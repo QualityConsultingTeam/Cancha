@@ -1,0 +1,72 @@
+﻿@model Access.Models.Booking
+@{
+    Layout = null;
+}
+
+
+<div class="row">
+    <div class="ibox-content">
+        <h4>COMPLEJO</h4>
+        <h2><strong> @Model.Field.Center.Name</strong></h2>
+        <h4> CANCHA </h4>
+        <h2> <strong> @Model.Field.Name</strong></h2>
+    </div>
+    <div class="ibox-content">
+        <h3><strong>Fecha</strong> </h3>
+        <h2></h2>
+        <h2>@Model.Start.Value.ToString("f")</h2>
+        @*<h2> @string.Format("{0:ddd, MMM d, yyyy}", Model.Start.Value.ToShortDateString())</h2>*@
+        <h2> Hora  @string.Format("{0:HH:mm}", Model.Start.Value)</h2>
+        @*<h2> Hora Final  @string.Format("{0:HH:mm}", Model.End.Value)</h2>*@
+        @*<h2> Hora Final @string.Format("{0}", Model.End.Value.ToString("t"))</h2>*@
+    </div>
+    <div class="ibox-content">
+        <h4>PRECIO</h4>
+        <h2>
+            <strong>
+                @Html.DisplayFor(m => m.Field.Cost.Price)
+            </strong>
+        </h2>
+
+    </div>
+</div>
+
+@using (Html.BeginForm("Confirmar", "Canchas",FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.Userid)
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.Idcancha)
+    @Html.HiddenFor(m => m.Start)
+    @Html.HiddenFor(m => m.End)
+    @Html.HiddenFor(m => m.Invoice)
+    @Html.HiddenFor(m => m.Status)
+    @Html.HiddenFor(m => m.Price)
+    @Html.HiddenFor(m => m.DownPayment)
+    @Html.HiddenFor(m => m.HasDownpay)
+    @Html.HiddenFor(m => m.Pending)
+    @Html.HiddenFor(m => m.Team1)
+    @Html.HiddenFor(m => m.Team2)
+
+
+
+    <div class="modal-footer">
+
+
+        <button type="submit" class="btn btn-info   btn-lg btn-outline">
+            <i class="fa fa-check"></i>
+            @{
+                var buttonText = User.Identity.IsAuthenticated ? "Reservar Cancha" : "Logearse para Reservar";
+            }
+           @buttonText  
+        </button>
+
+            @*<button class="btn btn-warning btn-circle btn-lg" data-dismiss="modal" type="button">
+                    <i class="fa fa-times"></i>
+                </button>*@
+    </div>
+}
+
+
+<script type="text/javascript">
+
+    </script>

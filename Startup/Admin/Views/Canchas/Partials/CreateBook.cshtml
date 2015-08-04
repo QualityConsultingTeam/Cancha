@@ -1,0 +1,28 @@
+﻿@using Access.Extensions
+@model Access.Models.Booking
+@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+
+@Html.Partial("Partials/CreateBookPartial",Model)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

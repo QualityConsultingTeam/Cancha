@@ -1,0 +1,40 @@
+﻿@{
+    Layout = null;
+    var formId = Guid.NewGuid();
+}
+@using Access.Extensions
+@model Booking
+ 
+ <div style="display: none">
+@using (Ajax.BeginForm("CreateBook", "Canchas", new AjaxOptions()
+        {
+            HttpMethod = "post",
+            InsertionMode = InsertionMode.Replace,
+            LoadingElementId = "loaderSection",
+            UpdateTargetId = "bookingModal"
+        },new {id=formId}))
+        {
+            @Html.HiddenFor(m=>m.Userid)
+            @Html.HiddenFor(m=> m.Id)
+            @Html.HiddenFor(m=> m.Idcancha)
+            @Html.HiddenFor(m=> m.Start)
+            @Html.HiddenFor(m => m.End)
+            @Html.HiddenFor(m => m.Invoice)
+            @Html.HiddenFor(m=> m.Status)
+            @Html.HiddenFor(m => m.Price)
+            @Html.HiddenFor(m => m.DownPayment)
+            @Html.HiddenFor(m => m.HasDownpay)
+            @Html.HiddenFor(m => m.Pending)
+            @Html.HiddenFor(m => m.Team1)
+            @Html.HiddenFor(m => m.Team2)
+            @Html.HiddenFor(m => m.OBJECTTYPE)
+            
+
+            @*<button type="submit" class="@Model.GetstatusClassForButton()" data-toggle="modal" data-target="#CreateAppointment">
+                @string.Format("{0:HH:mm}", Model.Start.Value)
+            </button>*@
+        }
+</div>
+ <button type="button" class="@Model.GetstatusClassForButton()" disabled="@Model.Isbusy" data-toggle="modal" data-target="#CreateAppointment" onclick="sendToModal('@formId')">
+    @string.Format("{0:HH:mm}", Model.Start.Value)
+</button>

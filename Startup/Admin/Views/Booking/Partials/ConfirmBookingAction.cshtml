@@ -1,0 +1,62 @@
+﻿
+@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}@using Access.Extensions
+@model Booking
+@Styles.Render("~/plugins/toastrStyles")
+     
+@Scripts.Render("~/plugins/toastr")
+<div class="row">
+    <div class="ibox-content animated fadeInLeftBig" id="bookingmodalheader">
+        <h2>@string.Format("{0}", ViewBag.ActionMessage)</h2>
+        <h4>@Model.Start.Value.ToString("f")</h4>
+        @*<h2> @string.Format("{0:ddd, MMM d, yyyy}", Model.Start.Value.ToShortDateString())</h2>*@
+        <h4> Hora Inicio  @string.Format("{0:HH:mm}", Model.Start.Value)</h4>
+        @*<h2> Hora Final  @string.Format("{0:HH:mm}", Model.End.Value)</h2>*@
+        <h4> Hora Final  @string.Format("{0}", Model.End.Value.ToString("t"))</h4>
+        <h3>@Model.Field.Name</h3>
+        
+    </div>
+</div>
+
+ 
+    @using (Ajax.BeginForm("DoConfirmBookingAction", "Booking", new AjaxOptions()
+        {
+            HttpMethod = "post",
+            //InsertionMode = InsertionMode.Replace,
+            LoadingElementId = "loaderSection",
+            //UpdateTargetId = "bookingModal",
+            OnSuccess = "OnCompleteBookingUpdate",
+        }))
+    {
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.Idcancha)
+        @Html.HiddenFor(m => m.Start)
+        @Html.HiddenFor(m => m.End)
+        @Html.HiddenFor(m => m.Invoice)
+        @Html.HiddenFor(m => m.Status)
+        @Html.HiddenFor(m => m.Price)
+        @Html.HiddenFor(m => m.DownPayment)
+        @Html.HiddenFor(m => m.HasDownpay)
+        @Html.HiddenFor(m => m.Pending)
+        @Html.HiddenFor(m => m.Team1)
+        @Html.HiddenFor(m => m.Team2)
+        @Html.HiddenFor(m => m.OBJECTTYPE)
+        @Html.HiddenFor(m=> m.RowVersion)
+    <div class="modal-footer animated fadeInRightBig">
+
+
+        <button type="submit" class="btn btn-info btn-circle btn-lg btn-outline">
+            <i class="fa fa-check"></i>
+        </button>
+
+        <button id="closemodalbtn" class="btn btn-warning btn-circle btn-lg btn-outline" data-dismiss="modal" type="button">
+            <i class="fa fa-times"></i>
+        </button>
+    </div>
+    }
+ 
+ 

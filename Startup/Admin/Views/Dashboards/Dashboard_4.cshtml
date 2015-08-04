@@ -1,0 +1,175 @@
+﻿@{
+    var isAsync = ViewBag.isAsync ?? false;
+    Layout = isAsync? null: "~/Views/Shared/_Layout_2.cshtml";
+    ViewBag.Title = "Dashboard v.4";
+}
+
+@model IEnumerable<Field>
+<div class="wrapper wrapper-content p-xl">
+    <div class="container animated fadeInRight">
+        <div class="row" id="fieldsContainer">
+            
+            
+            @foreach (var field in Model)
+            {
+
+                <div class="col-lg-4">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <span class="label label-warning-light pull-right">@field.Lawn.ToString().ToUpper() </span>
+                            <span class="label label-default pull-right">@field.Shoes.ToString().ToUpper()</span>
+                            <span class="label label-primary pull-right">FUT5</span>
+
+                            <h5>@field.Name</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="col-sm-6">
+                                <div class="text-center thumbnail">
+                                    <img alt="image" class="jg-loading-img m-t-xs img-responsive" src="@field.FieldPicure">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+
+                                <p><h3 class="font-bold no-margins"><i class="fa fa-map-marker"></i> @field.Location</h3></p>
+                                <address>
+                                    <abbr title="Numero de cancha">#:</abbr> @field.Id <br>
+                                    <abbr title="Telefono">T:</abbr> (503) @field.PhoneNumber
+                                </address>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="ibox-content">
+                            <button type="button" class="btn btn-default btn-sm">17:00</button>
+                            <button type="button" class="btn btn-warning btn-sm" tooltip="10% de descuento" tooltip-placement="bottom">
+                                <i class="fa fa-angellist"></i>
+                                18:00
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm">19:00</button>
+                            <button type="button" class="btn btn-primary btn-sm">20:00</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+            @*<div class="col-lg-4">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <span class="label label-warning-light pull-right">GRAMA</span>
+                        <span class="label label-default pull-right">TACOS</span>
+                        <span class="label label-primary pull-right">FUT5</span>
+
+                        <h5>Futeca</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="col-sm-6">
+                            <div class="text-center">
+                                <img alt="image" class="jg-loading-img m-t-xs img-responsive" src="/images/a2.jpg">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+
+                            <p><h3 class="font-bold no-margins"><i class="fa fa-map-marker"></i> Santa Tecla, La libertad</h3></p>
+                            <address>
+                                <abbr title="Numero de cancha">#:</abbr> 3 <br>
+                                <abbr title="Telefono">T:</abbr> (503) 1456-7890
+                            </address>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="ibox-content">
+                        <button type="button" class="btn btn-default btn-sm">17:00</button>
+                        <button type="button" class="btn btn-warning btn-sm" tooltip="10% de descuento" tooltip-placement="bottom">
+                            <i class="fa fa-angellist"></i>
+                            18:00
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm">19:00</button>
+                        <button type="button" class="btn btn-primary btn-sm">20:00</button>
+                    </div>
+                </div>
+            </div>*@
+
+       
+
+        <div class="row">
+            
+            <div class="col-lg-4">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <span class="label label-warning pull-right">Los Datos han cambiado</span>
+                        <h5>Actividad de Usuaios</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <small class="stats-label">Visitas</small>
+                                <h4>236 321.80</h4>
+                            </div>
+
+                            <div class="col-xs-4">
+                                <small class="stats-label">% Nuevas Visitas</small>
+                                <h4>46.11%</h4>
+                            </div>
+                            <div class="col-xs-4">
+                                <small class="stats-label">Semana pasada</small>
+                                <h4>432.021</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <small class="stats-label">Visitas</small>
+                                <h4>643 321.10</h4>
+                            </div>
+
+                            <div class="col-xs-4">
+                                <small class="stats-label">% Nuevas Visitas</small>
+                                <h4>92.43%</h4>
+                            </div>
+                            <div class="col-xs-4">
+                                <small class="stats-label">Semana pasada</small>
+                                <h4>564.554</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <small class="stats-label"> Visitas</small>
+                                <h4>436 547.20</h4>
+                            </div>
+
+                            <div class="col-xs-4">
+                                <small class="stats-label">% Nuevas Visitas</small>
+                                <h4>150.23%</h4>
+                            </div>
+                            <div class="col-xs-4">
+                                <small class="stats-label">Semana Pasada</small>
+                                <h4>124.990</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        
+    </div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/plugins/flot")
+    @Scripts.Render("~/plugins/chartJs")
+    @Scripts.Render("~/plugins/peity")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+      
+
+
+        });
+    </script>
+}

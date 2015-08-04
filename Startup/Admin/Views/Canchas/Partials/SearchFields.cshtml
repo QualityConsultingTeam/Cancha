@@ -1,0 +1,10 @@
+﻿@{
+    Layout = null;
+
+}
+@model IEnumerable<Field>
+
+@foreach (var field in Model)
+{
+    @Html.Partial("~/Views/Canchas/Partials/FieldSearchDetail.cshtml", field)
+}

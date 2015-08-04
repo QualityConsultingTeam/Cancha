@@ -1,0 +1,199 @@
+﻿@model Access.Models.Field
+
+@{
+
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Administracion de Canchas</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "RootAdmin")">Canchas</a>
+            </li>
+
+            <li class="active">
+                <strong> Detalles De Cancha</strong>
+            </li>
+            <li>
+                <a href="@Url.Action("EditField","RootAdmin",new{id= Model.Id})" class="btn btn-danger btn-circle" type="button"
+                   data-toggle="tooltip" data-placement="right" title="Tooltip on right">
+                    <i class="fa fa-pencil icon-white"></i>
+
+                </a>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5> Datos Centro <small> .</small></h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                                <a href="#">Config option 1</a>
+                            </li>
+                            <li>
+                                <a href="#">Config option 2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.FieldPicure)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.FieldPicure)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.CenterId)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.CenterId)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Location)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Location)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Description)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Comments)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Comments)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Town)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Town)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Department)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Department)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Country)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Country)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Neighborhood)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Neighborhood)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Length)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Length)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Width)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Width)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Grade)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Grade)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.UserSign)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.UserSign)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.CreateDate)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.CreateDate)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.CreateTime)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.CreateTime)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.OBJECTTYPE)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.OBJECTTYPE)
+                        </dd>
+
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

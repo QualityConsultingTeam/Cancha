@@ -1,0 +1,182 @@
+﻿@model Access.Models.Company
+
+@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+@Html.Partial("kendoRef")
+<div class="row wrapper border-bottom white-bg page-heading animated flipInX">
+    <div class="col-lg-10">
+        <h2>Administracion de Empresas</h2>
+        <ol class="breadcrumb">
+
+
+            <li class="active">
+                <strong>Empresas</strong>
+            </li>
+            <li>
+                <a href="@Url.Action("CompanyEdit","RootAdmin")" class="btn btn-danger btn-circle btn-outline" type="button"
+                   data-toggle="tooltip" data-placement="right" title="Tooltip on right">
+                    <i class="fa fa-plus icon-white"></i>
+                    @*Crear nueva cancha*@
+                </a>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+ 
+    
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>CompanyDetails Company</h5>
+                    </div>
+                    <div class="ibox-content">
+    
+    
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Name)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Nit)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Nit)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Phone1)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Phone1)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Phone2)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Phone2)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Address)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Address)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Personcontact)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Personcontact)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.UserSign)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.UserSign)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.CreateDate)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.CreateDate)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.CreateTime)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.CreateTime)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.OBJECTTYPE)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.OBJECTTYPE)
+                            </dd>
+    
+                        </dl>
+    
+    
+                        @Html.ActionLink("Editar", "CompanyEdit", new { id = Model.Id }, new { @class = "btn btn-primary"})
+        
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12" id="centersincompany">
+                @Html.Partial("Loader")
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+    $(function () {
+
+        loadCompanyCenters();
+
+    });
+
+        function loadCompanyCenters() {
+            $.get('@Url.Action("CompanyCenters", "RootAdmin",new{id=Model.Id})', function (data) {
+                $('#centersincompany').html(data);
+            });
+
+        }
+
+    
+    function clearCenterEditorForm() {
+        $("#companycentersEditorSection").html('');
+    }
+
+    function filtercities() {
+        return {
+            Department: $("#Department").val(),
+            cityfilter: $("#Town").data("kendoComboBox").input.val()
+        };
+    }
+    function filterStates() {
+        return {
+            idCountry: $("#Country").val(),
+            statefilter: $("#Town").data("kendoComboBox").input.val()
+        };
+    }
+    </script>
+    
+ 
+    
+    
+    
+    
+    
+     

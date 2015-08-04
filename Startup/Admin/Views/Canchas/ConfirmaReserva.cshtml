@@ -1,0 +1,64 @@
+﻿
+@{
+
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout_2.cshtml";
+    ViewBag.Title = "Canchas";
+}
+
+@model Access.Models.Booking
+
+@Html.Partial("KendoRef")
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4mbXflTyT-qgUjKpXrl2OQ7RE0BuMsaU">
+</script>
+<div class="wrapper wrapper-content p-xl" style="padding-top: 7%">
+    <div class="container animated fadeInRight">
+        <div class="row" id="fieldsContainer">
+            @Html.Partial("Loader")
+        </div>
+
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="CreateAppointment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h1 class="modal-title" id="myModalLabel">Reserva tu Cancha</h1>
+            </div>
+            <div class="modal-body">
+
+                <div id="modalLoader">
+                    @Html.Partial("LoaderCircle")
+                </div>
+
+                <div >
+                    @Html.Partial("Partials/CreateBookPartial", Model)
+                </div>
+            </div>
+           
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+         
+        $('#CreateAppointment').modal('show');
+        RunSearch();
+    });
+
+    function sendToModal(formid) {
+
+        @*$("#bookingModal').load('@Html.Partial("LoaderCircle")');*@
+        $("#bookingModal").html('');
+        $("#" + formid).submit();
+    }
+
+
+  
+</script>

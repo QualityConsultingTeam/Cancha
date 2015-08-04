@@ -1,0 +1,217 @@
+﻿@model Access.Models.Center
+
+@{
+    Layout = null;
+
+    var options = new AjaxOptions()
+    {
+        HttpMethod = "post",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "centersincompany",
+        LoadingElementId = "loaderSection",
+    };
+}
+
+  
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>CompanyCenterDetails Center</h5>
+                    </div>
+                    <div class="ibox-content">
+    
+    
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Idcompany)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Idcompany)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Name)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Type)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Type)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Location)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Location)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Description)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Description)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Town)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Town)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Department)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Department)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Country)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Country)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Neighborhood)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Neighborhood)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Administrator)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Administrator)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Personcontact)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Personcontact)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Phone1)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Phone1)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Phone2)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Phone2)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Email)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Email)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Opentime)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Opentime)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Closetime)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.Closetime)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.UserSign)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.UserSign)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.CreateDate)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.CreateDate)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.CreateTime)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.CreateTime)
+                            </dd>
+    
+                            <dt>
+                                @Html.DisplayNameFor(model => model.OBJECTTYPE)
+                            </dt>
+    
+                            <dd>
+                                @Html.DisplayFor(model => model.OBJECTTYPE)
+                            </dd>
+    
+                        </dl>
+    
+    
+                        @*@Html.ActionLink("Editar", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary"})*@
+                        @Ajax.ActionLink("Editar", "CompanyCenterEditorForm",
+                            new { id = Model.Id, companyId = (int)ViewBag.CompanyId }, options, new { @class = "btn btn-primary" })
+                        @*@Html.ActionLink("Volver", "Index", null, new { @class = "btn btn-white"})*@
+                        <a href="#" class="btn btn-white" onclick="loadCompanyCenters()">Volver</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12" id="fieldsSection">
+                
+            </div>
+        </div>
+     </div>
+    <script type="text/javascript">
+    $(function () {
+
+        $.get('@Url.Action("FieldsByCenter", "RootAdmin", new { id = Model.Id })', function (data) {
+            $('#fieldsSection').html(data);
+        });
+
+    });
+
+    
+</script>
+
+

@@ -1,0 +1,61 @@
+﻿@{
+    Layout = null;
+    var filter = (FilterOptionModel)ViewBag.Filter;
+
+}
+@model Field
+
+<div class="col-lg-4 animated flipInX">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <span class="label label-warning-light pull-right">@Model.Lawn.ToString().ToUpper() </span>
+            <span class="label label-default pull-right">@Model.Shoes.ToString().ToUpper()</span>
+            <span class="label label-primary pull-right">@Model.Type.ToString().ToUpper()</span>
+
+            <h5>@Model.Name</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="col-sm-6">
+                <div class="text-center">
+                    @Ajax.ImageActionLink(Model.FieldPicure, "Cancha", "FullSpecs",
+                        new { id = Model.Id, date = filter.date, end = filter.end, distance = Model.Distance }
+                        , new AjaxOptions()
+                        {
+                            HttpMethod = "post",
+                            InsertionMode = InsertionMode.Replace,
+                            UpdateTargetId = "fieldsContainer",
+                            LoadingElementId = "loaderSection",
+                                 
+                        }, new { @class = "jg-loading-img m-t-xs img-responsive", style = "max-height: 168px" })
+                </div>
+            </div>
+            <div class="col-sm-6">
+
+                <p>
+                    <h3 class="font-bold no-margins">
+                        <i class="fa fa-map-marker"></i> @Model.Location
+                    </h3>
+                </p>
+                <p>
+                    <h3 class="font-bold no-margins">
+                        <i class="fa fa-map-marker"></i> @Model.Distance 
+                    </h3>
+                </p>
+                <address>
+                    <abbr title="Numero de cancha">#:</abbr> @Model.Name <br>
+                    <abbr title="Telefono">T:</abbr> (503) @Model.Center.Phone1
+                    <abbr title="Telefono">T:</abbr> (503) @Model.Center.Phone2
+                </address>
+                <p>
+
+                </p>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        @Html.Partial("Partials/BookingSelector",Model.Bookings)
+    </div>
+</div>
+
+
+
+

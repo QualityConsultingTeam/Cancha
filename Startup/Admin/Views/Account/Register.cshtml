@@ -1,0 +1,94 @@
+﻿ 
+@using Admin.Models
+@model Admin.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Registrarse";
+    Layout = null;
+}
+ 
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>En La Cancha | Registrarse</title>
+
+    @*<link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Fonts/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="~/Content/animate.css" rel="stylesheet">
+    <link href="~/Content/style.css" rel="stylesheet">*@
+    @Styles.Render("~/font-awesome/css")
+    @Styles.Render("~/Content/css")
+
+    <style>
+        body {
+            color: white !important;
+        }
+          .form-control {
+            color: black !important;
+        }
+          .middle-box {
+             top: 37%!important;
+        }
+    </style>
+</head>
+
+<body class="bg-grass new-style">
+
+    <div class="middle-box text-center loginscreen   animated flipInY">
+        <div>
+            <div>
+
+                <h1 class="logo-name"> </h1>
+                <img src="/Images/logo_elc.png" alt="" style="width: 300px" />
+            </div>
+            
+            <p>Crea una cuenta para verlo en Accion.</p>
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "m-t", role = "form" }))
+            {
+                @*@Html.AntiForgeryToken()*@
+
+
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", PlaceHolder = "Email" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", PlaceHolder = "Password" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", PlaceHolder = "Password" })
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                </div>
+                @*<div class="form-group">
+                    <div class="checkbox"><label> <input type="checkbox"><i></i> Agree the terms and policy </label></div>
+                </div>*@
+                <button type="submit" class="btn btn-w-m btn-success full-width m-b">Registrarse</button>
+            }
+                <p class="text-muted text-center"><small>Ya Posee una Cuenta?</small></p>
+            <a class="btn btn-w-m btn-warning" href="@Url.Action("Login", "Account")">iniciar sesión</a>
+                <section id="socialLoginForm">
+                    @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+                </section>
+           
+
+            <p class="m-t"> <small>En la Cancha app framework  &copy; @DateTime.Now.Year</small> </p>
+
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+ 
+    @Scripts.Render("~/bundles/jqueryval")
+ 

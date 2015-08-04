@@ -1,0 +1,42 @@
+﻿@using Admin.Models
+@{
+    Layout = null;
+    var date = DateTime.Now;
+    var startTime = new DateTime(date.Year, date.Month, date.Day, 7, 00, 00);
+}
+
+@(Html.Kendo().Scheduler<BookingViewModel>()
+    .Name("scheduler")
+    .Date(date)
+        .StartTime(startTime)
+    .Height(600)
+    .Views(views =>
+    {
+        views.DayView(dayView => dayView.Selected(true));
+        views.WorkWeekView();
+        views.WeekView();
+        views.MonthView();
+        views.AgendaView();
+        //views.TimelineView();
+    })
+    .Timezone("Etc/UTC")
+     
+    .DataSource(d => d
+        .Model(m =>
+        {
+            m.Id(f => f.Id);
+            //m.Field(f => f.Title).DefaultValue("No title");
+            m.Field(f => f.Userid).DefaultValue(1);
+            //m.Field(f => f.Title).DefaultValue("No title");
+            //m.RecurrenceId(f => f.RecurrenceID);
+        })
+        .Read("Read", "Booking")
+            .Create("Create", "Booking")
+            .Destroy("Destroy", "Booking")
+            .Update("Update", "Booking")
+        .Filter(filters =>
+        {
+            filters.Add(model => model.Id).IsEqualTo(1).Or().IsEqualTo(2);
+        })
+    )
+)

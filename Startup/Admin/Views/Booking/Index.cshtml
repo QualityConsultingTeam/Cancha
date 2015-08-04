@@ -1,0 +1,223 @@
+﻿@{
+    //Layout = "~/Views/Shared/_Layout_2.cshtml";
+
+    var options = new AjaxOptions()
+    {
+        HttpMethod = "post",
+        InsertionMode = InsertionMode.Replace,
+        LoadingElementId = "loaderSection",
+        UpdateTargetId = "bookingModal",
+
+    };
+}
+
+
+@Html.Partial("KendoRef")
+
+<div class="row wrapper border-bottom white-bg page-heading animated flipInX">
+    <div class="col-lg-10">
+        <h2>Confirmacion de Reservas</h2>
+        <ol class="breadcrumb">
+
+            <li class="active">
+                <strong>Empresa  :</strong>
+            </li>
+            <li class="">
+                <strong>Complejo  :</strong>
+            </li>
+            <li>
+
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+        
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Administracion &nbsp;Reservas&nbsp;<small class="m-l-sm"></small></h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                                <a href="#">Config option 1</a>
+                            </li>
+                            <li>
+                                <a href="#">Config option 2</a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    @(Html.Kendo().Grid<Booking>()
+                          .Name("reservas")
+                          .Columns(columns =>
+                          {
+                              //columns.Bound(p => p.CreateDate).Visible(true).Format("{0:dd/MM/yyyy}").Width(100);
+                              columns.Bound(p => p.Start).Format("{0:H:mm}").Title("Hora");
+                              // columns.Bound(p => p.End).Format("{0:dd/MM/yyyy H:mm}");
+                              //columns.Bound(p => p.Field.Name).Title("Cancha");
+                              // user
+                              columns.Bound(p => p.UserInfo.Name);
+                              columns.Bound(o => o.UserInfo.Email).Title("Usuario")
+                                 .ClientTemplate(
+
+                                     "<button type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"ShowUserDetails('#= UserInfo.Id #')\" > #= UserInfo.Email #</button>" 
+                                     );
+                              columns.Bound(p => p.Type);
+                              columns.Bound(p => p.Status);
+                              columns.Bound(o => o.Isbusy).Title("Accion")
+                                  .ClientTemplate(
+                                      "# if (Status ==0) { #" +
+                                      "<button type=\"button\" class=\"btn btn-primary btn-sm\" onclick=\"ConfirmBookingAction(#= Id #)\" > Confirmar</button>" +
+                                    //"#: Field.Name #" +
+                                   "# } else if(Status==1) { #" +
+                                   //"#: Status #" +
+                                   "<button type=\"button\" class=\"btn btn-warning btn-sm\" onclick=\"CancelBookingAction(#=Id#)\"> Cancelar</button>" +
+                                   "# } else {#" +
+                                   "FINALIZADA"+ //"#:  Status #"+
+                                   "#}#"
+                                  );
+
+                          }).ToolBar(toolbar =>
+                          {
+                              toolbar.Template(@<text>
+                                <div class="toolbar">
+                                    <label class="Status-label" for="Status">Filtrar por estado:</label>
+                                    @(Html.Kendo().DropDownList()
+                                                                    .Name("statuses")
+                                                                    .OptionLabel("Todos")
+                                                                    .DataTextField("text")
+                                                                    .DataValueField("id")
+                                                                    .AutoBind(false)
+                                                                    .Events(e => e.Change("statuseschange"))
+                                                                    .DataSource(ds => ds.Read("BookingStates", "Booking")))
+
+                                </div>
+                            </text>);
+
+                          }).HtmlAttributes(new { style = "height: 530px" })
+                                                                                                            .Pageable()
+                                                                                                            .Navigatable()
+                                                                                                            .Sortable()
+                                                                                                            .Scrollable()
+                                                                                                            .Filterable()
+                                                                                                            .Groupable()
+                                                                                                            .Resizable(resize => resize.Columns(true))
+                                                                                                            .DataSource(dataSource => dataSource.Ajax().PageSize(20)
+                                                                                                                .ServerOperation(false)
+                                                                                                                .Model(model => model.Id(p => p.Id))
+                                                                                                                .Read("DataRead", "Booking")
+                                                                                                                ))
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="ChangeState" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header animated shake">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Administracion Reservas</h4>
+            </div>
+            
+            <div class="modal-body" id="modalLoader">
+                @*@Html.Partial("LoaderCircle")*@
+            </div>
+            <div class="modal-body" id="bookingModal">
+                @Html.Partial("LoaderCircle")
+            </div>
+            @*<div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                </div>*@
+        </div>
+    </div>
+</div>
+
+<script>
+    function statuseschange() {
+        var value = this.value(),
+             grid = $("#reservas").data("kendoGrid");
+
+        if (value) {
+            grid.dataSource.filter({ Status: "id", operator: "eq", value: parseInt(value) });
+        } else {
+            grid.dataSource.filter({});
+        }
+    }
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+        }
+    }
+    function showmodal() {
+        $("#bookingModal").html(null);
+        $("#modalLoader").fadeIn();
+        $('#ChangeState').modal('show');
+    }
+    function hideModal() {
+        $('#ChangeState').hide();
+    }
+
+    function GetBookingUpdateView(url) {
+        $.ajax({
+            type: "POST",
+            url: url,
+            //data: ,
+            datatype: "html",
+            success: function (data) {
+                $('#bookingModal').html(data);
+                $("#modalLoader").fadeOut();
+            }
+        });
+    }
+
+    function ConfirmBookingAction(id) {
+        console.log("Booking uid :" + id);
+        showmodal();
+        GetBookingUpdateView('@Url.Action("ConfirmBookingAction", "Booking")' + "?id=" + id);
+   }
+   function CancelBookingAction(id) {
+       console.log("Booking uid :" + id);
+       showmodal();
+       GetBookingUpdateView('@Url.Action("CancelBookingAction", "Booking")' + "?id=" + id);
+   }
+
+    function OnCompleteBookingUpdate(status) {
+
+        $("#bookingmodalheader").html(status);
+        toastr.success('Se actualizo Exitosamente nuevo estado: ' + status, 'Actualizacion de Reservas!');
+        $('#ChangeState').modal('hide');
+        
+        $('#reservas').data('kendoGrid').dataSource.read();
+    }
+    function ShowUserDetails(userid) {
+        console.log("user id: " + userid);
+        showmodal();
+        GetBookingUpdateView('@Url.Action("UserSummary", "Booking")' + "?id=" + userid);
+    }
+
+</script>

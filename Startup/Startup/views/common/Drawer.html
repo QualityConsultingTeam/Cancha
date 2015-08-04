@@ -1,0 +1,98 @@
+﻿<style>
+    :host {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: sans-serif;
+    }
+
+    core-header-panel {
+        background: white;
+    }
+
+    core-toolbar {
+        background-color: rgb(0, 186, 240);
+         color: rgb(255, 255, 255);
+        
+    }
+
+    #navheader {
+        background-color: rgb(0, 186, 240);
+    }
+
+    .content {
+        padding: 20px;
+    }
+
+    core-drawer-panel:not([narrow]) #navicon {
+        display: none;
+    }
+    core-icon[icon="account-circle"] {
+    color: #fefffa;
+    width: 60px;
+    height: 60px;
+  }
+
+    core-item.core-selected {
+  color: steelblue;
+}
+</style>
+
+ 
+
+<core-drawer-panel transition responsivewidth="1100px" selected="main" narrow id="drawerPanel" ng-if="authenticated()" >
+
+    <core-header-panel mode="scroll" drawer>
+        <core-toolbar id="navheader" class="tall">
+            <!-- <core-image src="{{user.cover}}" sizing="cover" preload fade
+                             style="width:400px; height:400px; background-color:#c41411;">
+                 </core-image> -->
+            <core-icon icon="account-circle" class="middle profile"></core-icon>
+
+            <!--<img class="middle profile" src="" />-->
+            <div class="bottom" layout vertical>
+                <span> John Doe</span>
+                <span>johncass-yopmail.com </span>
+               
+            </div>
+        </core-toolbar>
+        <core-menu selected="2" selectedindex="2">
+            <core-item icon="dashboard" label="Panaderia" horizontal center layout ng-click="ToPanaderiaAction()"></core-item>
+            <core-submenu opened active icon="settings" label="Pasteleria" ng-click="ToPasteleriaAction()">
+                <core-item id="core_item" label="Detallitos" horizontal center layout></core-item>
+                <core-item id="core_item1" label="Personalizados" horizontal center layout active></core-item>
+                <core-item id="core_item" label="Linea" horizontal center layout></core-item>
+                <core-item id="core_item" label="Pedidos Especiales" horizontal center layout></core-item>
+                <core-item id="core_item" label="Fotografias" horizontal center layout></core-item>
+            </core-submenu>
+            <core-item icon="settings" label="USUARIO" horizontal center layout></core-item>
+        </core-menu>
+
+
+    </core-header-panel>
+    <core-header-panel id="core_header_panel1" flex mode="waterfall" main>
+        <core-toolbar id="mainheader">
+            <paper-icon-button icon="menu" id="navicon" ng-click="menuAction()"></paper-icon-button>
+            <div>
+                Titulo
+            </div>
+
+        </core-toolbar>
+        <div ui-view></div>
+    </core-header-panel>
+</core-drawer-panel>
+
+
+<script>
+    //document.addEventListener('polymer-ready', function () {
+    //    var navicon = document.getElementById('navicon');
+    //    var drawerPanel = document.getElementById('drawerPanel');
+    //    navicon.addEventListener('click', function () {
+    //        drawerPanel.togglePanel();
+    //    });
+    //});
+</script>

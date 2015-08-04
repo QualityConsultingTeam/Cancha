@@ -1,0 +1,84 @@
+﻿@model Access.Models.UserInfo
+
+@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+
+ 
+                <div class="ibox-content">
+
+
+				    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ShedulesCount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShedulesCount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone2)
+        </dt>
+
+				        <dd>
+				            @Html.DisplayFor(model => model.Phone2)
+				        </dd>
+                        <dt>
+                            <ul>
+                                @foreach (var item in Model.BookingSummary)
+                                {
+                                    <li>@string.Format("{0} {1}",item.Label,item.Count)</li>
+                                }
+                            </ul>
+                    </dt>
+				        <dt>
+            @Html.DisplayNameFor(model => model.Comment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+
+    </dl>
+
+
+                </div>
+     
+
+
+
+
+
+
+
+
+
+

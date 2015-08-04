@@ -1,0 +1,321 @@
+﻿@model Access.Models.Field
+
+@{
+    //col-lg-2 control-label  replace with  col-lg-2 control-label
+    //col-lg-10 replace with col-lg-10
+}
+
+@Html.Partial("KendoRef")
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Administracion de Canchas</h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Index", "RootAdmin")">Canchas</a>
+            </li>
+
+            <li class="active">
+                <strong>Editar Datos Cancha</strong>
+            </li>
+            @*<li>
+                    <a href="@Url.Action("EditField","RootAdmin")" class="btn btn-danger btn-circle" type="button"
+                       data-toggle="tooltip" data-placement="right" title="Tooltip on right">
+                        <i class="fa fa-plus icon-white"></i>
+
+                    </a>
+                </li>*@
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5> Datos Cancha <small> .</small></h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                                <a href="#">Config option 1</a>
+                            </li>
+                            <li>
+                                <a href="#">Config option 2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    @using (Html.BeginForm("EditField","RootAdmin",FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            @Html.HiddenFor(model=> model.Id)
+                            @Html.HiddenFor(model=> model.CreateDate)
+                            @Html.HiddenFor(model=> model.CreateTime)
+                            @Html.HiddenFor(model=> model.UserSign)
+                            @Html.HiddenFor(model=>model.RowVersion)
+                          
+                            @Html.HiddenFor(model => model.Id)
+                            
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FieldPicure, htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @Html.EditorFor(model => model.FieldPicure, new { htmlAttributes = new { @class = "form-control !important" } })
+                                    @Html.ValidationMessageFor(model => model.FieldPicure, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CenterId, htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @Html.EditorFor(model => model.CenterId, new { htmlAttributes = new { @class = "form-control" } })
+
+                                    @*@(Html.Kendo().ComboBox()
+                                            .Name("Idcenter")
+                                            //.HtmlAttributes(new { @class = "form-control", style = "width: 100%;" })
+                                                    .Filter("contains")
+                                                    .DataTextField("text")
+                                                    .DataValueField("id")
+                                                    .DataSource(x =>
+                                                        x.Read("GetCites_all", "RootAdmin"))
+                                        )*@
+                                    @Html.ValidationMessageFor(model => model.CenterId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @Html.TextAreaFor(model => model.Description,  new { @class = "form-control", rows = "3" } )
+                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @Html.TextAreaFor(model => model.Comments,  new { @class = "form-control" ,rows="3"} )
+                                    @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @*@Html.EditorFor(model => model.Country, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    @(Html.Kendo().ComboBox()
+                                .Name("Country")
+                              .Placeholder("Seleccione Pais")
+                               .HtmlAttributes(new { style = "width: 100%;;heigth:100%" })
+                                                .Filter("contains")
+                                                .DataTextField("text")
+                                                .DataValueField("id")
+                                                .DataSource(x =>
+                                                    x.Read("GetCountries", "RootAdmin")).Value(Model.Country.ToString())
+                                    )
+                                    @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Department, htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @*@Html.EditorFor(model => model.Department, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    @(Html.Kendo().ComboBoxFor(model=> model.Department)
+                                .Value(Model.Department.ToString())
+                        .HtmlAttributes(new { style = "width: 100%;heigth:100%", id = Html.IdFor(model => model.Department).ToString() })
+                              .Placeholder("Seleccione Departamento..")
+                                      .DataTextField("text")
+                                      .DataValueField("id")
+                                      .Filter(FilterType.Contains)
+                                      .DataSource(source => source.Read(read => read.Action("GetStates", "RootAdmin")
+                                          .Data("filterStates"))
+                                      .ServerFiltering(true))
+                                      .Enable(true)
+                                      .AutoBind(false)
+                                      //.CascadeFrom("Country")
+                                        .CascadeFrom(Html.IdFor(model => model.Country).ToString())
+                                    )
+                                    @Html.ValidationMessageFor(model => model.Department, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Town, htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @*@Html.EditorFor(model => model.Town, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    @(Html.Kendo().ComboBoxFor(model=> model.Town)
+                                    .Name("Town")
+                                   .HtmlAttributes(new { style = "width:100%;heigth:100%", id = Html.IdFor(model => model.Town).ToString() })
+                                  .Placeholder("Seleccione una cuidad...")
+                                  .DataTextField("text")
+                                  .DataValueField("id")
+                                  .Filter(FilterType.Contains)
+                                     .DataSource(source => source.Read(read => read.Action("GetCities", "RootAdmin")
+                            .Data("filtercities"))
+                                      .ServerFiltering(true))
+                                  .Enable(true)
+                                  .AutoBind(false)
+                                    .CascadeFrom("Department").Value(Model.Town.ToString()))
+                                    @Html.ValidationMessageFor(model => model.Town, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Neighborhood, htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @Html.EditorFor(model => model.Neighborhood, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Neighborhood, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Length, htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @Html.EditorFor(model => model.Length, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Length, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Width, htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @Html.EditorFor(model => model.Width, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Width, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Grade, htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @Html.EditorFor(model => model.Grade, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Grade, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Lawn, htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @Html.EnumDropDownListFor(model => model.Lawn, new { @class = "form-control" } )
+                                    @Html.ValidationMessageFor(model => model.Lawn, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Shoes , htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @Html.EnumDropDownListFor(model => model.Shoes,   new { @class = "form-control" } )
+                                    @Html.ValidationMessageFor(model => model.Shoes, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @Html.EnumDropDownListFor(model => model.Status,   new { @class = "form-control" } )
+                                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        <div class="hr-line-dashed"></div>
+                            @*<div class="form-group">
+                                @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>*@
+                            @*<div class="form-group">
+                                @Html.LabelFor(model => model.UserSign, htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @Html.EditorFor(model => model.UserSign, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.UserSign, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>*@
+                            @*<div class="form-group">
+                                @Html.LabelFor(model => model.CreateDate, htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @Html.EditorFor(model => model.CreateDate, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.CreateDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>*@
+                            @*<div class="form-group">
+                                @Html.LabelFor(model => model.CreateTime, htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @Html.EditorFor(model => model.CreateTime, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.CreateTime, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>*@
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.OBJECTTYPE, htmlAttributes: new { @class = "col-lg-2 control-label" })
+                                <div class="col-lg-10">
+                                    @Html.EditorFor(model => model.OBJECTTYPE, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.OBJECTTYPE, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-lg-10">
+                                    <input type="submit" value="Save" class="btn btn-default" />
+                                </div>
+                            </div>
+                            <div >@Html.ValidationSummary(true, "", new { @class = "text-danger" })</div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function filtercities() {
+        return {
+            Department: $("#Department").val(),
+            cityfilter: $("#Town").data("kendoComboBox").input.val()
+        };
+    }
+    function filterStates() {
+        return {
+            idCountry: $("#Country").val(),
+            statefilter: $("#Town").data("kendoComboBox").input.val()
+        };
+    }
+</script>

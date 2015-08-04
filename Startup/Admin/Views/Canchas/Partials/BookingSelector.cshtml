@@ -1,0 +1,23 @@
+﻿@using Access.Extensions
+@model IEnumerable<Access.Models.Booking>
+
+@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+
+<div class="ibox-content">
+
+    @foreach (var book in Model.Where(b => b.Start.HasValue))
+    {
+       @Html.Partial("Partials/BookingItemChooser", book)
+
+    }
+
+</div>
+
+
+
+

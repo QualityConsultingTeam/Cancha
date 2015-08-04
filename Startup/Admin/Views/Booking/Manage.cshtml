@@ -1,0 +1,256 @@
+﻿@{
+    ViewBag.Title = "Administrar Reservas";
+
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    var options = new AjaxOptions()
+    {
+        HttpMethod = "post",
+        InsertionMode = InsertionMode.Replace,
+        LoadingElementId = "loader",
+        UpdateTargetId = "BookingListSection"
+    };
+}
+@model  IEnumerable<Booking>
+
+@Scripts.Render("~/plugins/knockout")
+
+
+
+
+<div class="wrapper wrapper-content animated fadeInRightBig" id="bookingAdminSection" style="padding-top: 7%">
+    
+    
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="tabs-container">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#tab-1"> Reservas</a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-2"> Calendario</a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-3"> Extras</a></li>
+               
+                </ul>
+                <div class="tab-content">
+                    <div id="tab-1" class="tab-pane active">
+                        <div class="panel-body">
+                            <div class="row">
+                                <h2>Confirmacion de Reservas </h2>
+                            </div>
+                            <div class="row">
+                                @using (Ajax.BeginForm("SearchAync", "Booking", null, new AjaxOptions
+                                 {
+                                        HttpMethod = "post",
+                                        InsertionMode = InsertionMode.Replace,
+                                        LoadingElementId = "loaderSection",
+                                        UpdateTargetId = "BookingListSection"
+
+                                    }, new { id = "searchbookingsform" }))
+                                {
+                                    <div class="col-sm-1 m-b-xs">
+                                        @Ajax.ActionLink(" ", "AddOrUpdate", "Booking", null, options, new { @class = "btn btn-danger btn-circle btn-outline fa fa-plus" }) 
+                                    </div>
+                                   
+                                    <div class="col-sm-1 m-b-xs">
+                                        <button type="submit" id="loading-example-btn" class="btn btn-sm btn-white"><i class="fa fa-refresh"></i> </button>
+
+                                    </div>
+                                    <div class="col-sm-3 m-b-xs">
+                                        <select class="input-sm form-control input-s-sm inline" id="BookingStatus" name="BookingStatus" data-bind="
+                                    options: statuses,
+                                    optionsText: 'Name',
+                                    value : seelctedStatus,
+                                    optionsValue: 'Id',event:{ change: onSelectionStatusChange},
+                                    optionsCaption: 'Estado...' "></select>
+                                    </div>
+
+                                    <div class="col-sm-5">
+                                        <div class="input-group">
+                                            <input type="text" placeholder="Buscar" class="input-sm form-control" id="keywords" name="keywords" data-bind="value:keywords">
+                                            <span class="input-group-btn">
+                                                <button type="submit" class="btn btn-sm btn-primary"> Go!</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div id="loader" style="display: none">
+                                @Html.Partial("Loader")
+                            </div>
+                            <div class="table-responsive" id="BookingListSection">
+
+                            </div>
+                          
+
+                         
+
+                            <div class="row" data-bind="visible: ShowDetails" style="display: none;">
+                                <div class="row">
+                                    <div class="col-sm-1 m-b-xs">
+                                        <button class="btn btn-danger btn-circle btn-lg btn-outline" type="button" data-bind="click: MaingoBackToList">
+                                            <i class="fa fa-arrow-left"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12" id="ibox-details">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="tab-2" class="tab-pane">
+                        <div class="panel-body">
+
+                           
+                        </div>
+                    </div>
+                    <div id="tab-3" class="tab-pane">
+                        <div class="panel-body">
+
+                           
+
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    
+</div>
+
+<div class="modal fade" id="ChangeState" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header animated shake">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Administracion Reservas</h4>
+            </div>
+
+            <div class="modal-body" id="modalLoader">
+                @Html.Partial("LoaderCircle")
+            </div>
+            <div class="modal-body" id="bookingModal">
+
+            </div>
+            @*<div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                </div>*@
+        </div>
+    </div>
+</div>
+@Styles.Render("~/plugins/footableStyles")
+@Scripts.Render("~/plugins/footable")
+<script type="text/javascript">
+
+
+    var previousScrollValue = 0;
+
+
+
+    //$('.HistoriaList').slimscroll().bind('slimscrolling', function (e, pos) {
+    //    //console.log("Scroll value: " + pos + "px");
+    //    if (pos == 0 && pos < previousScrollValue && scrollposition != 'top') $("#loadToScroll").click();
+    //    previousScrollValue = pos;
+    //});
+    var viewmodel = {
+        roles: [],
+        statuses: [],
+        keywords: ko.observable(),
+        seelctedStatus: ko.observable(),
+
+        page: ko.observable("1"),
+        scrollposition: ko.observable(),
+        onSelectionChange: function () {
+            $("#searchbookingsform").submit();
+        },
+        onSelectionStatusChange: function () {
+            $("#searchbookingsform").submit();
+        },
+
+        ShowList: ko.observable(true),
+        ShowDetails: ko.observable(false),
+        MainshowDetails: function () {
+            console.log("show details");
+            viewmodel.ShowList(false);
+            viewmodel.ShowDetails(true);
+        },
+        MaingoBackToList: function () {
+            console.log("close details");
+            viewmodel.ShowList(true);
+            viewmodel.ShowDetails(false);
+        }
+    };
+    // Initialize
+
+
+    $(function () {
+
+
+        $.get('@Url.Action("Statuses", "Booking")', function (status) {
+            viewmodel.statuses = status;
+            applybindigs(status);
+        });
+
+        $("#searchbookingsform").submit();
+
+
+    });
+    function applybindigs(statuses) {
+
+        console.log("Try apply bindings");
+        viewmodel.statuses = statuses;
+        ko.applyBindings(viewmodel);
+
+    };
+
+    function showDetails() {
+        viewmodel.MainshowDetails();
+    }
+
+
+    function showmodal() {
+        $("#bookingModal").html(null);
+        $("#modalLoader").fadeIn();
+        $('#ChangeState').modal('show');
+    }
+    function hideModal() {
+        $('#ChangeState').hide();
+    }
+
+
+    function GetBookingUpdateView(url) {
+        $.ajax({
+            type: "POST",
+            url: url,
+            //data: ,
+            datatype: "html",
+            success: function (data) {
+                $('#bookingModal').html(data);
+                $("#modalLoader").fadeOut();
+            }
+        });
+    }
+    function ConfirmBookingAction(id) {
+        console.log("Booking uid :" + id);
+        showmodal();
+        GetBookingUpdateView('@Url.Action("ConfirmBookingAction", "Booking")' + "?id=" + id);
+    }
+    function CancelBookingAction(id) {
+        console.log("Booking uid :" + id);
+        showmodal();
+        GetBookingUpdateView('@Url.Action("CancelBookingAction", "Booking")' + "?id=" + id);
+    }
+    function ShowUserDetails(userid) {
+        console.log("user id: " + userid);
+        showmodal();
+        GetBookingUpdateView('@Url.Action("UserSummary", "Booking")' + "?id=" + userid);
+    }
+</script>
+
+
+

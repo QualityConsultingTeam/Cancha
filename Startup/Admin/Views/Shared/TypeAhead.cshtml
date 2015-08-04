@@ -1,0 +1,33 @@
+﻿
+@*vista utilizada para crear un Helper TypeAheadFor(model => model.property, yakiris makiris)*@
+
+@model   TypeAheadParameter 
+<script type="text/javascript">
+    var targetId = '@Model.Id';
+            $("#"+targetId).typeahead({
+        source: function (query) {
+            var aheadModels = [];
+            map = {};
+
+            // This is going to make an HTTP post request to the controller
+            return $.post('@Url.Action(Model.ActionSource,Model.Controller)', { query: query }, function (data) {
+
+                // Loop through and push to the array
+                $.each(data, function (i, country) {
+                    map[country.Name] = country;
+                    aheadModels.push(country.Name);
+                });
+
+                // Process the details
+               // process(aheadModels);
+            });
+        },
+        //updater: function (item) {
+        //    var selectedShortCode = map[item].ShortCode;
+
+        //    // Set the text to our selected id
+        //    $("#details").text("Selected : " + selectedShortCode);
+        //    return item;
+        //}
+    });
+</script>

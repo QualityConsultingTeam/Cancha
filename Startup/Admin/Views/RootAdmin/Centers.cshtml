@@ -1,0 +1,135 @@
+﻿@{
+
+}
+
+@Html.Partial("KendoRef")
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Administracion de Centros</h2>
+        <ol class="breadcrumb">
+
+
+            <li class="active">
+                <strong>Centros </strong>
+            </li>
+            <li>
+                <a href="@Url.Action("CenterEdit","RootAdmin")" class="btn btn-danger btn-circle btn-outline" type="button"
+                   data-toggle="tooltip" data-placement="right" title="Tooltip on right">
+                    <i class="fa fa-plus icon-white"></i>
+                    @*Crear nueva cancha*@
+                </a>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeIn">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Administracion global de canchas super Usuario <small class="m-l-sm"></small></h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li>
+                                <a href="#">Config option 1</a>
+                            </li>
+                            <li>
+                                <a href="#">Config option 2</a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+
+                    @(Html.Kendo().Grid<Center>()
+                      .Name("Center_Grid")
+                      .Columns(columns =>
+                      {
+                          columns.Bound(p => p.Name);
+                          //columns.Bound(p => p.FieldPicure);
+                          //columns.Bound(p => p.Description);
+                          //columns.Bound(p => p.Idcenter);
+                          //columns.Bound(p => p.Type);
+                          //columns.Bound(p => p.Location);
+                          columns.Bound(p => p.Coordinates);
+
+                          //columns.Bound(p => p.Comments);
+                          columns.Bound(p => p.Town);
+                          columns.Bound(p => p.Department);
+                          //columns.Bound(p => p.Country);
+                          //columns.Bound(p => p.Neighborhood);
+                          //columns.Bound(p => p.Length);
+                          //columns.Bound(p => p.Width);
+
+                          columns.Bound(p => p.Status);
+                          //columns.Bound(p => p.UserSign);
+                          //columns.Bound(p => p.CreateDate);
+
+
+
+                          columns.Bound(o => o.Name).ClientTemplate(@Html.ActionLink("Editar", "CenterEdit", "RootAdmin", new { id = "#=Id#" }, new { @class = "k-button" }).ToHtmlString()).Title("Editar");
+                          columns.Bound(o => o.Name).ClientTemplate(@Html.ActionLink("Detalles", "CenterWithFields", "RootAdmin", new { id = "#=Id#" }, new { @class = "k-button" }).ToHtmlString()).Title("Editar");
+                          columns.Command(command => command.Destroy());
+                      })
+                      .ToolBar(toolbar =>
+                      {
+                          toolbar.Create();
+                          toolbar.Save();
+                      })
+                      .Editable(editable => editable.Mode(GridEditMode.InCell))
+                      .Pageable()
+                      .Navigatable()
+                      .Sortable()
+                      .Scrollable()
+                      .Filterable()
+                      .Groupable()
+                      .Resizable(resize => resize.Columns(true))
+
+                      .DataSource(dataSource => dataSource
+                          .Ajax()
+                          .Batch(true)
+                          .PageSize(20)
+                          .ServerOperation(false)
+
+                          .Model(model => model.Id(p => p.Id))
+                          .Create("Centers_Create", "RootAdmin")
+                          .Read("Centers_Read", "RootAdmin")
+                          .Update("Centers_Update", "RootAdmin")
+                          .Destroy("Centers_Destroy", "AdRootAdminmin")
+                          .Events(events => events.Error("error_handler"))
+                      )
+                    )
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+                <script type="text/javascript">
+                    function error_handler(e) {
+                        if (e.errors) {
+                            var message = "Errors:\n";
+                            $.each(e.errors, function (key, value) {
+                                if ('errors' in value) {
+                                    $.each(value.errors, function () {
+                                        message += this + "\n";
+                                    });
+                                }
+                            });
+                            alert(message);
+                        }
+                    }
+                </script>

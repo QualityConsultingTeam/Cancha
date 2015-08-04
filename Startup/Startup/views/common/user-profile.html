@@ -1,0 +1,28 @@
+﻿
+<polymer-element name="profile" attributes="src letter" noscript>
+<template>
+    <core-toolbar id="navheader" class="tall">
+        <!-- <core-image src="{{user.cover}}" sizing="cover" preload fade
+                         style="width:400px; height:400px; background-color:#c41411;">
+             </core-image> -->
+        <img class="middle profile" src="{{user.profile}}" hidden?="{{!user.profile}}">
+        <div class="bottom" layout vertical>
+            <span>{{user.name}}</span>
+            <span>{{user.email}}</span>
+        </div>
+    </core-toolbar>
+    <core-menu selected="0" excludedlocalnames="div" on-core-select="{{menuSelect}}">
+        <paper-item label="Inbox" icon="inbox"></paper-item>
+        <paper-item label="Social" icon="account-child"></paper-item>
+        <div class="separator">All labels</div>
+        <paper-item label="Starred" icon="star"></paper-item>
+        <paper-item label="Sent" icon="send"></paper-item>
+        <paper-item label="All Mail" icon="mail"></paper-item>
+        <paper-item label="Spam" icon="report"></paper-item>
+        <paper-item label="Trash" icon="delete"></paper-item>
+        <template repeat="{{l in labels}}">
+            <paper-item label="{{l.name}}" icon="label" class="{{l.color}}"></paper-item>
+        </template>
+    </core-menu>
+</template>
+</polymer-element>
