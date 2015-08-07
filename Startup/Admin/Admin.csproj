@@ -1507,6 +1507,7 @@
     <Content Include="Views\Booking\Partials\Scheduler.cshtml" />
     <Content Include="Views\Booking\Calendar.cshtml" />
     <Content Include="Service References\Application Insights\ConnectedService.json" />
+    <Content Include="Views\Shared\EditorTemplates\CustomEditorTemplate.cshtml" />
     <None Include="Web.Azure_Website.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

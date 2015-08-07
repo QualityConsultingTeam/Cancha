@@ -271,7 +271,7 @@ namespace Admin.Models
         }
 
 
-        public async Task<List<BookingViewModel>> UpdateAccountInfoFoScheduler(List<Booking> data)
+        public async Task<List<BookingViewModel>> UpdateAccountInfoFoScheduler(IQueryable<BookingViewModel> data)
         {
 
             var usersIds = data.Select(u => u.Userid).Distinct()
@@ -310,16 +310,16 @@ namespace Admin.Models
                 item.UserInfo = users.FirstOrDefault(u => u.Id == item.Userid) ?? new UserInfo();
 
             }
+            return data.ToList();
+            //return data.Select(d=>
+            //{
+            //    var book = new BookingViewModel();
+            //    book.CopyFrom(d);
+            //    book.Title = d.UserInfo.Name +"_ " ;
+            //    book.Description = "Reserva de Cancha";
 
-            return data.Select(d=>
-            {
-                var book = new BookingViewModel();
-                book.CopyFrom(d);
-                book.Title = d.UserInfo.Name +"_ " ;
-                book.Description = "Reserva de Cancha";
-
-                return book;
-            }).ToList();
+            //    return book;
+            //}).ToList();
         }
 
       

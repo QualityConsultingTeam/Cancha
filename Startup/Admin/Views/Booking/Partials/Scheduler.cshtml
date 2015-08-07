@@ -2,7 +2,7 @@
 @{
     Layout = null;
     var date = DateTime.Now;
-    var startTime = new DateTime(date.Year, date.Month, date.Day, 7, 00, 00);
+    var startTime = new DateTime(date.Year, date.Month, date.Day,6, 00, 00);
 }
 
 @(Html.Kendo().Scheduler<BookingViewModel>()
@@ -19,8 +19,25 @@
         views.AgendaView();
         //views.TimelineView();
     })
+    .MinorTickCount(1)
+     .Editable(editable =>
+     {
+         editable.TemplateName("CustomEditorTemplate");
+         editable.Resize(false);
+         editable.Move(false);
+         editable.Confirmation("Esta seguro que desea eliminar el registro");
+     })
+     .Messages(m =>
+     {
+         m.Cancel("Cancelar");
+         m.Date("Fecha");
+         m.Event("Reserva");
+         m.Save("Guardar");
+         m.DeleteWindowTitle("Borrar registro");
+         m.Destroy("Eliminar");
+     })
     .Timezone("Etc/UTC")
-     
+
     .DataSource(d => d
         .Model(m =>
         {
@@ -40,3 +57,24 @@
         })
     )
 )
+<script type="text/javascript">
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+
+            var scheduler = $("#scheduler").data("kendoScheduler");
+            scheduler.one("dataBinding", function (e) {
+                //prevent saving if server error is thrown
+                e.preventDefault();
+            })
+        }
+    }
+</script>
