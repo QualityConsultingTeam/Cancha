@@ -162,7 +162,9 @@ namespace Access
 
                             }).Take(4).ToList();
                 item.field.Bookings.AddRange(books);
-                item.field.Bookings = item.field.Bookings.OrderBy(o => o.Start).ToList();
+                // asegurar 4 Botones (por temas de estilo)
+                item.field.Bookings = item.field.Bookings.OrderBy(o => o.Start.Value).Take(4).ToList();
+               item.field.Bookings = item.field.Bookings.OrderBy(o => o.Start).ToList();
                 item.field.Cost = item.cost;
             }
 
