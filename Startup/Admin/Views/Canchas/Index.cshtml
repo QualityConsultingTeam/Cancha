@@ -10,80 +10,16 @@
 <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4mbXflTyT-qgUjKpXrl2OQ7RE0BuMsaU">
 </script>
-<div class="wrapper wrapper-content p-xl" style="padding-top: 7%">
-    <div class="container animated fadeInRight">
+@*<div class="wrapper wrapper-content p-xl" style="padding-top: 7%">*@
+    <div class="animated fadeInRight" style="padding-top :7%">
         <div class="row" id="fieldsContainer">
-            @Html.Partial("Loader")
-        </div>
-
-        @*<div class="row">
-
-                <div class="col-lg-4">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <span class="label label-warning pull-right">Los Datos han</span>
-                            <h5>Actividad de Usuaios</h5>
-                        </div>
-                        <div class="ibox-content">
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <small class="stats-label">Visitas</small>
-                                    <h4>236 321.80</h4>
-                                </div>
-
-                                <div class="col-xs-4">
-                                    <small class="stats-label">% Nuevas Visitas</small>
-                                    <h4>46.11%</h4>
-                                </div>
-                                <div class="col-xs-4">
-                                    <small class="stats-label">Semana pasada</small>
-                                    <h4>432.021</h4>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ibox-content">
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <small class="stats-label">Visitas</small>
-                                    <h4>643 321.10</h4>
-                                </div>
-
-                                <div class="col-xs-4">
-                                    <small class="stats-label">% Nuevas Visitas</small>
-                                    <h4>92.43%</h4>
-                                </div>
-                                <div class="col-xs-4">
-                                    <small class="stats-label">Semana pasada</small>
-                                    <h4>564.554</h4>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ibox-content">
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <small class="stats-label"> Visitas</small>
-                                    <h4>436 547.20</h4>
-                                </div>
-
-                                <div class="col-xs-4">
-                                    <small class="stats-label">% Nuevas Visitas</small>
-                                    <h4>150.23%</h4>
-                                </div>
-                                <div class="col-xs-4">
-                                    <small class="stats-label">Semana Pasada</small>
-                                    <h4>124.990</h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>*@
+            @Html.Partial("LoaderCircle")
+        </div> 
 
 
     </div>
 
-</div>
+@*</div>*@
  
 <div class="modal fade" id="CreateAppointment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -95,7 +31,7 @@
             <div class="modal-body" >
                 
                 <div id="modalLoader">
-                    @Html.Partial("LoaderCircle")
+                    @*@Html.Partial("Loader")*@
                 </div>
                 
                 <div id="bookingModal">
@@ -120,7 +56,7 @@
 
     function sendToModal(formid) {
 
-        @*$("#bookingModal').load('@Html.Partial("LoaderCircle")');*@
+       
         $("#bookingModal").html('');
         $("#" + formid).submit();
     }
