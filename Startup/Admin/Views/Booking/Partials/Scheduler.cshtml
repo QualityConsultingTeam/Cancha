@@ -17,7 +17,7 @@
         views.WeekView();
         views.MonthView();
         views.AgendaView();
-        //views.TimelineView();
+       // views.TimelineView();
     })
     .MinorTickCount(1)
      .Editable(editable =>
@@ -36,16 +36,16 @@
          m.DeleteWindowTitle("Borrar registro");
          m.Destroy("Eliminar");
      })
-    .Timezone("Etc/UTC")
+   // .Timezone("Etc/UTC")
 
     .DataSource(d => d
         .Model(m =>
         {
             m.Id(f => f.Id);
-            //m.Field(f => f.Title).DefaultValue("No title");
+            m.Field(f => f.Title).DefaultValue("No title");
             m.Field(f => f.Userid).DefaultValue(1);
-            //m.Field(f => f.Title).DefaultValue("No title");
-            //m.RecurrenceId(f => f.RecurrenceID);
+            m.Field(f => f.Title).DefaultValue("No title");
+            m.RecurrenceId(f => f.RecurrenceId);
         })
         .Read("Read", "Booking")
             .Create("Create", "Booking")
@@ -53,8 +53,10 @@
             .Update("Update", "Booking")
         .Filter(filters =>
         {
-            filters.Add(model => model.Id).IsEqualTo(1).Or().IsEqualTo(2);
-        })
+            filters.Add(model => model.Id);
+            //.IsEqualTo(1).Or().IsEqualTo(2);
+        }
+        )
     )
 )
 <script type="text/javascript">

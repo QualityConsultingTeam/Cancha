@@ -21,5 +21,7 @@ namespace Admin.Models
         public string EndTimezone { get; set; }
         public string RecurrenceRule { get; set; }
         public string RecurrenceException { get; set; }
+
+        public int RecurrenceId { get; set; }
     }
 }

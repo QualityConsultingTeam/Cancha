@@ -99,7 +99,7 @@ namespace Admin.Controllers
             
             var model = result.ToDataSourceResult(request);
 
-            model.Data = await IdentityManagerService.UpdateAccountInfoFoScheduler(model.Data as IQueryable<BookingViewModel>);
+            model.Data = await IdentityManagerService.UpdateAccountInfoFoScheduler(model.Data as List<BookingViewModel>);
 
             return Json(model);
         }

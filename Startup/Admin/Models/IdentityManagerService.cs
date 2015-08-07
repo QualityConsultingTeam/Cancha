@@ -271,7 +271,7 @@ namespace Admin.Models
         }
 
 
-        public async Task<List<BookingViewModel>> UpdateAccountInfoFoScheduler(IQueryable<BookingViewModel> data)
+        public async Task<List<BookingViewModel>> UpdateAccountInfoFoScheduler(List<BookingViewModel> data)
         {
 
             var usersIds = data.Select(u => u.Userid).Distinct()
