@@ -11,14 +11,15 @@
 <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4mbXflTyT-qgUjKpXrl2OQ7RE0BuMsaU">
 </script>
-<div class="wrapper wrapper-content p-xl" style="padding-top: 7%">
-    <div class="container animated fadeInRight">
-        <div class="row" id="fieldsContainer">
-            @Html.Partial("Loader")
+<div class="animated fadeInRight" style="padding-top :7%">
+    <div class="row">
+        <div class="wrapper wrapper-content " id="fieldsContainer">
+
+            @Html.Partial("LoaderCircle")
         </div>
-
-
     </div>
+
+
 
 </div>
 
@@ -31,13 +32,10 @@
             </div>
             <div class="modal-body">
 
-                <div id="modalLoader">
-                    @*@Html.Partial("LoaderCircle")*@
-                </div>
-
-                <div >
+                <div id="bookingModal">
                     @Html.Partial("Partials/CreateBookPartial", Model)
-                </div>
+                </div> 
+                
             </div>
            
         </div>
@@ -54,7 +52,7 @@
 
     function sendToModal(formid) {
 
-        @*$("#bookingModal').load('@Html.Partial("LoaderCircle")');*@
+        
         $("#bookingModal").html('');
         $("#" + formid).submit();
     }

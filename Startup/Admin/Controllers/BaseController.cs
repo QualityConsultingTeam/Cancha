@@ -10,7 +10,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 namespace Admin.Controllers
 {
-    [Globalization]
+    //[Globalization]
+    [RequireHttps]
     public class BaseController<TRepository, TContext, TEntity> : Controller //new()
         where TContext : DbContext 
         where TEntity :  BaseModel 

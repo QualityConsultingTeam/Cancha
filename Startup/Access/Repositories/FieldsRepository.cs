@@ -129,10 +129,10 @@ namespace Access
                                   cost  = cost,
                               }).ToListAsync();
 
-            var result = data.GroupBy(k => k.field)
+            var result = data.GroupBy(k => k.field.Id)
                 .Select(d => new
                 {
-                    field = d.Key,
+                    field = d.FirstOrDefault().field,
                     center = d.FirstOrDefault().center,
                     Books = d.Select(b => b.Default).ToList(),
                     cost  = d.FirstOrDefault().cost,
@@ -147,15 +147,20 @@ namespace Access
                 item.field.Center = resultItem.center;
                 item.field.Bookings = resultItem.Books.Where(b => b != null).ToList();
 
-                // add available bookings
-                var books = ranges.Where(t => !resultItem.Books.Where(b => b != null).Any(b => b.Start == t.Start && b.End == t.End))
-                    .Select(t => new Booking()
-                    {
-                        Start = t.Start, End = t.End ,Idcancha = item.field.Id,
-                        Price = item.cost.Price,
-                        Field = item.field,
-                        
-                    }).ToList();
+                // add available bookings 
+                // son 4 botones por defecto si estan disponibles o no
+                var books = ranges.Where(t =>
+                            !resultItem.Books.Where(b => b != null && b.Start.HasValue).Any(b => b.Start == t.Start && b.End == t.End))
+                            .OrderBy(b => b.Start.Value)
+                            .Select(t => new Booking()
+                            {
+                                Start = t.Start,
+                                End = t.End,
+                                Idcancha = item.field.Id,
+                                Price = item.cost.Price,
+                                Field = item.field,
+
+                            }).Take(4).ToList();
                 item.field.Bookings.AddRange(books);
                 item.field.Bookings = item.field.Bookings.OrderBy(o => o.Start).ToList();
                 item.field.Cost = item.cost;

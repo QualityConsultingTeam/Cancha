@@ -10,16 +10,20 @@
 <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4mbXflTyT-qgUjKpXrl2OQ7RE0BuMsaU">
 </script>
-@*<div class="wrapper wrapper-content p-xl" style="padding-top: 7%">*@
+ 
     <div class="animated fadeInRight" style="padding-top :7%">
-        <div class="row" id="fieldsContainer">
-            @Html.Partial("LoaderCircle")
-        </div> 
+        <div class="row">
+            <div class="wrapper wrapper-content " id="fieldsContainer">
+
+                @Html.Partial("LoaderCircle")
+            </div> 
+        </div>
+        
 
 
     </div>
 
-@*</div>*@
+ 
  
 <div class="modal fade" id="CreateAppointment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -29,11 +33,7 @@
                 <h1 class="modal-title" id="myModalLabel">Reserva tu Cancha</h1>
             </div>
             <div class="modal-body" >
-                
-                <div id="modalLoader">
-                    @*@Html.Partial("Loader")*@
-                </div>
-                
+                 
                 <div id="bookingModal">
 
                 </div>
