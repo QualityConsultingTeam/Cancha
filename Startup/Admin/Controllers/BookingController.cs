@@ -81,7 +81,9 @@ namespace Admin.Controllers
 
         public virtual async Task<JsonResult> Read([DataSourceRequest] DataSourceRequest request)
         {
-            IQueryable<Booking> result = Repository.GetSummary(LoggedUser.Value)
+            var defaultStart = DateTime.Now;
+            var defaultEnd = DateTime.Now.AddHours(1);
+            IQueryable<BookingViewModel> result = Repository.GetSummary(LoggedUser.Value)
                 .Select(b=> new BookingViewModel()
                 {
                     Id= b.Id,
@@ -90,11 +92,11 @@ namespace Admin.Controllers
                     Team1 = b.Team1,
                     Team2 = b.Team2,
                     Title = "Reserva de cancha",
-                    Start = b.Start.Value,
-                    End = b.End.Value,
+                    Start =  b.Start.HasValue? b.Start.Value : defaultStart,
+                    End = b.End.HasValue ? b.End.Value: defaultEnd,
                     
-                });
-
+                }).AsQueryable();
+            
             var model = result.ToDataSourceResult(request);
 
             model.Data = await IdentityManagerService.UpdateAccountInfoFoScheduler(model.Data as IQueryable<BookingViewModel>);
