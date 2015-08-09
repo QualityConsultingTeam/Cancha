@@ -274,7 +274,7 @@ namespace Admin.Models
         public async Task<List<BookingViewModel>> UpdateAccountInfoFoScheduler(List<BookingViewModel> data)
         {
 
-            var usersIds = data.Select(u => u.Userid).Distinct()
+            var usersIds = data.Select(u => u.UserId).Distinct()
                 .Select(u => u.ToString()).ToList();
 
             // userinfo
@@ -307,8 +307,14 @@ namespace Admin.Models
 
             foreach (var item in data)
             {
-                item.UserInfo = users.FirstOrDefault(u => u.Id == item.Userid) ?? new UserInfo();
-
+                item.UserInfo = users.FirstOrDefault(u => u.Id == item.UserId) ?? new UserInfo();
+                item.Start = DateTime.SpecifyKind(item.Start, DateTimeKind.Utc);
+                item.End= DateTime.SpecifyKind(item.End, DateTimeKind.Utc);
+                if(item.UserInfo!=null && !string.IsNullOrEmpty(item.UserInfo.Name)) 
+                {
+                    item.Title = item.UserInfo.Name;
+                }
+                if (item.UserId == Guid.Empty) item.UserId = Guid.NewGuid();
             }
             return data.ToList();
             //return data.Select(d=>

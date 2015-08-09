@@ -29,5 +29,16 @@ namespace Admin.Helpers
 
             return obj;
         }
+
+        public static DateTime ToSpecificKind(this DateTime? dateTime ,DateTimeKind kind= DateTimeKind.Utc)
+        {
+            var date = DateTime.Now;
+
+            return dateTime.HasValue ? 
+                DateTime.SpecifyKind(dateTime.Value, kind)
+                :DateTime.SpecifyKind(date, kind);
+
+
+        }
     }
 }

@@ -81,27 +81,25 @@ namespace Admin.Controllers
 
         public virtual async Task<JsonResult> Read([DataSourceRequest] DataSourceRequest request)
         {
-            var defaultStart = DateTime.Now;
-            var defaultEnd = DateTime.Now.AddHours(1);
-            IQueryable<BookingViewModel> result = Repository.GetSummary(LoggedUser.Value)
-                .Select(b=> new BookingViewModel()
+
+            IQueryable<BookingViewModel> query = Repository.GetSummary(LoggedUser.Value).ToList()
+                .Select(b => new BookingViewModel()
                 {
-                    Id= b.Id,
-                    CreateDate= b.CreateDate,
-                    CreateTime = b.CreateTime,
-                    Team1 = b.Team1,
-                    Team2 = b.Team2,
+                    Id = b.Id,
                     Title = "Reserva de cancha",
-                    Start =  b.Start.HasValue? b.Start.Value : defaultStart,
-                    End = b.End.HasValue ? b.End.Value: defaultEnd,
-                    
+                    Start = b.Start.ToSpecificKind(),
+                    End = b.End.ToSpecificKind(),
+                    UserId = b.Userid,
+                    Description = "",
                 }).AsQueryable();
+           
+            var model = query.ToDataSourceResult(request);
+
             
-            var model = result.ToDataSourceResult(request);
+           model.Data = await IdentityManagerService.UpdateAccountInfoFoScheduler(model.Data as List<BookingViewModel>);
 
-            model.Data = await IdentityManagerService.UpdateAccountInfoFoScheduler(model.Data as List<BookingViewModel>);
+            return Json(model); 
 
-            return Json(model);
         }
 
         public virtual async Task<JsonResult> Destroy([DataSourceRequest] DataSourceRequest request, BookingViewModel task)

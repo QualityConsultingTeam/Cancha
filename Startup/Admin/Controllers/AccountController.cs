@@ -338,7 +338,7 @@ namespace Admin.Controllers
             var user= await UserManager.FindByEmailAsync(loginInfo.Email);
 
             var existingClaims = await UserManager.GetClaimsAsync(user.Id);
-            if (!existingClaims.Any())
+            if (existingClaims!=null && !existingClaims.Any())
             {
                 var tasks = loginInfo.ExternalIdentity
                     .Claims.Select(c => new Task(() => UserManager.AddClaimAsync(user.Id, c))).ToList();

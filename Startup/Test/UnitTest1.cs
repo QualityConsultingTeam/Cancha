@@ -49,9 +49,15 @@ namespace Test
         {
             var context = AccessContext.Create();
 
-            var bookings = context.Bookings.Where(b => b.End == null).ToList();
-
-            bookings.ForEach(b => b.End = b.Start.Value.AddHours(1));
+            var bookings = context.Bookings.ToList();
+            var start = new DateTime(2015, 08, 09, 15, 00, 00, DateTimeKind.Utc);
+            var end = start.AddHours(1);
+            
+            foreach(var booking in bookings)
+            {
+                booking.Start = start;
+                booking.End = end;
+            }
 
             context.SaveChanges();
         }

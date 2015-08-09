@@ -32,14 +32,17 @@ namespace Access.Repositories
 
             // filtrar por nievel de acceso 
             var fieldsIds = Context.Centers.Include("Fields")
-                .Where(c => c.Employees.Any(employee => employee.AccountId == userid))
+                .Where(c =>  c.Employees.Any(employee => employee.AccountId == userid))
                 .SelectMany(c => c.Fields.Select(f => f.Id)).ToList();
         
             // agregar nivel de acceso para visibilidad
                           
             IQueryable<Booking> query =Context.Bookings.Include("Field");
-
-            if (fieldsIds.Any()) query = query.Where(b => fieldsIds.Contains(b.Field.Id));
+            
+            if (fieldsIds.Any()) query = query.Where(b => b.Start.HasValue &&
+                                                          b.End.HasValue && 
+                                                          b.Userid != Guid.Empty &&
+                                                          fieldsIds.Contains(b.Field.Id));
 
             return query;
         }

@@ -2,24 +2,24 @@
 @{
     Layout = null;
     var date = DateTime.Now;
-    var startTime = new DateTime(date.Year, date.Month, date.Day,6, 00, 00);
+    
 }
+
 
 @(Html.Kendo().Scheduler<BookingViewModel>()
     .Name("scheduler")
-    .Date(date)
-        .StartTime(startTime)
-    .Height(600)
+     .Date(date.Date)
+      .StartTime(new DateTime(date.Year, date.Month, date.Day, 7, 00, 00))
+      .Height(600)
     .Views(views =>
     {
-        views.DayView(dayView => dayView.Selected(true));
+        views.DayView();
         views.WorkWeekView();
         views.WeekView();
-        views.MonthView();
+        views.MonthView(mv => mv.Selected(true));
         views.AgendaView();
-       // views.TimelineView();
     })
-    .MinorTickCount(1)
+     .MinorTickCount(1)
      .Editable(editable =>
      {
          editable.TemplateName("CustomEditorTemplate");
@@ -27,24 +27,78 @@
          editable.Move(false);
          editable.Confirmation("Esta seguro que desea eliminar el registro");
      })
-     .Messages(m =>
+    .Messages(m =>
+    {
+        m.Cancel("Cancelar");
+        m.Date("Fecha");
+        m.Event("Reserva");
+        m.Save("Guardar");
+        m.DeleteWindowTitle("Borrar registro");
+        m.Destroy("Eliminar");
+    })
+    .Timezone("Etc/UTC")
+   .DataSource(d => d
+        .Model(m =>
+        {
+            m.Id(f => f.Id);
+            m.Field(f => f.Title).DefaultValue("No title");
+            // m.Field(f => f.UserId).DefaultValue(Guid.NewGuid());
+
+            m.RecurrenceId(f => f.RecurrenceId);
+        })
+        .Read("Read", "Booking")
+            .Create("Create", "Booking")
+            .Destroy("Destroy", "Booking")
+            .Update("Update", "Booking")
+    //.Filter(filters =>
+    //{
+    //    filters.Add(model => model.Id)
+    //    .IsEqualTo(1).Or().IsEqualTo(2);
+    //}
+
+    ))
+
+@*@(Html.Kendo().Scheduler<BookingViewModel>()
+    .Name("scheduler")
+    .Date(date.Date)
+      .StartTime(new DateTime(date.Year, date.Month,date.Day, 7, 00, 00))
+    .Height(600)
+    .Views(views =>
+    {
+        views.DayView();
+        //views.WeekView(weekView => weekView.Selected(true));
+        views.WorkWeekView();
+        views.WeekView();
+        views.MonthView(m=>m.Selected(true));
+        views.AgendaView();
+        // views.TimelineView();
+    })
+    //.MinorTickCount(1)
+     .Editable(editable =>
      {
-         m.Cancel("Cancelar");
-         m.Date("Fecha");
-         m.Event("Reserva");
-         m.Save("Guardar");
-         m.DeleteWindowTitle("Borrar registro");
-         m.Destroy("Eliminar");
+         editable.TemplateName("CustomEditorTemplate");
+         editable.Resize(false);
+         editable.Move(false);
+         editable.Confirmation("Esta seguro que desea eliminar el registro");
      })
-   // .Timezone("Etc/UTC")
+    //.Messages(m =>
+    //{
+    //    m.Cancel("Cancelar");
+    //    m.Date("Fecha");
+    //    m.Event("Reserva");
+    //    m.Save("Guardar");
+    //    m.DeleteWindowTitle("Borrar registro");
+    //    m.Destroy("Eliminar");
+    //})
+    .Timezone("Etc/UTC")
 
     .DataSource(d => d
         .Model(m =>
         {
             m.Id(f => f.Id);
             m.Field(f => f.Title).DefaultValue("No title");
-            m.Field(f => f.Userid).DefaultValue(1);
-            m.Field(f => f.Title).DefaultValue("No title");
+            m.Field(f => f.UserId).DefaultValue(Guid.NewGuid());
+
             m.RecurrenceId(f => f.RecurrenceId);
         })
         .Read("Read", "Booking")
@@ -53,11 +107,11 @@
             .Update("Update", "Booking")
         .Filter(filters =>
         {
-            filters.Add(model => model.Id);
-            //.IsEqualTo(1).Or().IsEqualTo(2);
+            filters.Add(model => model.Id)
+            .IsEqualTo(1).Or().IsEqualTo(2);
         }
         )
-    )
+    )*@
 )
 <script type="text/javascript">
     function error_handler(e) {
@@ -76,6 +130,7 @@
             scheduler.one("dataBinding", function (e) {
                 //prevent saving if server error is thrown
                 e.preventDefault();
+                console.log(e);
             })
         }
     }
