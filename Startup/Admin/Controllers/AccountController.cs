@@ -335,15 +335,13 @@ namespace Admin.Controllers
             // Sign in the user with this external login provider if the user already has a login
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
 
-            var user= await UserManager.FindByEmailAsync(loginInfo.Email);
 
-            var existingClaims = await UserManager.GetClaimsAsync(user.Id);
-            if (existingClaims!=null && !existingClaims.Any())
+            // Agregar custom Claims 
+            if (result == SignInStatus.Success)
             {
-                var tasks = loginInfo.ExternalIdentity
-                    .Claims.Select(c => new Task(() => UserManager.AddClaimAsync(user.Id, c))).ToList();
+                var user = await UserManager.FindByEmailAsync(loginInfo.Email);
 
-                tasks.ForEach(t => t.RunSynchronously());
+                 await CreateExternalClaimsAsync(user, loginInfo);
             }
             switch (result)
             {
@@ -387,9 +385,12 @@ namespace Admin.Controllers
                 if (result.Succeeded)
                 {
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                     
                     if (result.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                        await CreateExternalClaimsAsync(user, info);
                         return RedirectToLocal(returnUrl);
                     }
                 }
@@ -400,6 +401,18 @@ namespace Admin.Controllers
             return View(model);
         }
 
+
+        private async Task CreateExternalClaimsAsync(ApplicationUser user ,ExternalLoginInfo info)
+        {
+            var existingClaims = await UserManager.GetClaimsAsync(user.Id);
+            if (existingClaims != null && !existingClaims.Any())
+            {
+                var tasks = info.ExternalIdentity
+                    .Claims.Select(c => new Task(() => UserManager.AddClaimAsync(user.Id, c))).ToList();
+
+                tasks.ForEach(t => t.RunSynchronously());
+            }
+        }
         //
         // POST: /Account/LogOff
         [HttpPost]

@@ -69,25 +69,41 @@ namespace Admin
             facebookOptions.AppId = ConfigurationManager.AppSettings["FacebookApiId"];// "1376699832655793";
             facebookOptions.AppSecret = ConfigurationManager.AppSettings["facebookSecret"];//"03a61edc931982826f611b5d76786d53";
             facebookOptions.Scope.Add("email");
+      
 
             facebookOptions.Provider = new FacebookAuthenticationProvider()
             {
-                OnAuthenticated =   (facebookContext) =>
+                //  OnAuthenticated = (facebookContext) =>
+                //{
+                //    // Save every additional claim we can find in the user
+                //    //  foreach (JProperty property in facebookContext.User.Children())
+                //    //{
+                //    //    var claimType = string.Format("urn:facebook:{0}", property.Name);
+                //    //    string claimValue = (string)property.Value;
+                //    //    if (!facebookContext.Identity.HasClaim(claimType, claimValue))
+                //    //        facebookContext.Identity.AddClaim(new Claim(claimType, claimValue,
+                //    //              "http://www.w3.org/2001/XMLSchema#string", "External"));
+
+                //    //} 
+
+
+
+                //    return Task.FromResult(0);
+
+                //}
+                OnAuthenticated =   context =>
                 {
-                    // Save every additional claim we can find in the user
-                    foreach (JProperty property in facebookContext.User.Children())
+                    foreach (var x in context.User)
                     {
-                        var claimType = string.Format("urn:facebook:{0}", property.Name);
-                        string claimValue = (string)property.Value;
-                        if (!facebookContext.Identity.HasClaim(claimType, claimValue))
-                            facebookContext.Identity.AddClaim(new Claim(claimType, claimValue,
-                                  "http://www.w3.org/2001/XMLSchema#string", "External"));
-
+                        context.Identity.AddClaim(new Claim(x.Key, x.Value.ToString()));
                     }
+                    //Get the access token from FB and store it in the database and use FacebookC# SDK to get more information about the user
+                    context.Identity.AddClaim(new Claim("FacebookAccessToken", context.AccessToken));
 
-                    return Task.FromResult(facebookContext);
-
+                    return Task.FromResult(true);
                 }
+
+
             };
 
             app.UseFacebookAuthentication(facebookOptions);

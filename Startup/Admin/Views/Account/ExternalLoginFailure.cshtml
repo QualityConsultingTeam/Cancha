@@ -1,5 +1,6 @@
 ﻿@{
     ViewBag.Title = "Login Failure";
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout_2.cshtml";
 }
 
 <hgroup>
