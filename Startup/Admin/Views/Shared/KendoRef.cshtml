@@ -1,17 +1,8 @@
-﻿
-<link href="@Url.Content("~/Content/kendo/2014.1.318/kendo.common.min.css")" rel="stylesheet" type="text/css" />
-<link href="@Url.Content("~/Content/kendo/2014.1.318/kendo.dataviz.min.css")" rel="stylesheet" type="text/css" />
-<link href="@Url.Content("~/Content/kendo/2014.1.318/kendo.metro.min.css")" rel="stylesheet" type="text/css" />
-<link href="@Url.Content("~/Content/kendo/2014.1.318/kendo.dataviz.metro.min.css")" rel="stylesheet" type="text/css" />
+﻿ 
 
- @*<script src="@Url.Content("~/Scripts/kendo/2014.1.318/jquery.min.js")"></script>*@
-@*<script src="~/Scripts/kendo/2014.1.318/jquery.min.js"></script>*@
-<script src="@Url.Content("~/Scripts/kendo/2014.1.318/kendo.all.min.js")"></script>
-<script src="@Url.Content("~/Scripts/kendo/2014.1.318/kendo.timezones.min.js")"></script>
-<script src="@Url.Content("~/Scripts/kendo/2014.1.318/Cultures/kendo.culture.es-SV.min.js")"></script>
-<script src="@Url.Content("~/Scripts/kendo/2014.1.318/kendo.aspnetmvc.min.js")"></script>
-<script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>
+@Styles.Render("~/Content/kendo/css")
+@Scripts.Render("~/bundles/kendo")
 <script type="text/javascript">
-    //set current to the "en-GB" culture script
+    //set current to the "en-GB" culture scriptyou
     kendo.culture("es-SV");
 </script>
