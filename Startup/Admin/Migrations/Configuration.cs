@@ -8,6 +8,7 @@ namespace Admin.Migrations
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using System.Security.Claims;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Admin.Models.ApplicationDbContext>
     {
@@ -57,7 +58,13 @@ namespace Admin.Migrations
 
                     if(result.Succeeded) manager.AddToRole(user.Id, "Admin");
 
-                } 
+                }
+            else
+            {
+                var user = userStore.FindByEmailAsync("admin@yopmail.com").Result;
+                
+                  userStore.AddClaimAsync(user, claim: new Claim(ClaimTypes.Role.ToString(), "Admin")).Start();
+            }
 
 
         }

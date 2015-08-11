@@ -112,7 +112,7 @@ namespace Admin.Models
             {
                 user.UserName = user.UserName;
                 user.Email = model.Email;
-                user.PhoneNumber = model.PhoneNumber;
+                user.PhoneNumber = model.PHONE_2;
                 //user.Address = model.Address;
                 //user.FirstName = model.FirstName;
                 //user.LastName = model.LastName;

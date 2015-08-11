@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.ComponentModel;
 
 namespace Admin.Models
 {
@@ -47,7 +48,8 @@ namespace Admin.Models
 
         //[Timestamp]
         //public byte[] RowVersion { get; set; }
-
+        [DisplayName("Profile Picture")]
+        public string ProfilePicture { get; set; }
 
     }
 
@@ -56,6 +58,7 @@ namespace Admin.Models
         public ApplicationDbContext()
             : base("IdentityData", throwIfV1Schema: false)
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
         public DbSet<IdentityUserRole> UserRoles { get; set; }
@@ -75,8 +78,6 @@ namespace Admin.Models
             modelBuilder.Entity<IdentityUserLogin>().HasKey(l => new { l.UserId, l.LoginProvider, l.ProviderKey }).ToTable("AspNetUserLogins");
             modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId }).ToTable("AspNetUserRoles");
             modelBuilder.Entity<IdentityUserClaim>().ToTable("AspNetUserClaims");
-
-         
 
         }
     }
