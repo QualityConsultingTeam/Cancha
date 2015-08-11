@@ -493,7 +493,7 @@ namespace Admin.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return User.IsInRole("Admin") ? RedirectToAction("RootAdmin", "RootAdmin") : RedirectToAction("Index", "Canchas");
+            return User.IsInRole("admin") ? RedirectToAction("RootAdmin", "RootAdmin") : RedirectToAction("Index", "Canchas");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult
