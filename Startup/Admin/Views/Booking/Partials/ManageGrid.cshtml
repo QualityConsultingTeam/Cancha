@@ -51,7 +51,7 @@
                         {
                             <button class="btn-primary btn btn-xs" onclick="ConfirmBookingAction('@item.Id')">Confirmar</button>
                         }
-                        else if (item.Status == BookingStatus.Confirmada)
+                        else if (item.Status == BookingStatus.Reservada)
                         {
                             <button class="btn-danger btn btn-xs" onclick=" cancelbookingaction('@item.Id') ">Cancenlar</button>
                         }

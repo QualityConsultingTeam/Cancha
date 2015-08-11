@@ -177,7 +177,7 @@ namespace Admin.Controllers
         {
             ViewBag.ActionMessage = "Desea Confirmar Reserva?";
             var model = await Repository.FindByIdAsync(id,"Field");
-            model.Status = BookingStatus.Confirmada;
+            model.Status = BookingStatus.Cancelado;
             return View("Partials/ConfirmBookingAction",model);
         }
 
@@ -185,7 +185,7 @@ namespace Admin.Controllers
         {
             ViewBag.ActionMessage = "Desea Cancelar Reserva?";
             var model = await Repository.FindByIdAsync(id, "Field");
-            model.Status = BookingStatus.Finalizada;
+            model.Status = BookingStatus.Falta;
             return View("Partials/ConfirmBookingAction", model);
         }
 

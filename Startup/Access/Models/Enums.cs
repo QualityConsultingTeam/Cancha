@@ -44,9 +44,12 @@ namespace Access.Models
     public enum BookingStatus
     {
         Pendiente=0,
-        Confirmada =1,
-        Finalizada =2,
-        Cancelada = 3
+        Reservada =1,
+        Finalizado =2,
+        Denegado =3,
+        Cancelado =4,
+        Falta =5,
+        
     }
 
     public enum BookingType

@@ -230,11 +230,11 @@ namespace Admin.Models
                 join pending in bookings.Where(b => b.Status == BookingStatus.Pendiente) on all.Id equals pending.Id
                     into dfp
                 from defaultPending in dfp.DefaultIfEmpty()
-                join confirmed in bookings.Where(b => b.Status == BookingStatus.Confirmada) on all.Id equals
+                join confirmed in bookings.Where(b => b.Status == BookingStatus.Cancelado) on all.Id equals
                     confirmed.Id
                     into dfc
                 from defaultConfirmed in dfc.DefaultIfEmpty()
-                join canceled in bookings.Where(b => b.Status == BookingStatus.Finalizada) on all.Id equals canceled.Id
+                join canceled in bookings.Where(b => b.Status == BookingStatus.Falta) on all.Id equals canceled.Id
                     into dc
                 from defaultCanceled in dc.DefaultIfEmpty()
                 select new
