@@ -4,6 +4,27 @@
 
 <div class="wrapper wrapper-content" style="padding-top: 7%">
     <div class="row">
+        @{
+            if (User.IsInRole("Admin"))
+            {
+                 
+                <a href="@Url.Action("AccountMangement", "Account")" class="col-lg-3  animated flipInX">
+                    <div class="widget style1 navy-bg">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <i class="fa fa-futbol-o fa-5x"></i>
+                            </div>
+                            <div class="col-xs-8 text-right">
+                                <span>   </span>
+                                <h3 class="font-bold">
+                                    Usuarios
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            }
+        }    
         <a href="@Url.Action("Index", "RootAdmin")" class="col-lg-3  animated flipInX">
             <div class="widget style1 navy-bg">
                 <div class="row">

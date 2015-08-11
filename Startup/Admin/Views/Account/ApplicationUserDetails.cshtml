@@ -1,0 +1,239 @@
+﻿@using Microsoft.Ajax.Utilities
+@model Admin.Models.IdentityUserViewModel
+
+@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    var options = new AjaxOptions()
+    {
+        HttpMethod = "post",
+        InsertionMode = InsertionMode.Replace,
+        LoadingElementId = "loaderSection",
+        UpdateTargetId = "vertical-timeline"
+    };
+    
+    var mainOptions  = new AjaxOptions()
+    {
+        HttpMethod = "post",
+        InsertionMode = InsertionMode.Replace,
+        LoadingElementId = "loaderSection",
+        UpdateTargetId = "userAdminSection"
+    };
+}
+
+@Scripts.Render("~/plugins/knockout")
+<div class="wrapper wrapper-content  ">
+    <div class="row">
+
+        <div class="col-lg-4">
+            <div class="ibox animated fadeInRight">
+
+                <div class="ibox-content">
+                    <div class="tab-content">
+                        <div id="contact-1" class="tab-pane active">
+                            <div class="row m-b-lg">
+                                <div class="col-lg-4 text-center">
+                                    <h2>@Html.DisplayFor(m => m.FirstName) @Html.DisplayFor(m => m.LastName)</h2>
+
+                                    <div class="m-b-sm">
+                                        <img alt="image" class="img-circle" src="@Model.ProfilePicture"
+                                             style="width: 62px">
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <strong>
+                                        @Html.DisplayNameFor(m => m.DocumentNum)
+                                        @Html.DisplayFor(m => m.DocumentNum)
+                                    </strong>
+
+                                    <p>
+                                        <strong>@Html.DisplayNameFor(m => m.Address)</strong> @Html.DisplayFor(m => m.Address)
+                                    </p>
+                                    <p>
+                                        <strong>@Html.DisplayNameFor(m => m.PhoneNumber)</strong> @Html.DisplayFor(m => m.PhoneNumber)
+                                    </p>
+                                    <p>
+                                        <strong>@Html.DisplayNameFor(m => m.Email)</strong> @Html.DisplayFor(m => m.Email)
+                                    </p>
+                                    <p>
+                                        <strong>@Html.DisplayNameFor(m => m.Role)</strong> @Html.DisplayFor(m => m.Role)
+                                    </p>
+                                    @Ajax.ActionLink(" Edit", "EditApplicationUser", new { id = Model.Id }, mainOptions, new { @class = "btn btn-primary" })
+                                    @Ajax.ActionLink(" Back", "AccountMangement", null, mainOptions, new { @class = "btn btn-white" })
+                                </div>
+                            </div>
+                            <div class="client-detail">
+                                <div class="full-height-scroll">
+
+                                    <strong>Summary</strong>
+
+                                    @*<ul class="list-group clear-list">
+                                        @foreach (var item in Model.WorkSummary)
+                                        {
+                                            <li class="list-group-item fist-item">
+                                                <span class="pull-right">
+                                                    <button type="button" class="@item.StatusLabelFor()">
+                                                        @item.Count
+                                                    </button>
+                                                </span>
+                                                @item.StatusName
+                                            </li>
+                                        }
+                                    </ul>*@
+                                    <strong>Notes</strong>
+                                    <p>
+
+                                    </p>
+                                    <hr />
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="ibox float-e-margins animated fadeInLeftBig" data-bind="visible: shouldShowList">
+
+                <div class="ibox-content" id="ibox-content">
+
+                    <div class="row">
+                        @using (Ajax.BeginForm("WorkHistory", "Checkin", null, options, new { id = "searchcheckinsform" }))
+                        {
+
+                        <div class="col-sm-1 m-b-xs">
+                            @*<select class="input-sm form-control input-s-sm inline" id="mechanicId" name="mechanicId" data-bind="
+                                options: roles,
+                                optionsText: 'Name',
+                                value : selectedMechanic,
+                                optionsValue: 'Id',event:{ change: onSelectionChange},
+                                optionsCaption: 'Filter By Mechanic...' "></select>*@
+                            @Html.Hidden("mechanicId", Model.Id)
+                            <button type="submit" id="loading-example-btn" class="btn btn-white btn-circle btn-outline"><i class="fa fa-refresh"></i></button>
+                        </div>
+                        <div class="col-sm-5 m-b-xs">
+                            <select class="input-sm form-control input-s-sm inline" id="status" name="status" data-bind="
+                                    options: statuses,
+                                    optionsText: 'Name',
+                                    value : seelctedStatus,
+                                    optionsValue: 'Id',event:{ change: onSelectionStatusChange},
+                                    optionsCaption: 'Filter By Status...' "></select>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <input type="text" id="keywords" name="keywords" placeholder="Search" data-bind="value:keywords" class="input-sm form-control">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"> Go!</button>
+                                </span>
+                            </div>
+                        </div>
+                        }
+                    </div>
+
+                    <div id="vertical-timeline" class="vertical-container light-timeline">
+                        <div class="sk-spinner sk-spinner-double-bounce">
+                            <div class="sk-double-bounce1"></div>
+                            <div class="sk-double-bounce2"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="ibox float-e-margins" data-bind="visible: shouldShowDetails">
+                <div class="ibox-content" >
+                    <div class="row">
+                        <div class="col-sm-1 m-b-xs">
+                            <button class="btn btn-danger btn-circle btn-lg btn-outline" type="button" data-bind="click: goBackToList">
+                                <i class="fa fa-arrow-left"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row" id="ibox-details">
+                        <div class="sk-spinner sk-spinner-double-bounce">
+                            <div class="sk-double-bounce1"></div>
+                            <div class="sk-double-bounce2"></div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var vm = {
+        // roles: [],
+        statuses: [],
+        keywords: ko.observable(),
+        seelctedStatus: ko.observable(),
+
+        page: ko.observable("1"),
+        scrollposition: ko.observable(),
+        onSelectionChange: function () {
+            $("#searchcheckinsform").submit();
+        },
+        onSelectionStatusChange: function () {
+            $("#searchcheckinsform").submit();
+        },
+        shouldShowList: ko.observable(true),
+        shouldShowDetails: ko.observable(false),
+        showDetails: function () {
+            console.log("show details");
+            vm.shouldShowList(false);
+            vm.shouldShowDetails(true);
+        },
+        goBackToList: function () {
+            console.log("close details");
+            vm.shouldShowList(true);
+            vm.shouldShowDetails(false);
+        }
+        
+    };
+    // Initialize
+
+
+    $(function () {
+
+        $.get('@Url.Action("Statuses", "Checkin")', function (status) {
+
+            applybindigs(status);
+        });
+
+        $("#searchcheckinsform").submit();
+    });
+    function applybindigs(status) {
+
+        console.log("Try apply bindings");
+        vm.statuses = status;
+        ko.applyBindings(vm);
+        @*$('#checkinListSection').slimscroll({
+            height: 'auto',
+            size: '15px',
+
+        }).bind('slimscroll', function (e, pos) {
+            viewmodel.scrollposition = pos;
+            //  console.log("scroll position",scrollposition);
+            if (pos == "bottom") {
+                // console.log(pos);
+                $('#checkinListSection').slimScroll({ scrollBy: '-50px' });
+                $.post('@Url.Action("CheckinList", "Checkin")' +
+                    "?keywords=" + viewmodel.keywords
+                    + "&mechanicId=" + viewmodel.selectedMechanic
+                    + "&status=" + viewmodel.seelctedStatus
+                    + "&skip=" + viewmodel.page++, function (view) {
+
+                    });
+
+            }
+        });;*@
+    };
+    function OnClickedDetails() {
+        vm.showDetails();
+    }
+</script>

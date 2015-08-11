@@ -110,7 +110,12 @@ namespace Admin.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
+    public class FilterAccountOption
+    {
+        public string role { get; set; }
 
+        public string keywords { get; set; }
+    }
 
     public class IdentityUserViewModel
     {
@@ -151,5 +156,6 @@ namespace Admin.Models
         public string ProfilePicture { get; set; }
 
         //public List<IsInRole> OnRoles { get; set; } 
+        public dynamic WorkSummary { get; set; }
     }
 }

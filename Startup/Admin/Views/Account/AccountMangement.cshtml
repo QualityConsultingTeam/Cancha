@@ -1,0 +1,97 @@
+﻿ 
+@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    var options = new AjaxOptions()
+    {
+        HttpMethod = "post",
+        InsertionMode = InsertionMode.Replace,
+        LoadingElementId = "loaderSection",
+        UpdateTargetId = "userAdminSection"
+    };
+}
+@model  List<Admin.Models.IdentityUserViewModel>
+
+@Scripts.Render("~/plugins/knockout")
+
+<div class="wrapper wrapper-content animated fadeInRight" id="userAdminSection">
+    <div class="row fixed" >
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title animated fadeInUpBig">
+                    <h2>Usuarios</h2>
+                    <div class="ibox-tools">
+                        @*@Html.ActionLink("Create New", "EditApplicationUser", null, new { @class = "btn btn-primary btn-xs" })*@
+                        @Ajax.ActionLink(" ", "EditApplicationUser", null, options, new { @class = "btn btn-danger btn-circle btn-outline fa fa-plus" })
+                    </div>
+                </div>
+                <div class="ibox-content animated fadeInUpBig">
+                    <div class="row">
+                        @using (Ajax.BeginForm("SearchAccounts", "Account", null, new AjaxOptions
+                        {
+                            HttpMethod = "post",
+                            InsertionMode = InsertionMode.Replace,
+                            LoadingElementId = "loaderSection",
+                            UpdateTargetId = "tablecontaier"
+
+                        }, new {id = "searchaccountsform"}))
+                        {
+                            <div class="col-sm-5 m-b-xs">
+                                <select class="input-sm form-control input-s-sm inline" id="role" name="role" data-bind="
+                                    options: roles,
+                                    optionsText: 'Text',
+                                    optionsValue: 'Text',event:{ change: onSelectionChange},
+                                    optionsCaption: 'Please select Role...' "></select>
+                            </div>
+                            <div class="col-sm-4 m-b-xs"></div>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <input type="text" placeholder="Search" id="keywords" name="keywords" class="input-sm form-control"> <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-sm btn-primary"> Go!</button>
+                                    </span>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                    @*<div class="table-responsive" id="tablecontaier">
+                        @Html.Partial(@"~/Views/Account/Partials/UserManagementGrid.cshtml", Model)
+                    </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="row" id="tablecontaier">
+@Html.Partial("Partials/UserManagementGrid",Model)
+
+</div>
+</div>
+
+
+<script>
+    var viewmodel = {
+        roles: [],
+
+        onSelectionChange: function () {
+            $("#searchaccountsform").submit();
+        },
+    };
+    // Initialize
+    ;
+
+    $(function () {
+        var action = '@Url.Action("GetRoles", "Account")';
+        $.get(action, function (data) {
+            applybindigs(data);
+        });
+
+    });
+    function applybindigs(rolesfor) {
+
+        console.log("Try apply bindings");
+        viewmodel.roles = rolesfor;
+        ko.applyBindings(viewmodel);
+    };
+</script>

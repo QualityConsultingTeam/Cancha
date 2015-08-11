@@ -53,9 +53,9 @@ namespace Admin.Migrations
                         UserName = "admin@yopmail.com",
 
                     };
-                    manager.Create(user, "1234567");
-                    manager.AddToRole(user.Id, "Admin");
+                    var result =  manager.Create(user, "1234567");
 
+                    if(result.Succeeded) manager.AddToRole(user.Id, "Admin");
 
                 } 
 

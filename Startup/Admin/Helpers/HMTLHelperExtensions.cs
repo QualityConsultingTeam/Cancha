@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -152,31 +153,59 @@ namespace Admin
                var link = helper.ActionLink("[replaceme]", actionName, routeValues, ajaxOptions).ToHtmlString();
                return MvcHtmlString.Create(link.Replace("[replaceme]", builder.ToString(TagRenderMode.SelfClosing)));
            }
-//        $("#Search").typeahead({
-//    source: function (query, process) {
-//        var countries = [];
-//        map = {};
- 
-//        // This is going to make an HTTP post request to the controller
-//        return $.post('/Client/CountryLookup', { query: query }, function (data) {
- 
-//            // Loop through and push to the array
-//            $.each(data, function (i, country) {
-//                map[country.Name] = country;
-//                countries.push(country.Name);
-//            });
- 
-//            // Process the details
-//            process(countries);
-//        });
-//    },
-//    updater: function (item) {
-//        var selectedShortCode = map[item].ShortCode;
- 
-//        // Set the text to our selected id
-//        $("#details").text("Selected : " + selectedShortCode);
-//        return item;
-//    }
-//});
-	}
+        //        $("#Search").typeahead({
+        //    source: function (query, process) {
+        //        var countries = [];
+        //        map = {};
+
+        //        // This is going to make an HTTP post request to the controller
+        //        return $.post('/Client/CountryLookup', { query: query }, function (data) {
+
+        //            // Loop through and push to the array
+        //            $.each(data, function (i, country) {
+        //                map[country.Name] = country;
+        //                countries.push(country.Name);
+        //            });
+
+        //            // Process the details
+        //            process(countries);
+        //        });
+        //    },
+        //    updater: function (item) {
+        //        var selectedShortCode = map[item].ShortCode;
+
+        //        // Set the text to our selected id
+        //        $("#details").text("Selected : " + selectedShortCode);
+        //        return item;
+        //    }
+        //});
+
+        public static void Assign(this object destination, object source)
+        {
+            if (destination is IEnumerable && source is IEnumerable)
+            {
+                var dest_enumerator = (destination as IEnumerable).GetEnumerator();
+                var src_enumerator = (source as IEnumerable).GetEnumerator();
+                while (dest_enumerator.MoveNext() && src_enumerator.MoveNext())
+                    dest_enumerator.Current.Assign(src_enumerator.Current);
+            }
+            else
+            {
+                var destProperties = destination.GetType().GetProperties();
+                foreach (var sourceProperty in source.GetType().GetProperties())
+                {
+                    foreach (var destProperty in destProperties)
+                    {
+                        if (destProperty.Name == sourceProperty.Name &&
+                            destProperty.PropertyType.IsAssignableFrom(sourceProperty.PropertyType) && destProperty.CanWrite)
+                        {
+                            destProperty.SetValue(destination, sourceProperty.GetValue(source, new object[] { }),
+                                new object[] { });
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

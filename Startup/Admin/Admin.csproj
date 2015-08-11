@@ -222,9 +222,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AutoCompleteHelpers.cs" />
     <Compile Include="Helpers\DataExtensions.cs" />
     <Compile Include="Helpers\GlobalizationAttribute.cs" />
     <Compile Include="Helpers\HMTLHelperExtensions.cs" />
+    <Compile Include="Helpers\IdentityHelpers.cs" />
     <Compile Include="Helpers\UserClaimsExtensions.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1530,6 +1532,13 @@
     <Content Include="Views\Shared\UserProfileNav.cshtml" />
     <Content Include="Scripts\kendo\kendo.aspnetmvc.min.js.map" />
     <Content Include="Scripts\kendo\jquery.min.map" />
+    <Content Include="Views\Account\Partials\AccountPicker.cshtml" />
+    <Content Include="Views\Account\Partials\EditApplicationUser.cshtml" />
+    <Content Include="Views\Account\Partials\IdentityPreview.cshtml" />
+    <Content Include="Views\Account\Partials\PartialLogin.cshtml" />
+    <Content Include="Views\Account\Partials\UserManagementGrid.cshtml" />
+    <Content Include="Views\Account\AccountMangement.cshtml" />
+    <Content Include="Views\Account\ApplicationUserDetails.cshtml" />
     <None Include="Web.Azure_Website.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
