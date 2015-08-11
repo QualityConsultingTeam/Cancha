@@ -27,7 +27,7 @@
         {
             HttpMethod = "post",
             //InsertionMode = InsertionMode.Replace,
-            LoadingElementId = "loaderSection",
+            LoadingElementId = "loader",
             //UpdateTargetId = "bookingModal",
             OnSuccess = "OnCompleteBookingUpdate",
         }))
@@ -46,10 +46,11 @@
         @Html.HiddenFor(m => m.Team2)
         @Html.HiddenFor(m => m.OBJECTTYPE)
         @Html.HiddenFor(m=> m.RowVersion)
+        @Html.HiddenFor(m => m.Userid)
     <div class="modal-footer animated fadeInRightBig">
 
 
-        <button type="submit" class="btn btn-info btn-circle btn-lg btn-outline">
+        <button type="submit" class="btn btn-info btn-circle btn-lg btn-outline" >
             <i class="fa fa-check"></i>
         </button>
 

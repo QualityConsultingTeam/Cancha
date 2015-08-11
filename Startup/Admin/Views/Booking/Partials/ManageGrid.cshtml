@@ -49,18 +49,25 @@
                     <div class="btn-group">
                         @if (item.Status == BookingStatus.Pendiente)
                         {
-                            <button class="btn-primary btn btn-xs" onclick="ConfirmBookingAction('@item.Id')">Confirmar</button>
+                            <button class="btn-primary btn btn-xs" onclick="UpdateStatus('@item.Id','@BookingStatus.Reservada')">Confirmar</button>
+                            <button class="btn-danger btn btn-xs" onclick="UpdateStatus('@item.Id','@BookingStatus.Denegado')">Denegar</button>
                         }
                         else if (item.Status == BookingStatus.Reservada)
                         {
-                            <button class="btn-danger btn btn-xs" onclick=" cancelbookingaction('@item.Id') ">Cancenlar</button>
+                            <button class="btn-white btn btn-xs" onclick="UpdateStatus('@item.Id','@BookingStatus.Finalizado')">Finalizar</button>
+                            <button class="btn-warning btn btn-xs" onclick="UpdateStatus('@item.Id','@BookingStatus.Denegado')">Cancelar</button>
+                            <button class="btn-danger btn btn-xs" onclick="UpdateStatus('@item.Id','@BookingStatus.Falta')">Falta</button>
+                        }
+                        else if (item.Status == BookingStatus.Finalizado || item.Status == BookingStatus.Cancelado)
+                        {
+                            <button class="btn-primary btn btn-xs" onclick="UpdateStatus('@item.Id','@BookingStatus.Reservada')">Confirmar</button>
                         }
                         else
                         {
                             @Html.Label("Finalizada")
-                        } 
+                        }
                         @*<button class="btn-white btn btn-xs">Edit</button>
-                    <button class="btn-white btn btn-xs">Delete</button>*@
+                <button class="btn-white btn btn-xs">Delete</button>*@
                     </div>
                 </td>
             </tr>

@@ -173,21 +173,14 @@ namespace Admin.Controllers
             return Json(states, JsonRequestBehavior.AllowGet);
         }
 
-        public async Task<ActionResult> ConfirmBookingAction(int id)
+        public async Task<ActionResult> UpdateBookingStatus(int id,BookingStatus status)
         {
-            ViewBag.ActionMessage = "Desea Confirmar Reserva?";
-            var model = await Repository.FindByIdAsync(id,"Field");
-            model.Status = BookingStatus.Cancelado;
-            return View("Partials/ConfirmBookingAction",model);
-        }
-
-        public async Task<ActionResult> CancelBookingAction(int id)
-        {
-            ViewBag.ActionMessage = "Desea Cancelar Reserva?";
+            ViewBag.ActionMessage = Repository.MessageForStatus(status);
             var model = await Repository.FindByIdAsync(id, "Field");
-            model.Status = BookingStatus.Falta;
+            model.Status = status;
             return View("Partials/ConfirmBookingAction", model);
         }
+ 
 
         [HttpPost]
         public async Task<ActionResult> DoConfirmBookingAction(Booking booking)

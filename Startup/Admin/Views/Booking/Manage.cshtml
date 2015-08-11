@@ -209,20 +209,23 @@
             }
         });
     }
-    function ConfirmBookingAction(id) {
+    function UpdateStatus(id,status) {
         console.log("Booking uid :" + id);
         showmodal();
-        GetBookingUpdateView('@Url.Action("ConfirmBookingAction", "Booking")' + "?id=" + id);
+        GetBookingUpdateView('@Url.Action("UpdateBookingStatus", "Booking")' + "?id=" + id+"&status="+status);
     }
-    function CancelBookingAction(id) {
-        console.log("Booking uid :" + id);
-        showmodal();
-        GetBookingUpdateView('@Url.Action("CancelBookingAction", "Booking")' + "?id=" + id);
-    }
+    
     function ShowUserDetails(userid) {
         console.log("user id: " + userid);
         showmodal();
         GetBookingUpdateView('@Url.Action("UserSummary", "Booking")' + "?id=" + userid);
+    }
+
+    function OnCompleteBookingUpdate(result) {
+        console.log("nuevo resultado ");
+        console.log(result);
+        $("#searchbookingsform").submit();
+        hideModal();
     }
 </script>
 

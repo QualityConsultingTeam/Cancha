@@ -84,6 +84,21 @@ namespace Access.Repositories
             return null; 
         }
 
+
+        public string MessageForStatus(BookingStatus status)
+        {
+            switch (status)
+            {
+                case BookingStatus.Pendiente: return "";
+                case BookingStatus.Reservada: return "Desea Confirmar Reserva";
+                case BookingStatus.Finalizado: return "Se han Efectuado los pagos Correspondientes?";
+                case BookingStatus.Denegado: return "Desea denegar la solicitud de Reserva";
+                case BookingStatus.Cancelado: return "Desea Cambiar el estado a Cancelado ";
+                case BookingStatus.Falta: return "El Usuario falto a la Solicitud de Reserva";
+                default: return string.Empty;
+            }
+            
+        }
        
 
        
