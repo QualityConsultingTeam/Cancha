@@ -12,6 +12,7 @@ using Access.Repositories;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using Microsoft.AspNet.Identity;
+using Admin.Models;
 
 namespace Admin.Controllers
 {
@@ -353,5 +354,13 @@ namespace Admin.Controllers
 
 
         #endregion
+
+
+        public async Task<ActionResult> CenterAutoComplete(string query)
+        {
+            var Centers = await CenterRepository.SearchAsync (query);
+
+            return Json(Centers.ToAutocomplete(), JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -157,5 +157,10 @@ namespace Admin.Models
 
         //public List<IsInRole> OnRoles { get; set; } 
         public dynamic WorkSummary { get; set; }
+
+        public int CenterId { get; set; }
+
+        [DisplayName("Nombre de Complejo")]
+        public string CenterSearchName { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Access.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -40,7 +41,14 @@ namespace Admin.Models
                 }).ToList();
         }
 
-        
-    
-}
+        public static List<Autocomplete> ToAutocomplete(this List<Center> model)
+        {
+            return model.Select(c => new Autocomplete()
+            {
+                Id = c.Id,
+                Name = String.Format("{0} - {1}", c.Name.ToUpper(), c.Email)
+            }).ToList();
+        }
+
+    }
 }

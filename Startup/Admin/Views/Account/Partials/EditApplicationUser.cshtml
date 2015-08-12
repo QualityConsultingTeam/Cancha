@@ -1,5 +1,5 @@
 ﻿@model Admin.Models.IdentityUserViewModel
-
+@using Admin.Models
 
 @{
     if (Request.IsAjaxRequest())
@@ -97,9 +97,7 @@
                                 </div>
                             </div>
                             
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <div class="form-group">
+                            <div class="form-group">
                                     @Html.LabelFor(model => model.ForceChangePassword, new {@class = "control-label col-md-2"})
                                     <div class="col-md-10">
                                    
@@ -131,13 +129,31 @@
                                         </div>
                                     </div>
                                 </div>
+                               
 
-                            }
-                            else
+                            
+                            @*else
                             {
                                 Html.HiddenFor(model => model.ForceChangePassword);
                                 Html.HiddenFor(model => model.Password);
-                            }
+                            }*@
+                            <div class="form-group">
+
+                                <div    >
+                                    <div class="well">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.CenterSearchName, new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.HiddenFor(m => m.CenterId)
+                                                @Html.AutocompleteFor(m => m.CenterSearchName, model => model.CenterId, "CenterAutoComplete", "RootAdmin", true)
+                                                @*@Html.AutocompleteFor(model => model.Customer.SearchName, model => model.CustomerId, "CustomerAutoComplete", "Checkin", true)*@
+                                                @Html.ValidationMessageFor(model => model.Password)
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <div class="col-md-offset-2 col-md-10">
                                     <input type="submit" value="Save" class="btn btn-primary" />
@@ -153,3 +169,6 @@
         </div>
     </div>
 </div>
+<script src="~/Scripts/typeahead.bundle.min.js"></script>
+<script src="~/Scripts/typeahead.jquery.min.js"></script>
+<script src="~/Scripts/typeahead.mvc.model.js"></script>
