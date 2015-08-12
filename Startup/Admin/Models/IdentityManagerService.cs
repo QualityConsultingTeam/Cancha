@@ -98,7 +98,11 @@ namespace Admin.Models
                 {
                     Email = model.Email,
                     UserName = model.UserName,
-                    //FirstName = model.FirstName,
+                    DUI =model.DUI,
+                    PhoneNumber= model.PHONE_2,
+                    PHONE_2 = model.PHONE_2,
+                    Category = model.Category,
+                    ADDRESS = model.ADDRESS,
                     //LastName = model.LastName,
                     //DocumentNum = model.DocumentNum,
                     //Address = model.Address
@@ -110,9 +114,13 @@ namespace Admin.Models
             }
             else
             {
-                user.UserName = user.UserName;
                 user.Email = model.Email;
+                user.UserName = model.UserName;
+                user.DUI = model.DUI;
                 user.PhoneNumber = model.PHONE_2;
+                user.PHONE_2 = model.PHONE_2;
+                user.Category = model.Category;
+                user.ADDRESS = model.ADDRESS;
                 //user.Address = model.Address;
                 //user.FirstName = model.FirstName;
                 //user.LastName = model.LastName;

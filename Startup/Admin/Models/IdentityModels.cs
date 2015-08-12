@@ -42,7 +42,7 @@ namespace Admin.Models
         [Display(Name = "Fecha Creacion")]
         public DateTime CreatedDate { get; set; }
 
-        [Display(Name = "Tiempo de envio de correo:", Prompt = "Categoria")]
+        [Display(Name = "Calificacion:", Prompt = "Categoria")]
         [Range(1,5, ErrorMessage = "Debe especificar un maximo 5")] 
         public decimal? Category { get; set; }
 

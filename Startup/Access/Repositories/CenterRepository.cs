@@ -20,5 +20,19 @@ namespace Access.Repositories
 
             return q.ToListAsync();
         }
+
+        public async Task UpdateEmployeeCenter(string id, int centerId,Guid? loggedUser)
+        {
+            var user = await Context.CenterAccounts.FirstOrDefaultAsync(a => a.AccountId == new Guid(id))
+                ?? new CenterAccount()
+                {
+                    AccountId = new Guid(id),
+                    CenterId = centerId,
+                };
+            if (user.Id == 0) Context.CenterAccounts.Add(user);
+            else Context.Entry(user).State = EntityState.Modified;
+
+            await SaveAsync(loggedUser);
+        }
     }
 }

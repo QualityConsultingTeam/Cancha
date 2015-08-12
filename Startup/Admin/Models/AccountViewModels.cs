@@ -131,6 +131,7 @@ namespace Admin.Models
 
         public string Role { get; set; }
 
+        
         public string Password { get; set; }
 
         [DisplayName("Change Password")]
@@ -161,6 +162,11 @@ namespace Admin.Models
         public string ProfilePicture { get; set; }
 
         //public List<IsInRole> OnRoles { get; set; } 
+
+        [Display(Name = "Calificacion:", Prompt = "Categoria")]
+        [Range(1, 5, ErrorMessage = "Debe especificar un maximo 5")]
+        public decimal? Category { get; set; }
+
         public dynamic WorkSummary { get; set; }
 
         public int CenterId { get; set; }

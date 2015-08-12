@@ -12,6 +12,8 @@ using Microsoft.Owin.Security;
 using Admin.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
+using Access;
+using Access.Repositories;
 
 namespace Admin.Controllers
 {
@@ -542,6 +544,16 @@ namespace Admin.Controllers
 
         #endregion Accoutn Selector Results
 
+        private CenterRepository CenterRepository
+        {
+            get
+            {
+                return new CenterRepository()
+                {
+                    Context = HttpContext.GetOwinContext().GetUserManager<AccessContext>()
+                };
+            }
+        }
 
         //[Authorize(Roles = "Admin,Manager")]
         //[AllowAnonymous]
@@ -571,7 +583,7 @@ namespace Admin.Controllers
         {
             ViewBag.Roles = new SelectList(await IdentityManagerService.GetRolesAsync());
             var model = await IdentityManagerService.GetUserAsync(id) ?? new ApplicationUser();
-
+            
             return View(@"~/Views/Account/Partials/EditApplicationUser.cshtml", await model.ToIdentityUserViewModelAsync(IdentityManagerService));
         }
 
@@ -583,6 +595,7 @@ namespace Admin.Controllers
             if (ModelState.IsValid)
             {
                 await IdentityManagerService.InsertOrUpdate(model, UserManager);
+                await CenterRepository.UpdateEmployeeCenter(model.Id, model.CenterId,new Guid(User.Identity.GetUserId()));
                 return RedirectToAction("AccountMangement");
             }
             ViewBag.Roles = new SelectList(await IdentityManagerService.GetRolesAsync());
