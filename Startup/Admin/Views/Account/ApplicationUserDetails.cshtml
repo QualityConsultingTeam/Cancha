@@ -1,0 +1,175 @@
+﻿@using Microsoft.Ajax.Utilities
+@model Admin.Models.IdentityUserViewModel
+
+@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    var options = new AjaxOptions()
+    {
+        HttpMethod = "post",
+        InsertionMode = InsertionMode.Replace,
+        LoadingElementId = "loaderSection",
+        UpdateTargetId = "vertical-timeline"
+    };
+    
+    var mainOptions  = new AjaxOptions()
+    {
+        HttpMethod = "post",
+        InsertionMode = InsertionMode.Replace,
+        LoadingElementId = "loaderSection",
+        UpdateTargetId = "userAdminSection"
+    };
+}
+
+@Scripts.Render("~/plugins/knockout")
+<div class="wrapper wrapper-content  ">
+    <div class="row">
+
+        <div class="col-lg-6">
+            <div class="ibox animated fadeInRight">
+
+                <div class="ibox-content">
+                    <div class="tab-content">
+                        <div id="contact-1" class="tab-pane active">
+                            <div class="row m-b-lg">
+                                <div class="col-lg-4 text-center">
+                                    <h2>@Html.DisplayFor(m => m.FirstName) @Html.DisplayFor(m => m.LastName)</h2>
+
+                                    <div class="m-b-sm">
+                                        <img alt="image" class="img-circle" src="@Model.ProfilePicture"
+                                             style="width: 62px">
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <strong>
+                                        @Html.DisplayNameFor(m => m.DUI)
+                                        @Html.DisplayFor(m => m.DUI)
+                                    </strong>
+
+                                    <p>
+                                        <strong>@Html.DisplayNameFor(m => m.ADDRESS)</strong> @Html.DisplayFor(m => m.ADDRESS)
+                                    </p>
+                                    
+                                    <p>
+                                        <strong>@Html.DisplayNameFor(m => m.PHONE_2)</strong> @Html.DisplayFor(m => m.PHONE_2)
+                                    </p>
+                                    <p>
+                                        <strong>@Html.DisplayNameFor(m => m.Email)</strong> @Html.DisplayFor(m => m.Email)
+                                    </p>
+                                    <p>
+                                        <strong>@Html.DisplayNameFor(m => m.Role)</strong> @Html.DisplayFor(m => m.Role)
+                                    </p>
+                                    @Ajax.ActionLink(" Edit", "EditApplicationUser", new { id = Model.Id }, mainOptions, new { @class = "btn btn-primary" })
+                                    @Ajax.ActionLink(" Back", "AccountMangement", null, mainOptions, new { @class = "btn btn-white" })
+                                </div>
+                            </div>
+                            <div class="client-detail">
+                                <div class="full-height-scroll">
+
+                                    <strong>Summary</strong>
+
+                                    @*<ul class="list-group clear-list">
+                                        @foreach (var item in Model.WorkSummary)
+                                        {
+                                            <li class="list-group-item fist-item">
+                                                <span class="pull-right">
+                                                    <button type="button" class="@item.StatusLabelFor()">
+                                                        @item.Count
+                                                    </button>
+                                                </span>
+                                                @item.StatusName
+                                            </li>
+                                        }
+                                    </ul>*@
+                                    <strong>Notes</strong>
+                                    <p>
+
+                                    </p>
+                                    <hr />
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+</div>
+
+<script type="text/javascript">
+    var vm = {
+        // roles: [],
+        statuses: [],
+        keywords: ko.observable(),
+        seelctedStatus: ko.observable(),
+
+        page: ko.observable("1"),
+        scrollposition: ko.observable(),
+        onSelectionChange: function () {
+            $("#searchcheckinsform").submit();
+        },
+        onSelectionStatusChange: function () {
+            $("#searchcheckinsform").submit();
+        },
+        shouldShowList: ko.observable(true),
+        shouldShowDetails: ko.observable(false),
+        showDetails: function () {
+            console.log("show details");
+            vm.shouldShowList(false);
+            vm.shouldShowDetails(true);
+        },
+        goBackToList: function () {
+            console.log("close details");
+            vm.shouldShowList(true);
+            vm.shouldShowDetails(false);
+        }
+        
+    };
+    // Initialize
+
+
+    $(function () {
+
+        $.get('@Url.Action("Statuses", "Checkin")', function (status) {
+
+            applybindigs(status);
+        });
+
+        $("#searchcheckinsform").submit();
+    });
+    function applybindigs(status) {
+
+        console.log("Try apply bindings");
+        vm.statuses = status;
+        ko.applyBindings(vm);
+        @*$('#checkinListSection').slimscroll({
+            height: 'auto',
+            size: '15px',
+
+        }).bind('slimscroll', function (e, pos) {
+            viewmodel.scrollposition = pos;
+            //  console.log("scroll position",scrollposition);
+            if (pos == "bottom") {
+                // console.log(pos);
+                $('#checkinListSection').slimScroll({ scrollBy: '-50px' });
+                $.post('@Url.Action("CheckinList", "Checkin")' +
+                    "?keywords=" + viewmodel.keywords
+                    + "&mechanicId=" + viewmodel.selectedMechanic
+                    + "&status=" + viewmodel.seelctedStatus
+                    + "&skip=" + viewmodel.page++, function (view) {
+
+                    });
+
+            }
+        });;*@
+    };
+    function OnClickedDetails() {
+        vm.showDetails();
+    }
+</script>

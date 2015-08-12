@@ -1,0 +1,46 @@
+﻿@using Admin.Models
+
+@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+ 
+@model IdentityUserViewModel 
+
+<div>
+    <div class="m-b-md">
+        <img alt="image" class="img-circle circle-border" id="profileimage" src="@Model.ProfilePicture">
+        <button class="btn btn-info btn-circle btn-lg btn-outline" type="button" onclick="ShowAccountPicker()">
+            <i class="fa fa-angle-down"></i>
+        </button>
+    </div>
+    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "m-t", role = "form", id = "loginform" }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="form-group">
+            
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", PlaceHolder = "UserName" })
+            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control", PlaceHolder = "Password" })
+            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+        </div>
+
+
+        <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
+
+         
+    }
+
+
+    @*<p class="m-t"> <small>All rights reserved  &copy; 2015</small> </p>*@
+    <p class="m-t">
+
+    </p>
+</div>

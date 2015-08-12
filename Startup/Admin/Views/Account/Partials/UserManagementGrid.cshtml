@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Admin.Models.IdentityUserViewModel>
+@{
+    Layout = null;
+    var options = new AjaxOptions()
+    {
+        HttpMethod = "post",
+        InsertionMode = InsertionMode.Replace,
+        LoadingElementId = "loaderSection",
+        UpdateTargetId = "userAdminSection"
+    };
+}
+
+ 
+
+    @foreach (var item in Model)
+    {
+        
+
+    <div class="col-lg-4">
+        <div class="contact-box animated flip">
+            <a href="#">
+                <div class="col-sm-4">
+                    <div class="text-center">
+                        <img alt="image" class="img-circle m-t-xs img-responsive" src="@item.ProfilePicture">
+                        <div class="m-t-xs font-bold">@item.Role</div>
+                       
+                            @*@foreach (var workItem in item.WorkSummary)
+                            {
+                                <div class="m-t-xs font-bold">
+                                    @string.Format("{0} : {1}",workItem.StatusName,workItem.Count )
+                                </div>
+                            }*@
+                                
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <h3>
+                        <strong>@Html.DisplayFor(modelItem=> item.FirstName) @Html.DisplayFor(modelItem=> item.LastName)</strong>
+                    </h3>
+                    <p>
+                        <i class="fa fa-envelope m-r-xs"></i> @Html.DisplayFor(modelItem=> item.Email)
+                    </p>
+                    <address>
+                        <strong></strong><br>
+                        @Html.DisplayFor(modelItem => item.ADDRESS)<br/>
+
+                        <abbr title="Phone">P:</abbr> @Html.DisplayFor(modelItem => item.PHONE_2)
+                    </address>
+                    @Ajax.ActionLink(" Details", "ApplicationUserDetails", "Account", new { id = item.Id }, options, new { @class = "btn btn-primary btn-sm fa fa-paste" })
+                    @Ajax.ActionLink(" Edit", "EditApplicationUser", "Account", new { id = item.Id }, options, new { @class = "btn btn-white btn-sm fa fa-check" })
+                </div>
+                <div class="clearfix"></div>
+               
+            </a>
+        </div>
+    </div>
+
+    }
+
+ 

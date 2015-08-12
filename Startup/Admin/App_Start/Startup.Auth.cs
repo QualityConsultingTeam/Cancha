@@ -35,7 +35,7 @@ namespace Admin
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                CookieName = "enlacancha-authcookie",
+                CookieName = "enlacanchaauthcookie",
                 LoginPath = new PathString("/Account/Login"),
                 Provider = new CookieAuthenticationProvider
                 {

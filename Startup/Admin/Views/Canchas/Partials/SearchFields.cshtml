@@ -1,10 +1,15 @@
 ﻿@{
     Layout = null;
-
+   
 }
-@model IEnumerable<Field>
+@model IEnumerable<IEnumerable<Field>>
 
-@foreach (var field in Model)
+@foreach (var items in Model)
 {
-    @Html.Partial("~/Views/Canchas/Partials/FieldSearchDetail.cshtml", field)
+    <div class="row"> 
+      @foreach (var field in items)
+      {
+        @Html.Partial("~/Views/Canchas/Partials/FieldSearchDetail.cshtml", field)
+      }
+    </div> 
 }

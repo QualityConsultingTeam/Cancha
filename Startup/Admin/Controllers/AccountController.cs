@@ -467,6 +467,146 @@ namespace Admin.Controllers
             base.Dispose(disposing);
         }
 
+        #region methods account management
+
+        public IdentityManagerService IdentityManagerService
+        {
+            get
+            {
+                return new IdentityManagerService(HttpContext.GetOwinContext().Get<ApplicationDbContext>())
+                {
+
+                };
+            }
+        }
+
+        // Helper Methods 
+        // JsonReuslt /ViewResult For Accounts Picker
+        #region Account Selector Results
+        /// <summary>
+        ///Returns All Roles List
+        /// </summary>
+        /// <returns></returns>
+        public async Task<JsonResult> GetRoles()
+        {
+            var roles = await IdentityManagerService.GetRolesDataAsync();
+
+            return Json(roles, JsonRequestBehavior.AllowGet);
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> GetUserNames(string query)
+        {
+            var users = await IdentityManagerService.GetUsersAsync(keywords: query);
+
+            var model = users.ToIdentityUserViewModel();
+
+            return View(@"~/Views/Account/Partials/AccountPicker.cshtml", model);
+        }
+
+        [AllowAnonymous]
+        public async Task<JsonResult> GetAllUserNames()
+        {
+            var users = await IdentityManagerService.GetUsersAsync();
+
+            return Json(users.ToIdentityUserViewModel(), JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<JsonResult> GetMechanicNames(string query)
+        {
+            var users = await IdentityManagerService.GetUsersAsync(role: "Mechanic", keywords: query);
+
+            return Json(users.ToAutocomplete(), JsonRequestBehavior.AllowGet);
+
+
+        }
+        [HttpPost]
+
+        public async Task<ActionResult> GetIdentityPreview(string id)
+        {
+            var user = await IdentityManagerService.GetUserAsync(id);
+
+            return View(@"~/Views/Account/Partials/IdentityPreview.cshtml", await user.ToIdentityUserViewModelAsync(IdentityManagerService));
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> GetPartialLogin(string userid)
+        {
+            var user = await IdentityManagerService.GetUserAsync(userid);
+
+            return View(@"~/Views/Account/Partials/PartialLogin.cshtml", await user.ToIdentityUserViewModelAsync(IdentityManagerService));
+        }
+
+
+
+
+        #endregion Accoutn Selector Results
+
+
+        //[Authorize(Roles = "Admin,Manager")]
+        //[AllowAnonymous]
+        public async Task<ActionResult> AccountMangement()
+        {
+            var users = await IdentityManagerService.GetUsersAsync();
+
+            var model =   users.ToIdentityUserViewModel();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        //[Authorize(Roles = "Admin,Manager")]
+        public async Task<ActionResult> SearchAccounts(FilterAccountOption filter)
+        {
+            var users = await IdentityManagerService.GetUsersAsync(filter.role, filter.keywords);
+
+            var model =  users.ToIdentityUserViewModel();
+
+            return PartialView(@"~/Views/Account/Partials/UserManagementGrid.cshtml", model);
+        }
+
+        //[Authorize(Roles = "Admin,Manager")]
+        [HttpPost]
+        public async Task<ActionResult> EditApplicationUser(string id = "")
+        {
+            ViewBag.Roles = new SelectList(await IdentityManagerService.GetRolesAsync());
+            var model = await IdentityManagerService.GetUserAsync(id) ?? new ApplicationUser();
+
+            return View(@"~/Views/Account/Partials/EditApplicationUser.cshtml", await model.ToIdentityUserViewModelAsync(IdentityManagerService));
+        }
+
+
+        //[Authorize(Roles = "Admin,Manager")]
+        [HttpPost]
+        public async Task<ActionResult> UpdateApplicationUser(IdentityUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await IdentityManagerService.InsertOrUpdate(model, UserManager);
+                return RedirectToAction("AccountMangement");
+            }
+            ViewBag.Roles = new SelectList(await IdentityManagerService.GetRolesAsync());
+            return View("~/Views/Account/EditApplicationUser", model);
+        }
+        [HttpPost]
+        //[Authorize(Roles = "Admin,Manager")]
+        public async Task<ActionResult> ApplicationUserDetails(string id)
+        {
+            var model = await IdentityManagerService.GetUserAsync(id) ?? new ApplicationUser();
+            return View(await model.ToIdentityUserViewModelAsync(IdentityManagerService));
+        }
+
+        public async Task<JsonResult> GetApplicationUsers()
+        {
+            var users = await IdentityManagerService.GetApplicationUsers();
+
+            var model = users.Select(u => u.ToIdentityUserViewModel()).ToList();
+
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
         #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
@@ -493,7 +633,7 @@ namespace Admin.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return User.IsInRole("Admin") ? RedirectToAction("RootAdmin", "RootAdmin") : RedirectToAction("Index", "Canchas");
+            return User.IsInRole("admin") ? RedirectToAction("RootAdmin", "RootAdmin") : RedirectToAction("Index", "Canchas");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult
