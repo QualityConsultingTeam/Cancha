@@ -124,6 +124,7 @@ namespace Admin.Models
 
         public string Email { get; set; }
 
+        [DisplayName("Telefono")]
         public string PHONE_2 { get; set; }
 
         public int AccessFailedCount { get; set; }
@@ -135,8 +136,11 @@ namespace Admin.Models
         [DisplayName("Change Password")]
         public bool ForceChangePassword { get; set; }
 
+        [DisplayName("Nombre")]
         public string FirstName { get; set; }
 
+
+        [DisplayName("Apellido")]
         public string LastName { get; set; }
 
         //[StringLength(25)]
@@ -146,13 +150,14 @@ namespace Admin.Models
         //public string PHONE_2 { get; set; }
 
         [StringLength(200)]
+        [DisplayName("Direccion")]
         public string ADDRESS { get; set; }
 
         [Required]
         [DisplayName("User Name")]
         public string UserName { get; set; }
 
-        [DisplayName("Profile Picture")]
+        [DisplayName("Imagen de Perfil")]
         public string ProfilePicture { get; set; }
 
         //public List<IsInRole> OnRoles { get; set; } 
