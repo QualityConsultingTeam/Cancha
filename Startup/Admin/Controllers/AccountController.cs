@@ -574,6 +574,8 @@ namespace Admin.Controllers
 
             var model =  users.ToIdentityUserViewModel();
 
+            ViewBag.PageLimit = await IdentityManagerService.GetPageLimit(filter);
+
             return PartialView(@"~/Views/Account/Partials/UserManagementGrid.cshtml", model);
         }
 

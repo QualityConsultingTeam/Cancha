@@ -46,6 +46,7 @@
                                     optionsCaption: 'Please select Role...' "></select>
                             </div>
                             <div class="col-sm-4 m-b-xs"></div>
+                            <input type="hidden" data-bind="value:page" name="page" id="page" />
                             <div class="col-sm-3">
                                 <div class="input-group">
                                     <input type="text" placeholder="Search" id="keywords" name="keywords" class="input-sm form-control"> <span class="input-group-btn">
@@ -67,6 +68,21 @@
 @Html.Partial("Partials/UserManagementGrid",Model)
 
 </div>
+    <div class="row">
+        <div class="btn-group">
+            <button type="button" class="btn btn-white" data-bind="click:previousPage">
+                <i class="fa fa-chevron-left"></i>
+            </button>
+            @*<div data-bind="foreach:pages">
+                    <button class="btn btn-white  active" data-bind="text: number"></button>
+                </div>*@
+
+
+            <button type="button" class="btn btn-white" data-bind="click:nextPage">
+                <i class="fa fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
 </div>
 
 
@@ -76,6 +92,23 @@
 
         onSelectionChange: function () {
             $("#searchaccountsform").submit();
+        },
+        previousPage: function () {
+            var pag = Number($("#page").val()) - 1;
+            if (pag > 0) {
+                $("#page").val(pag);
+                doSearch();
+                $("#page").val(pag);
+            }
+        },
+        nextPage: function () {
+            var pag = Number($("#page").val()) + 1;
+            var limit = Number(pagelimit);
+            console.log("page : " + pag + "pageLImit: " + limit)
+            if (pag > 0 && pag <= limit) {
+                $("#page").val(pag);
+                doSearch();
+            }
         },
     };
     // Initialize

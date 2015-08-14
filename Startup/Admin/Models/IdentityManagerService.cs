@@ -36,6 +36,27 @@ namespace Admin.Models
                     .ToListAsync();
         }
 
+        //private IQueryable<ApplicationUser> CommonSearch(FilterOptionModel filter)
+        //{
+        //    IQueryable<ApplicationUser> users = identityContex.Users.Include(i => i.Roles);
+
+        //    if (string.IsNullOrEmpty(keywords)) keywords = "";
+        //    if (!string.IsNullOrEmpty(role))
+        //    {
+
+        //        var roleId = identityContex.Roles.FirstOrDefault(r => r.Name == role).Id;
+        //        users = (from user in identityContex.Users
+        //                 join roles in identityContex.UserRoles.Where(r => r.RoleId == roleId) on user.Id equals roles.UserId
+        //                 select user);
+        //    }
+        //    keywords.Split(' ').ToList()
+        //            .ForEach(key =>
+        //                users = users.Where(u => u.UserName.ToLower().Contains(key)
+        //                                    || u.ADDRESS.ToLower().Contains(key)
+        //                                    || u.DUI.ToLower().Contains(key)
+        //                                    || u.Email.ToLower().Contains(key)));
+        //} 
+
         public Task<List<ApplicationUser>> GetUsersAsync(string role = "", string keywords = "", int skip = 0, int take = 10)
         {
 
@@ -308,6 +329,9 @@ namespace Admin.Models
             //}).ToList();
         }
 
-      
+        internal Task<dynamic> GetPageLimit(FilterAccountOption filter)
+        {
+            return null;
+        }
     }
 }
