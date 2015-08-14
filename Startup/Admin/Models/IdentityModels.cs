@@ -26,6 +26,14 @@ namespace Admin.Models
             CreatedDate = DateTime.Now;
         }
 
+        public ApplicationUser(string email,string name, string lastname ,string doc = "")
+        {
+            this.Email = email;
+            this.FirstName = name;
+            this.LastName = lastname;
+            DUI = doc;
+        }
+
         [DisplayName("Nombre")]
         public string FirstName { get; set; }
 
