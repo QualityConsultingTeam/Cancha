@@ -167,5 +167,9 @@ namespace Admin.Models
 
         [DisplayName("Nombre de Complejo")]
         public string CenterSearchName { get; set; }
+
+        [Display(Name = "Categoria:", Prompt = "Categoria")]
+        [Range(1, 5, ErrorMessage = "Debe especificar un maximo 5")]
+        public decimal? Category { get; set; }
     }
 }

@@ -25,8 +25,9 @@ namespace Access.Repositories
                 return  Enum.GetValues(typeof(BookingStatus)).Cast<BookingStatus>();
 
             }
-        } 
+        }
 
+        #region Common
         public IQueryable<Booking> GetSummary(Guid userid )
         {
 
@@ -46,18 +47,12 @@ namespace Access.Repositories
 
             return query;
         }
-
-
-        public Task<List<Booking>> GetSummaryAsync(Guid userid, int skip=0, int take=10)
-        {
-            return GetSummary(userid).OrderBy(c => c.CreateDate).Skip(skip).Take(take).ToListAsync();
-        }
-
-        public Task<List<Booking>> GetSummaryAsync(FilterOptionModel filter,Guid user)
+        private IQueryable<Booking> CommonSearch(FilterOptionModel filter,Guid user)
         {
             IQueryable<Booking> query = GetSummary(user);
 
-            filter.SearchKeys.ForEach(k=> query.Where(f=>f.Field.Name.ToLower().Contains(k)  ));
+            filter.SearchKeys.ForEach(k => query = query.Where(q => q.Field.Name.ToLower().Contains(k)));
+             
 
             if (filter.date.HasValue) query = query.Where(q => q.Start >= filter.date.Value);
 
@@ -65,11 +60,25 @@ namespace Access.Repositories
 
             if (filter.BookingStatus.HasValue) query = query.Where(b => b.Status == filter.BookingStatus.Value);
 
-            query = filter.HasOrderByProperty ? query.CustomOrderby(filter) : query.OrderBy(o=>o.Start);
+            return filter.HasOrderByProperty ? query.CustomOrderby(filter) : query.OrderBy(o => o.Start);
+        }
+        #endregion
 
+        public Task<List<Booking>> GetSummaryAsync(Guid userid, int skip=0, int take=10)
+        {
+            return GetSummary(userid).OrderBy(c => c.CreateDate).Skip(skip).Take(take).ToListAsync();
+        }
 
+      
 
-            return query.Skip(filter.Skip).Take(filter.Limit).ToListAsync();
+        public Task<List<Booking>> GetSummaryAsync(FilterOptionModel filter,Guid user)
+        {
+            return CommonSearch(filter, user).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
+        }
+
+        public async Task <int> GetPageLimit(FilterOptionModel filter,Guid user)
+        {
+            return (await CommonSearch(filter, user).CountAsync() )/ filter.Limit +1;
         }
 
         public Task<Field> GetFieldForModel(Booking booking)

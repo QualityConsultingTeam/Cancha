@@ -26,6 +26,13 @@ namespace Admin.Models
             CreatedDate = DateTime.Now;
         }
 
+        [DisplayName("Nombre")]
+        public string FirstName { get; set; }
+
+
+        [DisplayName("Apellido")]
+        public string LastName { get; set; }
+
         [StringLength(25)]
         public string DUI { get; set; }
 
@@ -42,7 +49,7 @@ namespace Admin.Models
         [Display(Name = "Fecha Creacion")]
         public DateTime CreatedDate { get; set; }
 
-        [Display(Name = "Tiempo de envio de correo:", Prompt = "Categoria")]
+        [Display(Name = "Categoria:", Prompt = "Categoria")]
         [Range(1,5, ErrorMessage = "Debe especificar un maximo 5")] 
         public decimal? Category { get; set; }
 
