@@ -60,9 +60,12 @@ namespace Admin.Controllers
         public async Task<ActionResult> SearchAync(FilterOptionModel filter)
         {
             var model = await Repository.GetSummaryAsync(filter,LoggedUser.Value);
+            ViewBag.PageLimit = await Repository.GetPageLimit(filter, LoggedUser.Value) ;
 
             return View("Partials/ManageGrid",  await IdentityManagerService.UpdateAccountInfo(model));
         }
+
+       
 
         public ActionResult Statuses()
         {

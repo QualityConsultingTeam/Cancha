@@ -88,7 +88,13 @@
                                     @Html.ValidationMessageFor(model => model.ADDRESS)
                                 </div>
                             </div>
-
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DUI, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.DUI)
+                                    @Html.ValidationMessageFor(model => model.DUI)
+                                </div>
+                            </div>
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Category, new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">

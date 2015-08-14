@@ -26,6 +26,13 @@ namespace Admin.Models
             CreatedDate = DateTime.Now;
         }
 
+        [DisplayName("Nombre")]
+        public string FirstName { get; set; }
+
+
+        [DisplayName("Apellido")]
+        public string LastName { get; set; }
+
         [StringLength(25)]
         public string DUI { get; set; }
 

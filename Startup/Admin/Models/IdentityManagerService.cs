@@ -9,6 +9,7 @@ using Access.Models;
 using Admin.Helpers;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
+using Access.Extensions;
 
 namespace Admin.Models
 {
@@ -94,19 +95,9 @@ namespace Admin.Models
 
             if (user == null)
             {
-                user = new ApplicationUser()
-                {
-                    Email = model.Email,
-                    UserName = model.UserName,
-                    DUI =model.DUI,
-                    PhoneNumber= model.PHONE_2,
-                    PHONE_2 = model.PHONE_2,
-                    Category = model.Category,
-                    ADDRESS = model.ADDRESS,
-                    //LastName = model.LastName,
-                    //DocumentNum = model.DocumentNum,
-                    //Address = model.Address
-                };
+                user = new ApplicationUser();
+                user.Assign(model);
+                
 
                 var result = await userManager.CreateAsync(user, "1234567");
                 if (!result.Succeeded) return false;
@@ -118,9 +109,13 @@ namespace Admin.Models
                 user.UserName = model.UserName;
                 user.DUI = model.DUI;
                 user.PhoneNumber = model.PHONE_2;
-                user.PHONE_2 = model.PHONE_2;
-                user.Category = model.Category;
                 user.ADDRESS = model.ADDRESS;
+                user.Category = model.Category;
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.DUI = model.DUI;
+                user.PHONE_2 = model.PHONE_2;
+                user.ProfilePicture = model.ProfilePicture;
                 //user.Address = model.Address;
                 //user.FirstName = model.FirstName;
                 //user.LastName = model.LastName;
@@ -139,7 +134,7 @@ namespace Admin.Models
             }
             var roles = await userManager.GetRolesAsync(model.Id);
 
-            if (roles.All(r => r != model.Role))
+            if (roles.All(r => r != model.Role) &&roles.Any())
             {
                 var result = await userManager.AddToRoleAsync(model.Id, model.Role);
             }
