@@ -227,49 +227,26 @@ namespace Admin.Models
         {
             var user = await GetUserAsync(id.ToString());
 
-            IQueryable<Booking> bookings = context.Bookings;
+            
+            var data = await context.Bookings.Where(b => b.Userid == id).GroupBy(b => b.Status)
+                       .Select(g => new
+                       {
+                           Label = g.Key.ToString(),
+                           Count =g.Count(),
+                       }).ToListAsync();
 
-            var data = await (from all in bookings.Where(b => b.Userid == id)
-                join pending in bookings.Where(b => b.Status == BookingStatus.Pendiente) on all.Id equals pending.Id
-                    into dfp
-                from defaultPending in dfp.DefaultIfEmpty()
-                join confirmed in bookings.Where(b => b.Status == BookingStatus.Cancelado) on all.Id equals
-                    confirmed.Id
-                    into dfc
-                from defaultConfirmed in dfc.DefaultIfEmpty()
-                join canceled in bookings.Where(b => b.Status == BookingStatus.Falta) on all.Id equals canceled.Id
-                    into dc
-                from defaultCanceled in dc.DefaultIfEmpty()
-                select new
-                {
-                    id = all.Id,
 
-                    pending = defaultPending,
-                    confirmed = defaultConfirmed,
-                    canceled = defaultCanceled,
-                }).OrderBy(i => i.id)
-                .GroupBy(i => i.id)
-                .Select(g => new
-                {
-                    all = g.Count(),
-                    pending = g.Count(c => c.pending != null),
-                    confirmed = g.Count(c => c.confirmed != null),
-                    canceled = g.Count(c => c.canceled != null),
-                }).FirstOrDefaultAsync();
-
-            return new UserInfo()
+            var inf= new UserInfo()
             {
                 Email = user.Email,
                 Id = new Guid(user.Id),
                 Name = user.Claims.FinUserName(),
-                BookingSummary = new List<BookingSummary>()
-                {
-                    new BookingSummary() {Label = "Solicitadas", Count = data.all},
-                    new BookingSummary() {Label = "Completadas", Count = data.confirmed},
-                    new BookingSummary() {Label = "Faltas", Count = data.canceled},
-                }
+                BookingSummary = data.Select(d => new BookingSummary() { Label = d.Label, Count = d.Count }).ToList()
             };
 
+            inf.BookingSummary.Add(new BookingSummary() { Label = "Total", Count = data.Sum(s=>s.Count) });
+
+            return inf;
 
         }
 

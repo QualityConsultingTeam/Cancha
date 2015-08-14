@@ -68,10 +68,13 @@ namespace Admin.Migrations
             }
 
 
-            if (context.Users.Count() < 10)
+           foreach(var user in TestUsers())
             {
-                var results = TestUsers().Select(u => manager.Create(u, "1234567")).ToList(); 
+                var result = manager.Create(user, "1234567");
             }
+             
+
+            
 
         }
 
