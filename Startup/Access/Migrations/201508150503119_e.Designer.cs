@@ -7,13 +7,13 @@ namespace Access.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class r : IMigrationMetadata
+    public sealed partial class e : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(r));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(e));
         
         string IMigrationMetadata.Id
         {
-            get { return "201508121637285_r"; }
+            get { return "201508150503119_e"; }
         }
         
         string IMigrationMetadata.Source

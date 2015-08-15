@@ -18,6 +18,12 @@ namespace Access.Models
         [DisplayName("imgUrl")]
         public String imgUrl { get; set; }
 
+        [StringLength(50)]
+        public String header1 { get; set; }
+
+        [StringLength(50)]
+        public String header2 { get; set; }
+
         [Timestamp]
         public byte[] RowVersion { get; set; }
 
