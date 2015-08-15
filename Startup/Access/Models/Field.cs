@@ -116,9 +116,10 @@ namespace Access.Models
 
         public Cost Cost { get; set; }
         //public int CostId { get; set; }
-
-       
+        
         public Center Center { get; set; }
+
+         
        
     }
 }

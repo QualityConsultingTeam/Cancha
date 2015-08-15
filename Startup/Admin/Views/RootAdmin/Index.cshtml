@@ -83,7 +83,7 @@
 
 
 
-        columns.Bound(o => o.Name).ClientTemplate(@Html.ActionLink("Editar", "EditField", new { id = "#=Id#" }, new { @class = "k-button" }).ToHtmlString()).Title("Editar");
+        columns.Bound(o => o.Name).ClientTemplate(@Html.ActionLink("Editar", "EditField","RootAdmin", new { id = "#=Id#" }, new { @class = "k-button" }).ToHtmlString()).Title("Editar");
 
         columns.Command(command => command.Destroy());
     })

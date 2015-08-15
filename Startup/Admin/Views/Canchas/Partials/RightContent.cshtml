@@ -1,0 +1,54 @@
+﻿@{
+    Layout = null;
+    var filter = (FilterOptionModel)ViewBag.Filter;
+    //var canchas = ViewData["lstF"].ToString(); //as String;
+
+}
+@model Center
+
+<div class="col-lg-3 animated flipInX">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <!--
+            <span class="label label-warning-light pull-right">Model.Lawn.ToString().ToUpper() </span>
+            <span class="label label-default pull-right">Model.Shoes.ToString().ToUpper()</span>
+            <span class="label label-primary pull-right">Model.Type.ToString().ToUpper()</span>
+            -->
+            <h5>Canchas</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="col-sm-12">
+                <div class="btn-group-vertical ">
+                    
+                    
+                    <div>
+                        <div>
+                            <div>
+                                @{
+                                    if (@Model.Fields != null)
+                                    {
+                                        foreach (var x in @Model.Fields)
+                                        {
+                                            <button type="button" class="btn btn-primary"> x.Description </button>
+                                        }
+                                    }
+
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+           
+            <div class="clearfix"></div>
+        </div>
+        
+    </div>
+</div>
+
+
+
+
+
+

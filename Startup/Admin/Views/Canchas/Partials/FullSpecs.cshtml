@@ -5,90 +5,145 @@
     var containsLocation = Model.Coordinates != null;
 }
 
+    
+    <div class="wrapper wrapper-content " id="fieldsContainer">
 
-<div class="wrapper wrapper-content " id="fieldsContainer">
-    <div class="row">
-        @Html.Partial("Partials/FieldSearchDetail", Model)
+        <div id="myCarousel" class="carousel slide" data-ride="carousel" style="margin-bottom:20px; height:250px">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+                <li data-target="#myCarousel" data-slide-to="3"></li>
+            </ol>
 
-        @Html.Partial("Partials/CenterDetails",Model.Center)
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="ibox ">
-                <div class="ibox-title">
-                    <h5>Ubicacion</h5>
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                    <img src="~/Images/f1.jpg" alt="Chania" class=" img-rounded" width="350" height="150" style="margin:auto;">
                 </div>
-                <div class="ibox-content">
-                    <p>
-                        Como llegar
-                    </p>
-                    <div class="google-map" id="fieldmap" style="height: 500px"></div>
+                @for (var i = 1; i < 4; i++)
+                {
+                    <div class="item">
+                        <img src="~/Images/f2.jpg" alt="Chania" class=" img-rounded" width="350" height="150" style="margin:auto;">
+                    </div>
+                }
+            </div>
+   
+
+            <!-- Left and right controls -->
+            <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+
+        <div class="row">
+            @Html.Partial("Partials/LeftContent", Model)
+
+            @Html.Partial("Partials/CenterDetails", Model)
+
+            @Html.Partial("Partials/RightContent",new ViewDataDictionary { { "lstF", ViewBag.lstFields } })
+
+        </div>
+
+        <div class="btn-group btn-group-justified" style="margin-bottom:20px">
+            @for (var i = 1; i < 5; i++)
+            {
+                <a href="#" class="btn btn-primary">Servicios</a>
+            }
+            
+        </div>
+
+        <!-- Centered Tabs 
+        <ul class="nav nav-tabs nav-justified" style="margin-bottom:20px">
+            <li class="active"><a>Servicios</a></li>
+            <li><a href="#">Torneos</a></li>
+            <li><a href="#">Gimnasio</a></li>
+            <li><a href="#">Opciones</a></li>
+        </ul>
+        -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5>Ubicacion</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <p>
+                            Como llegar
+                        </p>
+                        <div class="google-map" id="fieldmap" style="height: 500px"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
- 
 
-<script type="text/javascript">
-    
 
-    var map;
-    var mapCenter;
-    var fieldMarker;
-    var directionsDisplay = new google.maps.DirectionsRenderer();
+    <script type="text/javascript">
 
-    var directionsService = new google.maps.DirectionsService();;
 
-    $(function() {
-        initialize();
-    });
-    
-    
-    function initialize() {
-       
-        var lat = '@Model.Coordinates.Latitude';
-        var lon = '@Model.Coordinates.Longitude';
-        console.log("field Coordinates lat=" + lat + " lon: " + lon);
-        mapCenter = new google.maps.LatLng(lat, lon);
-        var mapOptions = {
-            center: mapCenter,
-            zoom: 15
-        };
-        map = new google.maps.Map(document.getElementById("fieldmap"),
-            mapOptions);
+        var map;
+        var mapCenter;
+        var fieldMarker;
+        var directionsDisplay = new google.maps.DirectionsRenderer();
 
-        directionsDisplay.setMap(map);
+        var directionsService = new google.maps.DirectionsService();;
 
-        displayPotision();
-    }
-
-    function displayPotision() {
-        fieldMarker = new google.maps.Marker({
-            position: mapCenter,
-            title: '@Model.Name',
+        $(function () {
+            initialize();
         });
 
 
-        var marker = new google.maps.Marker({
-            position: new google.maps.LatLng(Mylatitude, Mylongitude),
-            title: "mi ubicacion",
-        });
-        marker.setMap(map);
-        fieldMarker.setMap(map);
-        console.log(marker);
+        function initialize() {
 
-        var request = {
-            origin: new google.maps.LatLng(Mylatitude, Mylongitude),
-            destination: mapCenter,
-            travelMode: google.maps.TravelMode.DRIVING
-        };
-        directionsService.route(request, function (response, status) {
-            if (status == google.maps.DirectionsStatus.OK) {
-                directionsDisplay.setDirections(response);
-            }
-        });
-    }
-   
-    
-</script>
+            var lat = '@Model.Coordinates.Latitude';
+            var lon = '@Model.Coordinates.Longitude';
+            console.log("field Coordinates lat=" + lat + " lon: " + lon);
+            mapCenter = new google.maps.LatLng(lat, lon);
+            var mapOptions = {
+                center: mapCenter,
+                zoom: 15
+            };
+            map = new google.maps.Map(document.getElementById("fieldmap"),
+                mapOptions);
+
+            directionsDisplay.setMap(map);
+
+            displayPotision();
+        }
+
+        function displayPotision() {
+            fieldMarker = new google.maps.Marker({
+                position: mapCenter,
+                title: '@Model.Name',
+            });
+
+
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(Mylatitude, Mylongitude),
+                title: "mi ubicacion",
+            });
+            marker.setMap(map);
+            fieldMarker.setMap(map);
+            console.log(marker);
+
+            var request = {
+                origin: new google.maps.LatLng(Mylatitude, Mylongitude),
+                destination: mapCenter,
+                travelMode: google.maps.TravelMode.DRIVING
+            };
+            directionsService.route(request, function (response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+                }
+            });
+        }
+
+
+    </script>

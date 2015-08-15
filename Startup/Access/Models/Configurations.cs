@@ -37,6 +37,13 @@ namespace Access.Models
         }
     }
 
+    internal class ImageFieldConfig : EntityTypeConfiguration<ImageField> {
+        public ImageFieldConfig() {
+            Property(p => p.RowVersion).IsConcurrencyToken();
+            HasOptional(p => p.Center).WithMany(p => p.ImageField).HasForeignKey(f => f.idCenter).WillCascadeOnDelete(true);
+        }
+    }
+
     internal class BookingConfig : EntityTypeConfiguration<Booking>
     {
         public BookingConfig()

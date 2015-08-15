@@ -1,0 +1,39 @@
+﻿@{
+    Layout = null;
+    var filter = (FilterOptionModel)ViewBag.Filter;
+
+}
+@model Field
+
+<div class="col-lg-3 animated flipInX">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>@Model.Name</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="col-sm-12">
+                <div class="text-center">
+                    @Ajax.ImageActionLink(Model.FieldPicure, "Cancha", "FullSpecs",
+                        new { id = Model.Id, date = filter.date, end = filter.end, distance = Model.Distance }
+                        , new AjaxOptions()
+                        {
+                            HttpMethod = "post",
+                            InsertionMode = InsertionMode.Replace,
+                            UpdateTargetId = "fieldsContainer",
+                            LoadingElementId = "loaderSection",
+
+                        }, new { @class = "jg-loading-img m-t-xs img-responsive", style = "max-height: 168px" })
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+

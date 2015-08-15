@@ -18,6 +18,7 @@ namespace Admin.Controllers
         // GET: Canchas
         public  ActionResult Index()
         {
+            ViewBag.lstFields = "hola";
             return View();
         }
 
