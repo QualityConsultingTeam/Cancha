@@ -17,9 +17,15 @@
         <div class="ibox-content">
             <div class="col-sm-6">
                 <div class="text-center">
-                   
-                    @Html.ActionLink("detalles", "CenterDetails", "Center",new {id = Model.CenterId }, new { @class = "k-button" })
-                </div>
+                    <a href="@Url.Action("CenterDetails", "Center", new { id = Model.CenterId })">
+                        <div class="text-center">
+                            <img alt="image" class="img-circle m-t-xs img-responsive" src="@Model.FieldPicure.ToString()">
+                            @*<div class="m-t-xs font-bold">Graphics designer</div>*@
+                        </div> 
+                    </a>
+
+                        @Html.ActionLink("detalles", "CenterDetails", "Center", new { id = Model.CenterId }, new { @class = "k-button" })
+</div>
             </div>
             <div class="col-sm-6">
 
