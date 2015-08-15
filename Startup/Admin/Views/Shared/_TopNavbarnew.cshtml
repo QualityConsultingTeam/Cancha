@@ -80,11 +80,23 @@
 
             </ul>
             <ul class="nav navbar-top-links navbar-right">
-                <li>
-                    <a href="@Url.Action("LogOut", "Account")">
-                        <i class="fa fa-sign-out"></i> cerrar sesión
-                    </a>
-                </li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @*<li>
+                <a href="@Url.Action("LogOut", "Account")">
+                    <i class="fa fa-sign-out"></i> @User.Identity.Name - cerrar sesión
+                </a>
+            </li>*@
+                    @Html.Partial("UserProfileNav")
+                }
+                else
+                {
+                    <li>
+                        <a href="@Url.Action("Login", "Account")">
+                            <i class="fa fa-sign-in"></i> Iniciar sesión
+                        </a>
+                    </li>
+                }
             </ul>
         </div>
     </nav>

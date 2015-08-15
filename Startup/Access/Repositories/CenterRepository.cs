@@ -10,6 +10,16 @@ namespace Access.Repositories
 {
     public class CenterRepository : BaseRepository<AccessContext, Center>
     {
+
+        #region Comoboxes
+
+        public IQueryable<Center> Centers()
+        {
+            return Context.Centers;
+        }
+
+        #endregion 
+
         public Task<List<Center>> SearchAsync(string query)
         {
             var keys = (query ?? "").ToLower().Split(' ').ToList();

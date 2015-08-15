@@ -15,27 +15,32 @@
                     <div class="col-md-5">
                         <img src="http://placehold.it/120x120"
                              alt="Alternate Text" class="img-responsive" />
-                        
+
                     </div>
                     <div class="col-md-7">
                         <span>@User.Identity.Name</span>
                         <p class="text-muted small">
                             @*@User.Identity.Name*@
-                            
+
                         </p>
                         <div class="divider">
                         </div>
                         <a href="@Url.Action("Index","Manage")" class="btn btn-primary btn-sm active">Mi Perfil</a>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                        <a href="@Url.Action("menu", "rootadmin")" class="btn btn-primary btn-sm active">Administracion</a>
+                        }
                     </div>
                 </div>
             </div>
             <div class="navbar-footer">
-                <div  class="navbar-footer-content" >
+                <div class="navbar-footer-content">
                     <div class="row">
-                        
+
                         <div class="col-md-6">
                             <a href=" @Url.Action("Change your password", "ChangePassword")"
-                                class="btn btn-default btn-sm">Cambiar Contraseña</a>
+                               class="btn btn-default btn-sm">Cambiar Contraseña</a>
                         </div>
                         <div class="col-md-6">
                             <a href="@Url.Action("LogOut", "Account")" class="btn btn-default btn-sm">

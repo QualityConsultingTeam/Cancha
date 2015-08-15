@@ -38,14 +38,22 @@
 
                         }, new {id = "searchaccountsform"}))
                         {
-                            <div class="col-sm-5 m-b-xs">
+                            <div class="col-sm-4 m-b-xs">
                                 <select class="input-sm form-control input-s-sm inline" id="role" name="role" data-bind="
                                     options: roles,
                                     optionsText: 'Text',
                                     optionsValue: 'Text',event:{ change: onSelectionChange},
-                                    optionsCaption: 'Please select Role...' "></select>
+                                    optionsCaption: 'Seleccione Rol...' "></select>
                             </div>
-                            <div class="col-sm-4 m-b-xs"></div>
+                            <div class="col-sm-5 m-b-xs">
+                                <select class="input-sm form-control input-s-sm inline" id="CenterId" name="CenterId" data-bind="
+                                    options: centers,
+                                    optionsText: 'Text',
+                                    optionsValue: 'Text',event:{ change: onCenterChange},
+                                    optionsCaption: 'Seleccione Centro...' "></select>
+                            </div>
+                            
+                            <input type="hidden" data-bind="value:limit" name="limit" id="limit" />
                             <input type="hidden" data-bind="value:page" name="page" id="page" />
                             <div class="col-sm-3">
                                 <div class="input-group">
@@ -87,11 +95,19 @@
 
 
 <script>
+    var pagelimit;
     var viewmodel = {
         roles: [],
-
+        limit: 12,
+        page: ko.observable('1'),
+        CenterId : ko.observable(),
         onSelectionChange: function () {
-            $("#searchaccountsform").submit();
+            $("#page").val(0);
+            doSearch();
+        },
+        onCenterChange: function () {
+            $("#page").val(0);
+            doSearch();
         },
         previousPage: function () {
             var pag = Number($("#page").val()) - 1;
@@ -112,19 +128,23 @@
         },
     };
     // Initialize
-    ;
+    function doSearch() {
+        $("#searchaccountsform").submit();
+    }
 
     $(function () {
-        var action = '@Url.Action("GetRoles", "Account")';
-        $.get(action, function (data) {
-            applybindigs(data);
+        $.get('@Url.Action("GetRoles", "Account")', function (data) {
+            $.get('@Url.Action("GetCenters","Account")', function (centers) {
+                applybindigs(data,centers);
+            });
         });
 
     });
-    function applybindigs(rolesfor) {
+    function applybindigs(rolesfor,centers) {
 
         console.log("Try apply bindings");
         viewmodel.roles = rolesfor;
+        viewmodel.centers = centers;
         ko.applyBindings(viewmodel);
     };
 </script>

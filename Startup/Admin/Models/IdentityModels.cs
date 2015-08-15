@@ -28,10 +28,11 @@ namespace Admin.Models
 
         public ApplicationUser(string email,string name, string lastname ,string doc = "")
         {
-            this.Email = email;
+            this.Email = this.UserName= email;
             this.FirstName = name;
             this.LastName = lastname;
             DUI = doc;
+            CreatedDate = DateTime.Now;
         }
 
         [DisplayName("Nombre")]

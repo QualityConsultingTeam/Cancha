@@ -42,6 +42,10 @@ namespace Access.Models
         public string OrderByProperty { get; set; }
 
 
+        public string role { get; set; }
+
+        public int? CenterId { get; set; }
+
         public int Skip
         {
             get { return Page == 1 || Page == 0 ? 0 : (Page - 1) * Limit; }
