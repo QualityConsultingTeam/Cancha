@@ -469,6 +469,9 @@
     <Content Include="Images\p_big1.jpg" />
     <Content Include="Images\p_big2.jpg" />
     <Content Include="Images\p_big3.jpg" />
+    <Content Include="Images\slide0.jpg" />
+    <Content Include="Images\slide1.jpg" />
+    <Content Include="Images\slide2.jpg" />
     <Content Include="Images\zender_logo.png" />
     <Content Include="Scripts\app\inspinia.js" />
     <Content Include="Scripts\app\inspinia.min.js" />
