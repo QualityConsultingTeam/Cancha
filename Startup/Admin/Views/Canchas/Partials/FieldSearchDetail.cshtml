@@ -17,17 +17,7 @@
         <div class="ibox-content">
             <div class="col-sm-6">
                 <div class="text-center">
-                    @Ajax.ImageActionLink(Model.FieldPicure, "Cancha", "FullSpecs",
-                        new { id = Model.Id, date = filter.date, end = filter.end, distance = Model.Distance }
-                        , new AjaxOptions()
-                        {
-                            HttpMethod = "post",
-                            InsertionMode = InsertionMode.Replace,
-                            UpdateTargetId = "fieldsContainer",
-                            LoadingElementId = "loaderSection",
-                                 
-                        }, new { @class = "jg-loading-img m-t-xs img-responsive", style = "max-height: 168px" })
-
+                   
                     @Html.ActionLink("detalles", "CenterDetails", "Center",new {id = Model.CenterId }, new { @class = "k-button" })
                 </div>
             </div>

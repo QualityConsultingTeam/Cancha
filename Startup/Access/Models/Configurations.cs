@@ -46,7 +46,7 @@ namespace Access.Models
 
     internal class ServiceConfig : EntityTypeConfiguration<Service> {
         public ServiceConfig() {
-           // HasOptional(p => p.Center).WithMany(p => p.Service).
+            //HasOptional(p => p.Center).WithMany(p => p.Service).
         }
     }
 

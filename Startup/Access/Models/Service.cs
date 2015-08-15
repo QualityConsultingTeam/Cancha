@@ -30,5 +30,7 @@ namespace Access.Models
         [Required]
         [StringLength(15)]
         public string OBJECTTYPE { get; set; }
+
+        public Center Center { get; set; }
     }
 }
