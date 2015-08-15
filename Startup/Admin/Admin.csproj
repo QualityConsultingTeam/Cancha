@@ -1549,6 +1549,7 @@
     <Content Include="Views\Account\AccountMangement.cshtml" />
     <Content Include="Views\Account\ApplicationUserDetails.cshtml" />
     <Content Include="Views\Center\CenterDetails.cshtml" />
+    <Content Include="Views\Center\Index.cshtml" />
     <None Include="Web.Azure_Website.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

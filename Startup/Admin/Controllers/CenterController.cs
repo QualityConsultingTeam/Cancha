@@ -19,9 +19,11 @@ namespace Admin.Controllers
         }
 
         // GET: Center
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            var model = await Repository.SearchAsync(new FilterOptionModel());
+
+            return View(model);
         }
 
         // GET: Center/Details/5

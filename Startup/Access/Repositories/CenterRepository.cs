@@ -32,6 +32,22 @@ namespace Access.Repositories
             return q.ToListAsync();
         }
 
+        private IQueryable<Center> CommonSearch(FilterOptionModel filter)
+        {
+            IQueryable<Center> q = Context.Centers;
+
+            filter.SearchKeys.ForEach(k => q = q.Where(c => c.Name.ToLower().Contains(k)));
+
+            return q;
+        }
+
+        public Task<List<Center>> SearchAsync(FilterOptionModel filter)
+        {
+            var query = CommonSearch(filter);
+
+            return query.OrderBy(o => o.Name).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
+
+        }
         public async Task UpdateEmployeeCenter(string id, int centerId,Guid? loggedUser)
         {
             var user = await Context.CenterAccounts.FirstOrDefaultAsync(a => a.AccountId == new Guid(id))
