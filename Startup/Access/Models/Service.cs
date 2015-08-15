@@ -15,6 +15,8 @@ namespace Access.Models
         [StringLength(100)]
         public string Name { get; set; }
 
+        [DisplayName("Id")]
+        public int? IdCenter { get; set; }
 
         [DisplayName("Type")]
         public int? Type { get; set; }
