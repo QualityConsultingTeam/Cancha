@@ -11,6 +11,7 @@ namespace Access.Repositories
     public class CenterRepository : BaseRepository<AccessContext, Center>
     {
 
+
         #region Comoboxes
 
         public IQueryable<Center> Centers()

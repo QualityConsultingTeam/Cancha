@@ -221,6 +221,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BookingController.cs" />
     <Compile Include="Controllers\CanchasController.cs" />
+    <Compile Include="Controllers\CenterController.cs" />
     <Compile Include="Controllers\RootAdminController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\StartController.cs" />
@@ -1544,6 +1545,7 @@
     <Content Include="Views\Account\Partials\UserManagementGrid.cshtml" />
     <Content Include="Views\Account\AccountMangement.cshtml" />
     <Content Include="Views\Account\ApplicationUserDetails.cshtml" />
+    <Content Include="Views\Center\CenterDetails.cshtml" />
     <None Include="Web.Azure_Website.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
