@@ -14,7 +14,7 @@ namespace Access.Models
 
         public FilterOptionModel()
         {
-            Page = 1;
+            page = 1;
             Limit = 10;
 
         }
@@ -31,7 +31,7 @@ namespace Access.Models
         public string lon { get; set; }
 
 
-        public int Page { get; set; }
+        public int page { get; set; }
 
         public int Limit { get; set; }
 
@@ -44,11 +44,11 @@ namespace Access.Models
 
         public string role { get; set; }
 
-        public int? CenterId { get; set; }
+        public int? centerid { get; set; }
 
         public int Skip
         {
-            get { return Page == 1 || Page == 0 ? 0 : (Page - 1) * Limit; }
+            get { return page == 1 || page == 0 ? 0 : (page - 1) * Limit; }
         }
 
         public bool HasOrderByProperty

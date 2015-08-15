@@ -572,10 +572,10 @@ namespace Admin.Controllers
         public async Task<ActionResult> AccountMangement()
         {
             var filter = new FilterOptionModel() { Limit = 12 };
-            var users = await IdentityManagerService.GetUsersAsync(filter,Context );
-            ViewBag.PageLimit = await IdentityManagerService.GetPageLimit(filter,Context);
+            var users = await IdentityManagerService.GetUsersAsync(filter, Context);
+            ViewBag.PageLimit = await IdentityManagerService.GetPageLimit(filter, Context);
 
-            var model =   users.ToIdentityUserViewModel();
+            var model = users.ToIdentityUserViewModel();
 
             return View(model);
         }

@@ -38,7 +38,7 @@ namespace Admin.Models
 
         private IQueryable<ApplicationUser> CommonSearch(FilterOptionModel filter,AccessContext Context)
         {
-            IQueryable<ApplicationUser> users = identityContex.Users.Include(i => i.Roles);
+            IQueryable<ApplicationUser> users = identityContex.Users.Include(i => i.Roles).Include(u=>u.Claims);
 
            
             if (!string.IsNullOrEmpty(filter.role))
@@ -50,9 +50,9 @@ namespace Admin.Models
                          select user);
             }
 
-            if (filter.CenterId.HasValue)
+            if (filter.centerid.HasValue)
             {
-                var usersInCenter = Context.CenterAccounts.Where(c => c.CenterId == filter.CenterId)
+                var usersInCenter = Context.CenterAccounts.Where(c => c.CenterId == filter.centerid)
                     .Select(c => c.AccountId.ToString()).ToList();
 
                 users = users.Where(u => usersInCenter.Contains(u.Id));
@@ -75,13 +75,26 @@ namespace Admin.Models
             }).ToListAsync();
         }
 
-        public Task<List<ApplicationUser>> GetUsersAsync(FilterOptionModel filter ,AccessContext Context)
+        public async Task<List<ApplicationUser>> GetUsersAsync(FilterOptionModel filter ,AccessContext Context)
         {
 
             IQueryable<ApplicationUser> users = CommonSearch(filter,Context);
 
-            return users.OrderBy(u => u.UserName).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
-            
+            var accounts = await  users.OrderBy(u => u.UserName).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
+
+            //refresh profile pictures from extenal login
+
+            foreach(var account in  accounts.Where(a=> a.Claims.Any()))
+           {
+                var claim =  account.Claims.FirstOrDefault(c => c.ClaimType == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+
+                if (claim != null)
+                {
+                    account.ProfilePicture = string.Format("http://graph.facebook.com/{0}/picture?type=large", claim.ClaimValue);
+                }
+            }
+
+            return   accounts;
         }
 
         public Task<ApplicationUser> GetUserAsync(string userid)
@@ -154,6 +167,11 @@ namespace Admin.Models
                 if (!result.Succeeded) return false;
             }
             var roles = await userManager.GetRolesAsync(model.Id);
+
+            if (!roles.Any())
+            {
+                var res = userManager.AddToRoleAsync(model.Id, model.Role);
+            }
 
             if (roles.All(r => r != model.Role) &&roles.Any())
             {

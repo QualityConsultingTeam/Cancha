@@ -15,23 +15,26 @@
     @foreach (var item in Model)
     {
         
-
+      
     <div class="col-lg-4">
         <div class="contact-box animated flip">
             <a href="#">
+                
                 <div class="col-sm-4">
                     <div class="text-center">
-                        <img alt="image" class="img-circle m-t-xs img-responsive" src="@item.ProfilePicture">
-                        <div class="m-t-xs font-bold">@item.Role</div>
-                       
+                        <a href="#"  class="thumbnail">
+                            <img alt="image" class="img-circle m-t-xs img-responsive"   src="@item.ProfilePictureDefault">
+                         </a>
+                            <div class="m-t-xs font-bold">@item.Role</div>
+
                             @*@foreach (var workItem in item.WorkSummary)
-                            {
-                                <div class="m-t-xs font-bold">
-                                    @string.Format("{0} : {1}",workItem.StatusName,workItem.Count )
-                                </div>
-                            }*@
-                                
-                    </div>
+            {
+                <div class="m-t-xs font-bold">
+                    @string.Format("{0} : {1}",workItem.StatusName,workItem.Count )
+                </div>
+            }*@
+
+                        </div>
                 </div>
                 <div class="col-sm-8">
                     <h3>
@@ -46,8 +49,8 @@
 
                         <abbr title="Phone">P:</abbr> @Html.DisplayFor(modelItem => item.PHONE_2)
                     </address>
-                    @Ajax.ActionLink(" Details", "ApplicationUserDetails", "Account", new { id = item.Id }, options, new { @class = "btn btn-primary btn-sm fa fa-paste" })
-                    @Ajax.ActionLink(" Edit", "EditApplicationUser", "Account", new { id = item.Id }, options, new { @class = "btn btn-white btn-sm fa fa-check" })
+                    @Ajax.ActionLink(" Detalles", "ApplicationUserDetails", "Account", new { id = item.Id }, options, new { @class = "btn btn-primary btn-sm fa fa-paste" })
+                    @Ajax.ActionLink(" Editar", "EditApplicationUser", "Account", new { id = item.Id }, options, new { @class = "btn btn-white btn-sm fa fa-check" })
                 </div>
                 <div class="clearfix"></div>
                

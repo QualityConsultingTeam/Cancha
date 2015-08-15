@@ -9,6 +9,10 @@ namespace Access.Models
 {
     public class CenterAccount : TrackedEntity
     {
+        public CenterAccount()
+        {
+            CreatedDate = DateTime.Now;
+        }
 
         [DisplayName("Usuario")]
         public Guid AccountId { get; set; }

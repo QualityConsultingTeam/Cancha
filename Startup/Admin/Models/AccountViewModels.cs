@@ -156,6 +156,11 @@ namespace Admin.Models
         [DisplayName("Imagen de Perfil")]
         public string ProfilePicture { get; set; }
 
+        public string ProfilePictureDefault
+        {
+            get { return !string.IsNullOrEmpty(ProfilePicture) ? ProfilePicture : "/Images/profile.jpg"; }
+        }
+
         //public List<IsInRole> OnRoles { get; set; } 
 
         [Display(Name = "Calificacion:", Prompt = "Categoria")]

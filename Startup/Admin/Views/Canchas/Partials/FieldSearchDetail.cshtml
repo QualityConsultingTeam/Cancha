@@ -1,7 +1,14 @@
 ﻿@{
     Layout = null;
     var filter = (FilterOptionModel)ViewBag.Filter;
+    var options = new AjaxOptions()
+    {
+        HttpMethod = "post",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "fieldsContainer",
+        LoadingElementId = "loaderSection",
 
+    };
 }
 @model Field
 
@@ -17,18 +24,9 @@
         <div class="ibox-content">
             <div class="col-sm-6">
                 <div class="text-center">
-                    @Ajax.ImageActionLink(Model.FieldPicure, "Cancha", "FullSpecs",
-                        new { id = Model.Id, date = filter.date, end = filter.end, distance = Model.Distance }
-                        , new AjaxOptions()
-                        {
-                            HttpMethod = "post",
-                            InsertionMode = InsertionMode.Replace,
-                            UpdateTargetId = "fieldsContainer",
-                            LoadingElementId = "loaderSection",
-                                 
-                        }, new { @class = "jg-loading-img m-t-xs img-responsive", style = "max-height: 168px" })
-
-                    @Html.ActionLink("detalles", "CenterDetails", "Center",new {id = Model.CenterId }, new { @class = "k-button" })
+                    <a href="@Url.Action("CenterDetails","Center",new { id = Model.CenterId })">
+                        <img src="@Model.FieldPicure" class="jg-loading-img m-t-xs img-responsive"  style="max-height:168px"/>
+                    </a>
                 </div>
             </div>
             <div class="col-sm-6">
@@ -40,7 +38,7 @@
                 </p>
                 <p>
                     <h3 class="font-bold no-margins">
-                        <i class="fa fa-map-marker"></i> @Model.Distance 
+                        <i class="fa fa-map-marker"></i> @Model.Distance
                     </h3>
                 </p>
                 <address>
@@ -54,10 +52,8 @@
             </div>
             <div class="clearfix"></div>
         </div>
-        @Html.Partial("Partials/BookingSelector",Model.Bookings)
+        @Html.Partial("Partials/BookingSelector", Model.Bookings)
     </div>
 </div>
-
-
 
 

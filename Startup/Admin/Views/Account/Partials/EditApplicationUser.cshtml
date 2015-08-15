@@ -21,7 +21,7 @@
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>EditApplicationUser IdentityUserViewModel</h5>
+                    <h5>Identidad De Usuario</h5>
                 </div>
                 <div class="ibox-content">
 
@@ -118,11 +118,11 @@
                                             htmlAttributes:
                                                 new
                                                 {
-                                                    @class = "iCheck-helper",
+                                                    @class = "js-switch_3",
                                                     data_toggle = "collapse",
                                                     data_target = "#collapseExample",
                                                     aria_expanded = "false",
-                                                    aria_controls = "collapseExample"
+                                                    aria_controls = "collapseExample",
                                                 })
                                 </div>
                             </div>
@@ -164,8 +164,8 @@
 
                             <div class="form-group">
                                 <div class="col-md-offset-2 col-md-10">
-                                    <input type="submit" value="Save" class="btn btn-primary" />
-                                    @Ajax.ActionLink("Cancel", "AccountMangement", null, options, new { @class = "btn btn-white" })
+                                    <input type="submit" value="Guardar" class="btn btn-primary" />
+                                    @Ajax.ActionLink("Cancelar", "AccountMangement", null, options, new { @class = "btn btn-white" })
                                 </div>
                             </div>
                         </div>

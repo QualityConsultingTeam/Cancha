@@ -153,6 +153,25 @@ namespace Admin
                var link = helper.ActionLink("[replaceme]", actionName, routeValues, ajaxOptions).ToHtmlString();
                return MvcHtmlString.Create(link.Replace("[replaceme]", builder.ToString(TagRenderMode.SelfClosing)));
            }
+
+        public static string ImageLink(this HtmlHelper htmlHelper, string imgSrc, string alt, string actionName, string controllerName, object routeValues, object htmlAttributes, object imgHtmlAttributes)
+        {
+            UrlHelper urlHelper = ((Controller)htmlHelper.ViewContext.Controller).Url;
+            TagBuilder imgTag = new TagBuilder("img");
+            imgTag.MergeAttribute("src", imgSrc);
+            imgTag.MergeAttributes((IDictionary<string, string>)imgHtmlAttributes, true);
+            string url = urlHelper.Action(actionName, controllerName, routeValues);
+
+
+
+            TagBuilder imglink = new TagBuilder("a");
+            imglink.MergeAttribute("href", url);
+            imglink.InnerHtml = imgTag.ToString();
+            imglink.MergeAttributes((IDictionary<string, string>)htmlAttributes, true);
+
+            return imglink.ToString();
+
+        }
         //        $("#Search").typeahead({
         //    source: function (query, process) {
         //        var countries = [];
@@ -180,6 +199,6 @@ namespace Admin
         //    }
         //});
 
-        
+
     }
 }
