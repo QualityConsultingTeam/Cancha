@@ -36,52 +36,52 @@ namespace Admin.Models
                     .ToListAsync();
         }
 
-        //private IQueryable<ApplicationUser> CommonSearch(FilterOptionModel filter)
-        //{
-        //    IQueryable<ApplicationUser> users = identityContex.Users.Include(i => i.Roles);
-
-        //    if (string.IsNullOrEmpty(keywords)) keywords = "";
-        //    if (!string.IsNullOrEmpty(role))
-        //    {
-
-        //        var roleId = identityContex.Roles.FirstOrDefault(r => r.Name == role).Id;
-        //        users = (from user in identityContex.Users
-        //                 join roles in identityContex.UserRoles.Where(r => r.RoleId == roleId) on user.Id equals roles.UserId
-        //                 select user);
-        //    }
-        //    keywords.Split(' ').ToList()
-        //            .ForEach(key =>
-        //                users = users.Where(u => u.UserName.ToLower().Contains(key)
-        //                                    || u.ADDRESS.ToLower().Contains(key)
-        //                                    || u.DUI.ToLower().Contains(key)
-        //                                    || u.Email.ToLower().Contains(key)));
-        //} 
-
-        public Task<List<ApplicationUser>> GetUsersAsync(string role = "", string keywords = "", int skip = 0, int take = 10)
+        private IQueryable<ApplicationUser> CommonSearch(FilterOptionModel filter,AccessContext Context)
         {
-
             IQueryable<ApplicationUser> users = identityContex.Users.Include(i => i.Roles);
 
-            if (string.IsNullOrEmpty(keywords)) keywords = "";
-            if (!string.IsNullOrEmpty(role))
+           
+            if (!string.IsNullOrEmpty(filter.role))
             {
 
-                var roleId = identityContex.Roles.FirstOrDefault(r => r.Name == role).Id;
+                var roleId = identityContex.Roles.FirstOrDefault(r => r.Name == filter.role).Id;
                 users = (from user in identityContex.Users
                          join roles in identityContex.UserRoles.Where(r => r.RoleId == roleId) on user.Id equals roles.UserId
                          select user);
             }
-            keywords.Split(' ').ToList()
-                    .ForEach(key =>
+
+            if (filter.CenterId.HasValue)
+            {
+                var usersInCenter = Context.CenterAccounts.Where(c => c.CenterId == filter.CenterId)
+                    .Select(c => c.AccountId.ToString()).ToList();
+
+                users = users.Where(u => usersInCenter.Contains(u.Id));
+            }
+           filter.SearchKeys.ForEach(key =>
                         users = users.Where(u => u.UserName.ToLower().Contains(key)
                                             || u.ADDRESS.ToLower().Contains(key)
-                                            || u.DUI. ToLower().Contains(key)
+                                            || u.DUI.ToLower().Contains(key)
                                             || u.Email.ToLower().Contains(key)));
 
-            return users.OrderBy(u => u.UserName).Skip(skip).ToListAsync();
+            return users;
+        }
 
+        public Task<List<ApplicationUser>> GetAllUserNames(AccessContext context)
+        {
+            return CommonSearch(new FilterOptionModel(),context).Select(u=> new ApplicationUser()
+            {
+                UserName = u.UserName,
+                Id = u.Id
+            }).ToListAsync();
+        }
 
+        public Task<List<ApplicationUser>> GetUsersAsync(FilterOptionModel filter ,AccessContext Context)
+        {
 
+            IQueryable<ApplicationUser> users = CommonSearch(filter,Context);
+
+            return users.OrderBy(u => u.UserName).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
+            
         }
 
         public Task<ApplicationUser> GetUserAsync(string userid)
@@ -329,9 +329,9 @@ namespace Admin.Models
             //}).ToList();
         }
 
-        internal Task<dynamic> GetPageLimit(FilterAccountOption filter)
+        internal async Task<int> GetPageLimit(FilterOptionModel filter,AccessContext context)
         {
-            return null;
+            return (await CommonSearch(filter,context).CountAsync()) / filter.Limit + 1;
         }
     }
 }

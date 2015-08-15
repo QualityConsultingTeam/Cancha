@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Admin.Models;
+using Access;
 
 namespace Test
 {
@@ -67,7 +68,7 @@ namespace Test
             //
             var service = new IdentityManagerService(ApplicationDbContext.Create());
 
-            var users = service.GetUsersAsync().Result;
+            var users = service.GetUsersAsync(new Access.Models.FilterOptionModel(), AccessContext.Create()).Result;
 
             Assert.IsNotNull(users);
             

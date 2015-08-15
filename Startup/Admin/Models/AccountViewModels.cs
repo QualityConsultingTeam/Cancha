@@ -110,12 +110,7 @@ namespace Admin.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
-    public class FilterAccountOption
-    {
-        public string role { get; set; }
-
-        public string keywords { get; set; }
-    }
+    
 
     public class IdentityUserViewModel
     {

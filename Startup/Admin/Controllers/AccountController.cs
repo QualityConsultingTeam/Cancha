@@ -14,6 +14,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Access;
 using Access.Repositories;
+using Access.Models;
+using System.Data.Entity;
 
 namespace Admin.Controllers
 {
@@ -496,10 +498,19 @@ namespace Admin.Controllers
             return Json(roles, JsonRequestBehavior.AllowGet);
         }
 
+        public async  Task<JsonResult> GetCenters()
+        {
+            var centers = await CenterRepository.Centers()
+                          .Select(c=> new SelectListModel<string>() { Id = c.Id.ToString(), Text = c.Name })
+                          .ToListAsync();
+
+            return Json(centers, JsonRequestBehavior.AllowGet);
+        }
+
         [AllowAnonymous]
         public async Task<ActionResult> GetUserNames(string query)
         {
-            var users = await IdentityManagerService.GetUsersAsync(keywords: query);
+            var users = await IdentityManagerService.GetAllUserNames(Context);
 
             var model = users.ToIdentityUserViewModel();
 
@@ -509,19 +520,12 @@ namespace Admin.Controllers
         [AllowAnonymous]
         public async Task<JsonResult> GetAllUserNames()
         {
-            var users = await IdentityManagerService.GetUsersAsync();
+            var users = await IdentityManagerService.GetAllUserNames(Context);
 
             return Json(users.ToIdentityUserViewModel(), JsonRequestBehavior.AllowGet);
         }
 
-        public async Task<JsonResult> GetMechanicNames(string query)
-        {
-            var users = await IdentityManagerService.GetUsersAsync(role: "Mechanic", keywords: query);
-
-            return Json(users.ToAutocomplete(), JsonRequestBehavior.AllowGet);
-
-
-        }
+      
         [HttpPost]
 
         public async Task<ActionResult> GetIdentityPreview(string id)
@@ -550,16 +554,26 @@ namespace Admin.Controllers
             {
                 return new CenterRepository()
                 {
-                    Context = HttpContext.GetOwinContext().GetUserManager<AccessContext>()
+                    Context = Context,
                 };
             }
         }
 
-        //[Authorize(Roles = "Admin,Manager")]
+        private AccessContext Context
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().GetUserManager<AccessContext>();
+            }
+        }
+
+        [Authorize(Roles = "Admin,Manager")]
         //[AllowAnonymous]
         public async Task<ActionResult> AccountMangement()
         {
-            var users = await IdentityManagerService.GetUsersAsync();
+            var filter = new FilterOptionModel() { Limit = 12 };
+            var users = await IdentityManagerService.GetUsersAsync(filter,Context );
+            ViewBag.PageLimit = await IdentityManagerService.GetPageLimit(filter,Context);
 
             var model =   users.ToIdentityUserViewModel();
 
@@ -568,13 +582,13 @@ namespace Admin.Controllers
 
         [HttpPost]
         //[Authorize(Roles = "Admin,Manager")]
-        public async Task<ActionResult> SearchAccounts(FilterAccountOption filter)
+        public async Task<ActionResult> SearchAccounts(FilterOptionModel filter)
         {
-            var users = await IdentityManagerService.GetUsersAsync(filter.role, filter.keywords);
+            var users = await IdentityManagerService.GetUsersAsync(filter,Context);
 
             var model =  users.ToIdentityUserViewModel();
 
-            ViewBag.PageLimit = await IdentityManagerService.GetPageLimit(filter);
+            ViewBag.PageLimit = await IdentityManagerService.GetPageLimit(filter,Context);
 
             return PartialView(@"~/Views/Account/Partials/UserManagementGrid.cshtml", model);
         }

@@ -67,12 +67,17 @@ namespace Admin.Migrations
                   userStore.AddClaimAsync(user, claim: new Claim(ClaimTypes.Role.ToString(), "Admin")).Start();
             }
 
-
-           foreach(var user in TestUsers())
+            if (context.Users.Count() < 10)
             {
-                var result = manager.Create(user, "1234567");
+                foreach (var user in TestUsers())
+                {
+                    var result = manager.Create(user, "1234567");
+                }
             }
-             
+
+            var toUpdateProfiles = context.Users.Where(u => string.IsNullOrEmpty(u.ProfilePicture)).ToList();
+
+
 
             
 

@@ -26,6 +26,7 @@ namespace Admin.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult Menu()
         {
             return View();
