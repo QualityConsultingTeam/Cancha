@@ -19,13 +19,12 @@
                 <div class="text-center">
                     <a href="@Url.Action("CenterDetails", "Center", new { id = Model.CenterId })">
                         <div class="text-center">
-                            <img alt="image" class="img-circle m-t-xs img-responsive" src="@Model.FieldPicure.ToString()">
+                            <img alt="image" class="m-t-xs img-responsive" src="@Model.FieldPicure.ToString()">
                             @*<div class="m-t-xs font-bold">Graphics designer</div>*@
-                        </div> 
+                        </div>
                     </a>
 
-                        @Html.ActionLink("detalles", "CenterDetails", "Center", new { id = Model.CenterId }, new { @class = "k-button" })
-</div>
+                </div>
             </div>
             <div class="col-sm-6">
 
@@ -36,7 +35,7 @@
                 </p>
                 <p>
                     <h3 class="font-bold no-margins">
-                        <i class="fa fa-map-marker"></i> @Model.Distance 
+                        <i class="fa fa-map-marker"></i> @Model.Distance
                     </h3>
                 </p>
                 <address>
@@ -50,7 +49,7 @@
             </div>
             <div class="clearfix"></div>
         </div>
-        @Html.Partial("Partials/BookingSelector",Model.Bookings)
+        @Html.Partial("Partials/BookingSelector", Model.Bookings)
     </div>
 </div>
 
