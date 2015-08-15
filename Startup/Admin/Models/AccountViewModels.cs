@@ -110,7 +110,12 @@ namespace Admin.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
+    public class FilterAccountOption
+    {
+        public string role { get; set; }
 
+        public string keywords { get; set; }
+    }
 
     public class IdentityUserViewModel
     {
@@ -119,37 +124,56 @@ namespace Admin.Models
 
         public string Email { get; set; }
 
-        public string PhoneNumber { get; set; }
+        [DisplayName("Telefono")]
+        public string PHONE_2 { get; set; }
 
         public int AccessFailedCount { get; set; }
 
         public string Role { get; set; }
 
+        
         public string Password { get; set; }
 
         [DisplayName("Change Password")]
         public bool ForceChangePassword { get; set; }
 
+        [DisplayName("Nombre")]
         public string FirstName { get; set; }
 
+
+        [DisplayName("Apellido")]
         public string LastName { get; set; }
 
         //[StringLength(25)]
-        public string DocumentNum { get; set; }
+        public string DUI { get; set; }
 
         //[StringLength(20)]
         //public string PHONE_2 { get; set; }
 
         [StringLength(200)]
-        public string Address { get; set; }
+        [DisplayName("Direccion")]
+        public string ADDRESS { get; set; }
 
         [Required]
         [DisplayName("User Name")]
         public string UserName { get; set; }
 
-        [DisplayName("Profile Picture")]
+        [DisplayName("Imagen de Perfil")]
         public string ProfilePicture { get; set; }
 
         //public List<IsInRole> OnRoles { get; set; } 
+
+        [Display(Name = "Calificacion:", Prompt = "Categoria")]
+        [Range(1, 5, ErrorMessage = "Debe especificar un maximo 5")]
+        public decimal? Category { get; set; }
+
+        public dynamic WorkSummary { get; set; }
+
+        public int CenterId { get; set; }
+
+        [DisplayName("Nombre de Complejo")]
+        public string CenterSearchName { get; set; }
+
+       
     }
 }

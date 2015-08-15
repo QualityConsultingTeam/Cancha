@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.ComponentModel;
 
 namespace Admin.Models
 {
@@ -25,6 +26,21 @@ namespace Admin.Models
             CreatedDate = DateTime.Now;
         }
 
+        public ApplicationUser(string email,string name, string lastname ,string doc = "")
+        {
+            this.Email = email;
+            this.FirstName = name;
+            this.LastName = lastname;
+            DUI = doc;
+        }
+
+        [DisplayName("Nombre")]
+        public string FirstName { get; set; }
+
+
+        [DisplayName("Apellido")]
+        public string LastName { get; set; }
+
         [StringLength(25)]
         public string DUI { get; set; }
 
@@ -41,13 +57,14 @@ namespace Admin.Models
         [Display(Name = "Fecha Creacion")]
         public DateTime CreatedDate { get; set; }
 
-        [Display(Name = "Tiempo de envio de correo:", Prompt = "Categoria")]
+        [Display(Name = "Calificacion:", Prompt = "Categoria")]
         [Range(1,5, ErrorMessage = "Debe especificar un maximo 5")] 
         public decimal? Category { get; set; }
 
         //[Timestamp]
         //public byte[] RowVersion { get; set; }
-
+        [DisplayName("Profile Picture")]
+        public string ProfilePicture { get; set; }
 
     }
 
@@ -56,6 +73,7 @@ namespace Admin.Models
         public ApplicationDbContext()
             : base("IdentityData", throwIfV1Schema: false)
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
         public DbSet<IdentityUserRole> UserRoles { get; set; }
@@ -75,8 +93,6 @@ namespace Admin.Models
             modelBuilder.Entity<IdentityUserLogin>().HasKey(l => new { l.UserId, l.LoginProvider, l.ProviderKey }).ToTable("AspNetUserLogins");
             modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId }).ToTable("AspNetUserRoles");
             modelBuilder.Entity<IdentityUserClaim>().ToTable("AspNetUserClaims");
-
-         
 
         }
     }

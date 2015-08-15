@@ -1,0 +1,16 @@
+﻿@{
+    Layout = null;
+    
+}
+
+@model Admin.Models.IdentityUserViewModel 
+<h1>@string.Format("{0} {1}",Model.FirstName,Model.LastName)</h1>
+<div class="m-b-sm">
+    <img alt="image" class="img-circle" src="@Model.ProfilePicture">
+</div>
+<p class="font-bold">Mechanic Assigned</p>
+
+@*<div class="text-center">
+    <a class="btn btn-xs btn-white"><i class="fa fa-thumbs-up"></i> Like </a>
+    <a class="btn btn-xs btn-primary"><i class="fa fa-heart"></i> Love</a>
+</div>*@

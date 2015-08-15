@@ -1,0 +1,182 @@
+﻿@model Admin.Models.IdentityUserViewModel
+@using Admin.Models
+
+@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    var options = new AjaxOptions()
+    {
+        HttpMethod = "post",
+        InsertionMode = InsertionMode.Replace,
+        LoadingElementId = "loaderSection",
+        UpdateTargetId = "userAdminSection"
+    };
+}
+
+
+<div class="wrapper wrapper-content animated flipInX">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>EditApplicationUser IdentityUserViewModel</h5>
+                </div>
+                <div class="ibox-content">
+
+                    @using (Ajax.BeginForm("UpdateApplicationUser", "Account", options))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+
+                            @Html.ValidationSummary(true)
+                            @Html.HiddenFor(model => model.Id)
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.UserName)
+                                    @Html.ValidationMessageFor(model => model.UserName)
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Email)
+                                    @Html.ValidationMessageFor(model => model.Email)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ProfilePicture, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.ProfilePicture)
+                                    @Html.ValidationMessageFor(model => model.ProfilePicture)
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PHONE_2, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.PHONE_2)
+                                    @Html.ValidationMessageFor(model => model.PHONE_2)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FirstName, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.FirstName)
+                                    @Html.ValidationMessageFor(model => model.FirstName)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.LastName, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.LastName)
+                                    @Html.ValidationMessageFor(model => model.LastName)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ADDRESS, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.ADDRESS)
+                                    @Html.ValidationMessageFor(model => model.ADDRESS)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DUI, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.DUI)
+                                    @Html.ValidationMessageFor(model => model.DUI)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Category, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Category)
+                                    @Html.ValidationMessageFor(model => model.Category)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Role, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownListFor(model => model.Role, (IEnumerable<SelectListItem>)ViewBag.Roles, "Asignar Rol", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Role)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ForceChangePassword, new {@class = "control-label col-md-2"})
+                                <div class="col-md-10">
+
+                                    @Html.CheckBoxFor(model => model.ForceChangePassword,
+                                            htmlAttributes:
+                                                new
+                                                {
+                                                    @class = "iCheck-helper",
+                                                    data_toggle = "collapse",
+                                                    data_target = "#collapseExample",
+                                                    aria_expanded = "false",
+                                                    aria_controls = "collapseExample"
+                                                })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <div class="collapse" id="collapseExample">
+                                    <div class="well">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Password, new {@class = "control-label col-md-2"})
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.Password)
+                                                @Html.ValidationMessageFor(model => model.Password)
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            @*else
+                                {
+                                    Html.HiddenFor(model => model.ForceChangePassword);
+                                    Html.HiddenFor(model => model.Password);
+                                }*@
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CenterSearchName, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.HiddenFor(m => m.CenterId)
+                                    @Html.AutocompleteFor(m => m.CenterSearchName, model => model.CenterId, "CenterAutoComplete", "RootAdmin", true)
+                                    @*@Html.AutocompleteFor(model => model.Customer.SearchName, model => model.CustomerId, "CustomerAutoComplete", "Checkin", true)*@
+                                    @Html.ValidationMessageFor(model => model.Password)
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Save" class="btn btn-primary" />
+                                    @Ajax.ActionLink("Cancel", "AccountMangement", null, options, new { @class = "btn btn-white" })
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/typeahead.bundle.min.js"></script>
+<script src="~/Scripts/typeahead.jquery.min.js"></script>
+<script src="~/Scripts/typeahead.mvc.model.js"></script>

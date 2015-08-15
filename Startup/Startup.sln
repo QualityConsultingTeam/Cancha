@@ -43,6 +43,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{7D1A36
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kendo", "Kendo", "{EC50C67D-2E0A-4621-AFAC-211152ACC6FE}"
+	ProjectSection(SolutionItems) = preProject
+		Kendo MVC\Kendo.Mvc.dll = Kendo MVC\Kendo.Mvc.dll
+		Kendo MVC\Kendo.Mvc.resources.dll = Kendo MVC\Kendo.Mvc.resources.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Azure_Website|Any CPU = Azure_Website|Any CPU
@@ -174,5 +180,6 @@ Global
 		{C2CE66B0-2C66-46F3-8F36-BF2C1D720451} = {7A875313-F02B-49FE-8F27-3B04F1EDD230}
 		{AFA8DC17-9CC2-4E51-BF3E-344DEC95E9FA} = {243147F1-5D70-49CD-A5A6-ED30CDA5D1BE}
 		{25B98DA1-19C8-4FED-AD15-C61BB5CCDE12} = {243147F1-5D70-49CD-A5A6-ED30CDA5D1BE}
+		{EC50C67D-2E0A-4621-AFAC-211152ACC6FE} = {7F66016C-1D2D-46B0-93D9-65C53F3DB5B5}
 	EndGlobalSection
 EndGlobal

@@ -12,7 +12,12 @@
 <div class="row">
     <div class="ibox-content animated fadeInLeftBig" id="bookingmodalheader">
         <h2>@string.Format("{0}", ViewBag.ActionMessage)</h2>
-        <h4>@Model.Start.Value.ToString("f")</h4>
+        <h4>
+            @if (Model.Start.HasValue)
+            {
+                @Model.Start.Value.ToString("f")
+            }
+        </h4>
         @*<h2> @string.Format("{0:ddd, MMM d, yyyy}", Model.Start.Value.ToShortDateString())</h2>*@
         <h4> Hora Inicio  @string.Format("{0:HH:mm}", Model.Start.Value)</h4>
         @*<h2> Hora Final  @string.Format("{0:HH:mm}", Model.End.Value)</h2>*@
@@ -27,7 +32,7 @@
         {
             HttpMethod = "post",
             //InsertionMode = InsertionMode.Replace,
-            LoadingElementId = "loaderSection",
+            LoadingElementId = "loader",
             //UpdateTargetId = "bookingModal",
             OnSuccess = "OnCompleteBookingUpdate",
         }))
@@ -46,10 +51,11 @@
         @Html.HiddenFor(m => m.Team2)
         @Html.HiddenFor(m => m.OBJECTTYPE)
         @Html.HiddenFor(m=> m.RowVersion)
+        @Html.HiddenFor(m => m.Userid)
     <div class="modal-footer animated fadeInRightBig">
 
 
-        <button type="submit" class="btn btn-info btn-circle btn-lg btn-outline">
+        <button type="submit" class="btn btn-info btn-circle btn-lg btn-outline" >
             <i class="fa fa-check"></i>
         </button>
 

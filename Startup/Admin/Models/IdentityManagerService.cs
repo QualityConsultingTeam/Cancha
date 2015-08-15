@@ -9,6 +9,7 @@ using Access.Models;
 using Admin.Helpers;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
+using Access.Extensions;
 
 namespace Admin.Models
 {
@@ -34,6 +35,27 @@ namespace Admin.Models
                 })
                     .ToListAsync();
         }
+
+        //private IQueryable<ApplicationUser> CommonSearch(FilterOptionModel filter)
+        //{
+        //    IQueryable<ApplicationUser> users = identityContex.Users.Include(i => i.Roles);
+
+        //    if (string.IsNullOrEmpty(keywords)) keywords = "";
+        //    if (!string.IsNullOrEmpty(role))
+        //    {
+
+        //        var roleId = identityContex.Roles.FirstOrDefault(r => r.Name == role).Id;
+        //        users = (from user in identityContex.Users
+        //                 join roles in identityContex.UserRoles.Where(r => r.RoleId == roleId) on user.Id equals roles.UserId
+        //                 select user);
+        //    }
+        //    keywords.Split(' ').ToList()
+        //            .ForEach(key =>
+        //                users = users.Where(u => u.UserName.ToLower().Contains(key)
+        //                                    || u.ADDRESS.ToLower().Contains(key)
+        //                                    || u.DUI.ToLower().Contains(key)
+        //                                    || u.Email.ToLower().Contains(key)));
+        //} 
 
         public Task<List<ApplicationUser>> GetUsersAsync(string role = "", string keywords = "", int skip = 0, int take = 10)
         {
@@ -94,15 +116,9 @@ namespace Admin.Models
 
             if (user == null)
             {
-                user = new ApplicationUser()
-                {
-                    Email = model.Email,
-                    UserName = model.UserName,
-                    //FirstName = model.FirstName,
-                    //LastName = model.LastName,
-                    //DocumentNum = model.DocumentNum,
-                    //Address = model.Address
-                };
+                user = new ApplicationUser();
+                user.Assign(model);
+                
 
                 var result = await userManager.CreateAsync(user, "1234567");
                 if (!result.Succeeded) return false;
@@ -110,9 +126,17 @@ namespace Admin.Models
             }
             else
             {
-                user.UserName = user.UserName;
                 user.Email = model.Email;
-                user.PhoneNumber = model.PhoneNumber;
+                user.UserName = model.UserName;
+                user.DUI = model.DUI;
+                user.PhoneNumber = model.PHONE_2;
+                user.ADDRESS = model.ADDRESS;
+                user.Category = model.Category;
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.DUI = model.DUI;
+                user.PHONE_2 = model.PHONE_2;
+                user.ProfilePicture = model.ProfilePicture;
                 //user.Address = model.Address;
                 //user.FirstName = model.FirstName;
                 //user.LastName = model.LastName;
@@ -131,7 +155,7 @@ namespace Admin.Models
             }
             var roles = await userManager.GetRolesAsync(model.Id);
 
-            if (roles.All(r => r != model.Role))
+            if (roles.All(r => r != model.Role) &&roles.Any())
             {
                 var result = await userManager.AddToRoleAsync(model.Id, model.Role);
             }
@@ -224,49 +248,26 @@ namespace Admin.Models
         {
             var user = await GetUserAsync(id.ToString());
 
-            IQueryable<Booking> bookings = context.Bookings;
+            
+            var data = await context.Bookings.Where(b => b.Userid == id).GroupBy(b => b.Status)
+                       .Select(g => new
+                       {
+                           Label = g.Key.ToString(),
+                           Count =g.Count(),
+                       }).ToListAsync();
 
-            var data = await (from all in bookings.Where(b => b.Userid == id)
-                join pending in bookings.Where(b => b.Status == BookingStatus.Pendiente) on all.Id equals pending.Id
-                    into dfp
-                from defaultPending in dfp.DefaultIfEmpty()
-                join confirmed in bookings.Where(b => b.Status == BookingStatus.Confirmada) on all.Id equals
-                    confirmed.Id
-                    into dfc
-                from defaultConfirmed in dfc.DefaultIfEmpty()
-                join canceled in bookings.Where(b => b.Status == BookingStatus.Finalizada) on all.Id equals canceled.Id
-                    into dc
-                from defaultCanceled in dc.DefaultIfEmpty()
-                select new
-                {
-                    id = all.Id,
 
-                    pending = defaultPending,
-                    confirmed = defaultConfirmed,
-                    canceled = defaultCanceled,
-                }).OrderBy(i => i.id)
-                .GroupBy(i => i.id)
-                .Select(g => new
-                {
-                    all = g.Count(),
-                    pending = g.Count(c => c.pending != null),
-                    confirmed = g.Count(c => c.confirmed != null),
-                    canceled = g.Count(c => c.canceled != null),
-                }).FirstOrDefaultAsync();
-
-            return new UserInfo()
+            var inf= new UserInfo()
             {
                 Email = user.Email,
                 Id = new Guid(user.Id),
                 Name = user.Claims.FinUserName(),
-                BookingSummary = new List<BookingSummary>()
-                {
-                    new BookingSummary() {Label = "Solicitadas", Count = data.all},
-                    new BookingSummary() {Label = "Completadas", Count = data.confirmed},
-                    new BookingSummary() {Label = "Faltas", Count = data.canceled},
-                }
+                BookingSummary = data.Select(d => new BookingSummary() { Label = d.Label, Count = d.Count }).ToList()
             };
 
+            inf.BookingSummary.Add(new BookingSummary() { Label = "Total", Count = data.Sum(s=>s.Count) });
+
+            return inf;
 
         }
 
@@ -328,6 +329,9 @@ namespace Admin.Models
             //}).ToList();
         }
 
-      
+        internal Task<dynamic> GetPageLimit(FilterAccountOption filter)
+        {
+            return null;
+        }
     }
 }

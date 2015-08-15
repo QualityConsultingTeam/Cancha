@@ -23,18 +23,7 @@
 <div class="wrapper wrapper-content animated fadeInRightBig" id="bookingAdminSection" style="padding-top: 7%">
     
     
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="tabs-container">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#tab-1"> Reservas</a></li>
-                    <li class=""><a data-toggle="tab" href="#tab-2"> Calendario</a></li>
-                    <li class=""><a data-toggle="tab" href="#tab-3"> Extras</a></li>
-               
-                </ul>
-                <div class="tab-content">
-                    <div id="tab-1" class="tab-pane active">
-                        <div class="panel-body">
+     
                             <div class="row">
                                 <h2>Confirmacion de Reservas </h2>
                             </div>
@@ -43,9 +32,9 @@
                                  {
                                         HttpMethod = "post",
                                         InsertionMode = InsertionMode.Replace,
-                                        LoadingElementId = "loaderSection",
-                                        UpdateTargetId = "BookingListSection"
-
+                                        LoadingElementId = "loader",
+                                        UpdateTargetId = "BookingListSection",
+                                        
                                     }, new { id = "searchbookingsform" }))
                                 {
                                     <div class="col-sm-1 m-b-xs">
@@ -64,7 +53,7 @@
                                     optionsValue: 'Id',event:{ change: onSelectionStatusChange},
                                     optionsCaption: 'Estado...' "></select>
                                     </div>
-
+                                    <input type="hidden" data-bind="numeric, value:page" name="page" id="page"/>
                                     <div class="col-sm-5">
                                         <div class="input-group">
                                             <input type="text" placeholder="Buscar" class="input-sm form-control" id="keywords" name="keywords" data-bind="value:keywords">
@@ -76,238 +65,34 @@
                                 }
                             </div>
                             <div id="loader" style="display: none">
-                                @Html.Partial("Loader")
+                                <div style="padding-left:10%;padding-top:10%;z-index:100000">
+                                    @Html.Partial("LoaderCircle")
+                                </div>
                             </div>
-                            <div class="table-responsive" id="BookingListSection">
-
-
-<div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-sm-4">
-        <h2>Reservar</h2>
-        <ol class="breadcrumb">
-            <li>
-                <a href="/Booking/Manage">Atras</a>
-            </li>
-            <li class="active">&nbsp;<b>Editar Reserva</b></li></ol>
-    </div>
-    <div class="col-sm-8">
-        <div class="title-action">
-			<a class="btn btn-primary" href="/Booking">Cerrar</a></div>
-    </div>
-</div>
-<script src="/Scripts/typeahead.bundle.min.js"></script>
-<script src="/Scripts/typeahead.jquery.min.js"></script>
-<script src="/Scripts/typeahead.mvc.model.js"></script>
-
-
-<div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>EditBooking Booking</h5>
-                </div>
-                <div class="ibox-content">
-
-<form action="/Booking/AddOrUpdate" method="post">    <div class="form-horizontal">
-
-        <div class="validation-summary-errors"><ul><li style="display:none"></li>
-</ul></div>
-        <input data-val="true" data-val-number="The field Id must be a number." data-val-required="The Id field is required." id="Id" name="Id" type="hidden" value="0">
-
-        
-
-        <div class="form-group">
-            <label class="control-label col-md-2" for="Userid">Usuario</label>
-            <div class="col-md-10">
-                <input class="form-control" data-val="true" data-val-required="The Usuario field is required." id="Userid" name="Userid" type="text" value="00000000-0000-0000-0000-000000000000">
-                <span class="field-validation-valid" data-valmsg-for="Userid" data-valmsg-replace="true"></span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2" for="Idcancha">Cancha</label>
-            <div class="col-md-10">
-                <input class="text-box single-line" data-val="true" data-val-number="The field Cancha must be a number." id="Idcancha" name="Idcancha" type="number" value="">
-                <span class="field-validation-valid" data-valmsg-for="Idcancha" data-valmsg-replace="true"></span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2" for="Start">Inicio</label>
-            <div class="col-md-10">
-                <input data-val="true" data-val-date="The field Inicio must be a date." id="Start" name="Start" style="width:100%" type="datetime" value="9/8/2015 8:47 p. m."><script>
-	jQuery(function(){jQuery("#Start").kendoDateTimePicker({"format":"d/M/yyyy h:mm tt","min":new Date(1900,0,1,0,0,0,0),"max":new Date(2099,11,31,0,0,0,0),"interval":30});});
-</script>
-                <span class="field-validation-valid" data-valmsg-for="Start" data-valmsg-replace="true"></span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2" for="End">Final</label>
-            <div class="col-md-10">
-                <input data-val="true" data-val-date="The field Final must be a date." id="End" name="End" style="width:100%" type="datetime" value="9/8/2015 8:47 p. m."><script>
-	jQuery(function(){jQuery("#End").kendoDateTimePicker({"format":"d/M/yyyy h:mm tt","min":new Date(1900,0,1,0,0,0,0),"max":new Date(2099,11,31,0,0,0,0),"interval":30});});
-</script>
-                <span class="field-validation-valid" data-valmsg-for="End" data-valmsg-replace="true"></span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2" for="Invoice">Numero Factura</label>
-            <div class="col-md-10">
-                <input class="form-control" data-val="true" data-val-length="The field Numero Factura must be a string with a maximum length of 25." data-val-length-max="25" id="Invoice" name="Invoice" type="text" value="">
-                <span class="field-validation-valid" data-valmsg-for="Invoice" data-valmsg-replace="true"></span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2" for="Price">Precio</label>
-            <div class="col-md-10">
-                <input data-val="true" data-val-number="The field Precio must be a number." id="Price" min="0" name="Price" style="width:100%" type="number"><script>
-	jQuery(function(){jQuery("#Price").kendoNumericTextBox({"format":"c"});});
-</script>
-
-
-
-                <span class="field-validation-valid" data-valmsg-for="Price" data-valmsg-replace="true"></span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2" for="DownPayment">Anticipo</label>
-            <div class="col-md-10">
-                <input data-val="true" data-val-number="The field Anticipo must be a number." id="DownPayment" min="0" name="DownPayment" style="width:100%" type="number"><script>
-	jQuery(function(){jQuery("#DownPayment").kendoNumericTextBox({"format":"c"});});
-</script>
-
-
-
-                <span class="field-validation-valid" data-valmsg-for="DownPayment" data-valmsg-replace="true"></span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2" for="HasDownpay">Tiene Anticipo</label>
-            <div class="col-md-10">
-                <select class="list-box tri-state" id="HasDownpay" name="HasDownpay"><option selected="selected" value="">Not Set</option>
-<option value="true">True</option>
-<option value="false">False</option>
-</select>
-                <span class="field-validation-valid" data-valmsg-for="HasDownpay" data-valmsg-replace="true"></span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2" for="Pending">Monoto Pendiente</label>
-            <div class="col-md-10">
-                <input data-val="true" data-val-number="The field Monoto Pendiente must be a number." id="Pending" min="0" name="Pending" style="width:100%" type="number"><script>
-	jQuery(function(){jQuery("#Pending").kendoNumericTextBox({"format":"c"});});
-</script>
-
-
-
-                <span class="field-validation-valid" data-valmsg-for="Pending" data-valmsg-replace="true"></span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2" for="Team1">Equipo 1</label>
-            <div class="col-md-10">
-                <input class="form-control" data-val="true" data-val-length="The field Equipo 1 must be a string with a maximum length of 50." data-val-length-max="50" id="Team1" name="Team1" type="text" value="">
-                <span class="field-validation-valid" data-valmsg-for="Team1" data-valmsg-replace="true"></span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2" for="Team2">Equipo 2</label>
-            <div class="col-md-10">
-                <input class="form-control" data-val="true" data-val-length="The field Equipo 2 must be a string with a maximum length of 50." data-val-length-max="50" id="Team2" name="Team2" type="text" value="">
-                <span class="field-validation-valid" data-valmsg-for="Team2" data-valmsg-replace="true"></span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2" for="CreateDate">Fecha</label>
-            <div class="col-md-10">
-                <input data-val="true" data-val-date="The field Fecha must be a date." data-val-required="The Fecha field is required." id="CreateDate" name="CreateDate" style="width:100%" type="datetime" value="9/8/2015 8:47 p. m."><script>
-	jQuery(function(){jQuery("#CreateDate").kendoDateTimePicker({"format":"d/M/yyyy h:mm tt","min":new Date(1900,0,1,0,0,0,0),"max":new Date(2099,11,31,0,0,0,0),"interval":30});});
-</script>
-                <span class="field-validation-valid" data-valmsg-for="CreateDate" data-valmsg-replace="true"></span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2" for="CreateTime">Hora Creacion</label>
-            <div class="col-md-10">
-                <input class="text-box single-line" data-val="true" data-val-number="The field Hora Creacion must be a number." id="CreateTime" name="CreateTime" type="number" value="20">
-                <span class="field-validation-valid" data-valmsg-for="CreateTime" data-valmsg-replace="true"></span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2" for="OBJECTTYPE">OBJECTTYPE</label>
-            <div class="col-md-10">
-                <input class="input-validation-error form-control" data-val="true" data-val-length="The field OBJECTTYPE must be a string with a maximum length of 15." data-val-length-max="15" data-val-required="The OBJECTTYPE field is required." id="OBJECTTYPE" name="OBJECTTYPE" type="text" value="">
-                <span class="field-validation-error" data-valmsg-for="OBJECTTYPE" data-valmsg-replace="true">The OBJECTTYPE field is required.</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-primary">
-				<a class="btn btn-white" href="/Booking/Manage">Cancelar</a>
-            </div>
-        </div>
-    </div>
-</form>
-
-                </div>
-            </div>
-        </div>
-    </div>
- </div>
-
-
-</div>
+                            <div class="table-responsive" id="BookingListSection"> 
+                               
+                                
+                                    @Html.Partial("LoaderCircle")
+                                
+                                 
+                            </div>
+                            <div class="row">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-white" data-bind="click:previousPage">
+                                        <i class="fa fa-chevron-left"></i>
+                                    </button>
+                                    @*<div data-bind="foreach:pages">
+                                        <button class="btn btn-white  active" data-bind="text: number"></button>
+                                    </div>*@
+                                   
+                                   
+                                    <button type="button" class="btn btn-white" data-bind="click:nextPage">
+                                        <i class="fa fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
                           
-
-                         
-
-                            <div class="row" data-bind="visible: ShowDetails" style="display: none;">
-                                <div class="row">
-                                    <div class="col-sm-1 m-b-xs">
-                                        <button class="btn btn-danger btn-circle btn-lg btn-outline" type="button" data-bind="click: MaingoBackToList">
-                                            <i class="fa fa-arrow-left"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12" id="ibox-details">
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div id="tab-2" class="tab-pane">
-                        <div class="panel-body">
-
-                           
-                        </div>
-                    </div>
-                    <div id="tab-3" class="tab-pane">
-                        <div class="panel-body">
-
-                           
-
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
-    </div>
-    
-
+      
     
 </div>
 
@@ -337,45 +122,56 @@
 <script type="text/javascript">
 
 
-    var previousScrollValue = 0;
-
-
-
-    //$('.HistoriaList').slimscroll().bind('slimscrolling', function (e, pos) {
-    //    //console.log("Scroll value: " + pos + "px");
-    //    if (pos == 0 && pos < previousScrollValue && scrollposition != 'top') $("#loadToScroll").click();
-    //    previousScrollValue = pos;
-    //});
+    var pagelimit = 0;
+     
     var viewmodel = {
         roles: [],
         statuses: [],
         keywords: ko.observable(),
         seelctedStatus: ko.observable(),
 
-        page: ko.observable("1"),
+        page: ko.observable(1),
+        limit :ko.observable(1),
         scrollposition: ko.observable(),
         onSelectionChange: function () {
-            $("#searchbookingsform").submit();
+            $("#page").val('0');
+            doSearch();
         },
         onSelectionStatusChange: function () {
-            $("#searchbookingsform").submit();
+            $("#page").val('0');
+            doSearch();
         },
+        previousPage: function () {
+            var pag = Number($("#page").val()) - 1;
+            if (pag > 0) {
+                $("#page").val(pag);
+                doSearch();
+                $("#page").val(pag);
+            }
+        },
+        nextPage: function () {
+            var pag = Number($("#page").val()) + 1;
+            var limit = Number(pagelimit);
+            console.log("page : "+pag+"pageLImit: "+limit)
+            if (pag > 0 && pag <= limit) {
+                $("#page").val(pag);
+                doSearch();
+            }
+        },
+        pages: function () {
+            var  pageitems=[];
+            for (i = 1; i < pagelimit; i++) {
+                pageitems.push({number:i});
+            }
+            return pageitems;
+        }   
 
-        ShowList: ko.observable(true),
-        ShowDetails: ko.observable(false),
-        MainshowDetails: function () {
-            console.log("show details");
-            viewmodel.ShowList(false);
-            viewmodel.ShowDetails(true);
-        },
-        MaingoBackToList: function () {
-            console.log("close details");
-            viewmodel.ShowList(true);
-            viewmodel.ShowDetails(false);
-        }
     };
     // Initialize
 
+    function doSearch() {
+        $("#searchbookingsform").submit();
+    }
 
     $(function () {
 
@@ -424,21 +220,26 @@
             }
         });
     }
-    function ConfirmBookingAction(id) {
+    function UpdateStatus(id,status) {
         console.log("Booking uid :" + id);
         showmodal();
-        GetBookingUpdateView('@Url.Action("ConfirmBookingAction", "Booking")' + "?id=" + id);
+        GetBookingUpdateView('@Url.Action("UpdateBookingStatus", "Booking")' + "?id=" + id+"&status="+status);
     }
-    function CancelBookingAction(id) {
-        console.log("Booking uid :" + id);
-        showmodal();
-        GetBookingUpdateView('@Url.Action("CancelBookingAction", "Booking")' + "?id=" + id);
-    }
+    
     function ShowUserDetails(userid) {
         console.log("user id: " + userid);
         showmodal();
         GetBookingUpdateView('@Url.Action("UserSummary", "Booking")' + "?id=" + userid);
     }
+
+    function OnCompleteBookingUpdate(result) {
+        console.log("nuevo resultado ");
+        console.log(result);
+        $("#searchbookingsform").submit();
+        hideModal();
+    }
+  
+     
 </script>
 
 

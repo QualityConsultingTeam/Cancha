@@ -27,7 +27,16 @@ namespace Admin.Controllers
         {
             var model = await Repository.FullSearchAsync(filter);
              ViewBag.Filter = filter;
-            return View("Partials/SearchFields", model);
+            var items = new List<List<Field>>();
+
+            while (model.Any())
+            {
+                var subItems = model.Take(3).ToList();
+                items.Add(subItems);
+                subItems.ForEach(i => model.Remove(i));
+            }
+            
+            return View("Partials/SearchFields", items);
         }
 
         [HttpPost]

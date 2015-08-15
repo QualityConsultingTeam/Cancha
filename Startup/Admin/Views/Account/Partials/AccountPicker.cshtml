@@ -1,0 +1,42 @@
+﻿
+@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+
+    var options = new AjaxOptions()
+    {
+        HttpMethod = "post",
+        InsertionMode = InsertionMode.Replace,
+        LoadingElementId = "loginloader",
+        UpdateTargetId = "loginSection",
+        OnSuccess = "HideAccountPicker"
+        
+    };
+}
+
+@model  IEnumerable< Admin.Models.IdentityUserViewModel>
+
+
+    <div class="row">
+        @foreach (var user in Model)
+    {
+
+            <div class="col-md-6 col-md-offset-3">
+                <div class="ibox-content text-center">
+                    <h1>@string.Format("{0} {1}",user.FirstName ,user.LastName) </h1>
+                    <div class="m-b-sm">
+                        
+                        @Ajax.ImageActionLink(user.ProfilePicture, "profile", "GetPartialLogin", new { userid = user.Id }, options, new { @class = "img-circle" })
+                    </div>
+                    <p class="font-bold"></p>
+
+                    <div class="text-center">
+                      @string.Format("{0}",  @user.UserName)
+                    </div>
+                </div>
+            </div>
+    }
+    </div>
+

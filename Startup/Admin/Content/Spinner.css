@@ -558,3 +558,32 @@
 		-moz-transform: rotate(900deg);
 	}
 }
+
+
+
+
+/*--- THE EFFECT ---*/
+@keyframes move{
+  100%{ background-position:80% 0; } /* my texture isn't perfect */
+}
+@-webkit-keyframes move{
+  100%{ background-position:80% 0; } /* my texture isn't perfect */
+}
+.ball{ display:inline-block; width:65px; height:65px;	position:relative; 
+       perspective:800px; -webkit-perspective:800px; }
+	.ball div{ 
+        margin-left:25px;
+        margin-top:25px;
+		background:url('http://dropthebit.com/demos/assests/ball3.jpg') 0 0 no-repeat; 
+		background-size:auto 100%; 
+		/*box-shadow:-10px -30px 40px -20px inset, 10px 10px 10px rgba(255,255,255,.6) inset, 0 8px 10px -10px, 0 0 1px 1px #CCC inset;*/ 
+		width:100%;	height:100%; 
+		overflow:hidden;	position:relative; 
+		border-radius:100%; 
+		-webkit-animation:.4s move infinite linear; 
+		animation:.4s move infinite linear;
+	}
+ 
+/*--- PAGE RESET ---*/
+
+.ball{ vertical-align: middle; }

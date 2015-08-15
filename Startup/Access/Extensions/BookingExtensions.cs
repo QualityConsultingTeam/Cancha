@@ -11,11 +11,13 @@ namespace Access.Extensions
     {
         public static string GetstatusClassForButton(this Booking booking)
         {
+            /// la propiedad isNearTo se usa para saber si la hora es cercana a la hora actual 
+            /// tipo para no reservar la cancha menos de una hora si ya es tarde 
             var date = DateTime.Now.Date;
             return booking.Isbusy ? "btn btn-default btn-sm"
                 : (booking.IsNearTo &&
                     booking.Start.HasValue &&
-                    booking.Start.Value.Date==date.Date ? "btn btn-warning btn-sm" : "btn btn-primary btn-sm");
+                    booking.Start.Value.Date==date.Date ? "btn btn-primary btn-sm" : "btn btn-primary btn-sm");
         }
 
         public static DateTime EstimatedTime(DateTime? date,int hour, bool forPreview)

@@ -18,6 +18,7 @@ namespace Access.Models
             CreateTime = DateTime.Now.Hour;
             Start = DateTime.Now;
             End = DateTime.Now;
+            UserInfo = new UserInfo();
         }
 
 
