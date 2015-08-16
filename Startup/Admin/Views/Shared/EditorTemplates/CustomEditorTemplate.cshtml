@@ -60,27 +60,32 @@
             "endDateTime",
             "end",
             "value:end,invisible:isAllDay",
-            new Dictionary<string, object>() {{"data-dateCompare-msg", "End date should be greater than or equal to the start date"}}))
+            new Dictionary<string, object>() { { "data-dateCompare-msg", "End date should be greater than or equal to the start date" } }))
             .Enable(false))
-        
+
     @(Html.Kendo().DatePickerFor(model => model.End)
         .HtmlAttributes(generateDatePickerAttributes(
-            "endDate", 
-            "end", 
+            "endDate",
+            "end",
             "value:end,visible:isAllDay",
-            new Dictionary<string, object>() {{"data-dateCompare-msg", "End date should be greater than or equal to the start date"}}))
+            new Dictionary<string, object>() { { "data-dateCompare-msg", "End date should be greater than or equal to the start date" } }))
             .Enable(false))
 
     <span data-bind="text: endTimezone"></span>
     <span data-for="end" class="k-invalid-msg"></span>
 </div>
 
-@*<div class="k-edit-label">
-    @(Html.LabelFor(model => model.IsAllDay))
+<div class="k-edit-label">
+    @(Html.LabelFor(model => model.UserId))
 </div>
-<div data-container-for="isAllDay" class="k-edit-field">
-    <input data-bind="checked: isAllDay" data-val="true" id="IsAllDay" name="IsAllDay" type="checkbox" />
+
+<div data-container-for="UserId" class="k-edit-field">
+  
+    @Html.AutocompleteFor(m => m.Title, model => model.UserId, "GetUserNames", "Account", true)
 </div>
+@*<div data-container-for="isAllDay" class="k-edit-field">
+        <input data-bind="checked: isAllDay" data-val="true" id="IsAllDay" name="IsAllDay" type="checkbox" />
+    </div>*@
 
 <div class="endTimezoneRow">
     <div class="k-edit-label"></div>
@@ -90,7 +95,7 @@
             Use separate start and end time zones
         </label>
     </div>
-</div>*@
+</div>
 <script>
     $(".k-timezone-toggle").on("click", function () {
         var isVisible = $(this).is(":checked");
@@ -115,28 +120,28 @@
 </script>
 
 @*<div class="k-edit-label">
-    @(Html.LabelFor(model => model.StartTimezone))
-</div>
-<div data-container-for="startTimezone" class="k-edit-field">
-    @(Html.Kendo().TimezoneEditorFor(model => model.StartTimezone)
-        .HtmlAttributes(new { data_bind = "value:startTimezone" }))
-</div>
+        @(Html.LabelFor(model => model.StartTimezone))
+    </div>
+    <div data-container-for="startTimezone" class="k-edit-field">
+        @(Html.Kendo().TimezoneEditorFor(model => model.StartTimezone)
+            .HtmlAttributes(new { data_bind = "value:startTimezone" }))
+    </div>
 
-<div class="k-edit-label">
-    @(Html.LabelFor(model => model.EndTimezone))
-</div>
-<div data-container-for="endTimezone" class="k-edit-field">
-    @(Html.Kendo().TimezoneEditorFor(model => model.EndTimezone)
-        .HtmlAttributes(new { data_bind = "value:endTimezone" }))
-</div>
+    <div class="k-edit-label">
+        @(Html.LabelFor(model => model.EndTimezone))
+    </div>
+    <div data-container-for="endTimezone" class="k-edit-field">
+        @(Html.Kendo().TimezoneEditorFor(model => model.EndTimezone)
+            .HtmlAttributes(new { data_bind = "value:endTimezone" }))
+    </div>
 
-<div class="k-edit-label">
-    @(Html.LabelFor(model => model.RecurrenceRule))
-</div>
-<div data-container-for="recurrenceRule" class="k-edit-field">
-    @(Html.Kendo().RecurrenceEditorFor(model => model.RecurrenceRule)
-        .HtmlAttributes(new { data_bind = "value:recurrenceRule" }))
-</div>*@
+    <div class="k-edit-label">
+        @(Html.LabelFor(model => model.RecurrenceRule))
+    </div>
+    <div data-container-for="recurrenceRule" class="k-edit-field">
+        @(Html.Kendo().RecurrenceEditorFor(model => model.RecurrenceRule)
+            .HtmlAttributes(new { data_bind = "value:recurrenceRule" }))
+    </div>*@
 
 <div class="k-edit-label">
     @(Html.LabelFor(model => model.Description))
@@ -150,17 +155,17 @@
 </div>
 <div data-container-for="RoomID" class="k-edit-field">
     @*@(Html.Kendo().DropDownListFor(model => model.RoomID)
-        .HtmlAttributes(new { data_bind = "value:RoomID", style = "width: 200px" })
-        .DataTextField("Text")
-        .DataValueField("Value")
-        .OptionLabel("None")
-        .ValuePrimitive(true)
-        .Template("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Text\\#")
-        .BindTo(new[] { 
-                new { Text = "Meeting Room 101", Value = 1, Color = "\\#6eb3fa" },
-                new { Text = "Meeting Room 201", Value = 2, Color = "\\#f58a8a" } 
-            }).ToClientTemplate()
-    )*@
+            .HtmlAttributes(new { data_bind = "value:RoomID", style = "width: 200px" })
+            .DataTextField("Text")
+            .DataValueField("Value")
+            .OptionLabel("None")
+            .ValuePrimitive(true)
+            .Template("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Text\\#")
+            .BindTo(new[] {
+                    new { Text = "Meeting Room 101", Value = 1, Color = "\\#6eb3fa" },
+                    new { Text = "Meeting Room 201", Value = 2, Color = "\\#f58a8a" }
+                }).ToClientTemplate()
+        )*@
 </div>
 
 <div class="k-edit-label">
@@ -168,17 +173,19 @@
 </div>
 <div data-container-for="Attendees" class="k-edit-field">
     @*@(Html.Kendo().AutoCompleteFor (model => model.Attendees)
-        .HtmlAttributes(new { data_bind = "value:Attendees" })
-        .Animation(true)        
-        .DataTextField("text")
-        .Value("id")
-        .ValuePrimitive(true)
-        //.TagTemplate("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Text\\#")
-        //.ItemTemplate("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Text\\#")
-        .DataSource(ds => ds.Read("Customers", "Customers"))
-    )*@
+            .HtmlAttributes(new { data_bind = "value:Attendees" })
+            .Animation(true)
+            .DataTextField("text")
+            .Value("id")
+            .ValuePrimitive(true)
+            //.TagTemplate("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Text\\#")
+            //.ItemTemplate("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Text\\#")
+            .DataSource(ds => ds.Read("Customers", "Customers"))
+        )*@
 </div>
 
 @{
     ViewContext.FormContext = null;
-}
+}<script src="~/Scripts/typeahead.bundle.min.js"></script>
+<script src="~/Scripts/typeahead.jquery.min.js"></script>
+<script src="~/Scripts/typeahead.mvc.model.js"></script>

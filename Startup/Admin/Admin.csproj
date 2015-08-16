@@ -1533,7 +1533,6 @@
     <Content Include="Views\Booking\Manage.cshtml" />
     <Content Include="Views\Booking\Partials\ManageGrid.cshtml" />
     <Content Include="Views\Booking\Partials\AddOrUpdate.cshtml" />
-    <Content Include="Views\Canchas\Partials\Scheduler.cshtml" />
     <Content Include="Views\Booking\Partials\Scheduler.cshtml" />
     <Content Include="Views\Booking\Calendar.cshtml" />
     <Content Include="Service References\Application Insights\ConnectedService.json" />
