@@ -32,6 +32,11 @@ namespace Admin
                 cssClass : String.Empty;
         }
 
+        //public static string IsActive(this HtmlHelper html , expression)
+        //{
+        //    return expression. == true ? "active" : "";
+        //}
+
         public static string PageClass(this HtmlHelper html)
         {
             string currentAction = (string)html.ViewContext.RouteData.Values["action"];

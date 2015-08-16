@@ -15,8 +15,8 @@
     {
         views.DayView();
         views.WorkWeekView();
-        views.WeekView();
-        views.MonthView(mv => mv.Selected(true));
+        views.WeekView(mv => mv.Selected(true));
+        views.MonthView();
         views.AgendaView();
     })
      .MinorTickCount(1)

@@ -26,7 +26,7 @@
                 <div class="text-center">
                     <a href="@Url.Action("CenterDetails", "Center", new { id = Model.CenterId })">
                         <div class="text-center">
-                            <img alt="image" class="m-t-xs img-responsive" src="@Model.FieldPicure.ToString()">
+                            <img alt="image" class="m-t-xs img-responsive" src="@Model.FieldPicure.ToString()" style="max-height:160px;max-width:160px">
                             @*<div class="m-t-xs font-bold">Graphics designer</div>*@
                         </div>
                     </a>

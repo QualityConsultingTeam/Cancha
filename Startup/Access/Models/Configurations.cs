@@ -46,7 +46,8 @@ namespace Access.Models
 
     internal class ServiceConfig : EntityTypeConfiguration<Service> {
         public ServiceConfig() {
-            HasOptional(p => p.Center).WithMany(p => p.Services).HasForeignKey(f => f.IdCenter).WillCascadeOnDelete(true);
+            HasOptional(p => p.Center).WithMany(p => p.Services).HasForeignKey(f => f.IdCenter)
+                .WillCascadeOnDelete(false);
         }
     }
 
