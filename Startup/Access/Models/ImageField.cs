@@ -12,8 +12,8 @@ namespace Access.Models
     {
         public ImageField() { }
 
-        [DisplayName("idCenter")]
-        public int idCenter { get; set; }
+        [DisplayName("IdCenter")]
+        public int? IdCenter { get; set; }
 
         [DisplayName("imgUrl")]
         public String imgUrl { get; set; }

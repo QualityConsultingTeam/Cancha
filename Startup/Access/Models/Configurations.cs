@@ -40,13 +40,13 @@ namespace Access.Models
     internal class ImageFieldConfig : EntityTypeConfiguration<ImageField> {
         public ImageFieldConfig() {
             Property(p => p.RowVersion).IsConcurrencyToken();
-            HasOptional(p => p.Center).WithMany(p => p.ImageField).HasForeignKey(f => f.idCenter).WillCascadeOnDelete(true);
+            HasOptional(p => p.Center).WithMany(p => p.ImageField).HasForeignKey(f => f.IdCenter).WillCascadeOnDelete(true);
         }
     }
 
     internal class ServiceConfig : EntityTypeConfiguration<Service> {
         public ServiceConfig() {
-           // HasOptional(p => p.Center).WithMany(p => p.Service).
+            HasOptional(p => p.Center).WithMany(p => p.Services).HasForeignKey(f => f.IdCenter).WillCascadeOnDelete(true);
         }
     }
 

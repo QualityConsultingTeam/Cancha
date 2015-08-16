@@ -24,9 +24,13 @@
         <div class="ibox-content">
             <div class="col-sm-6">
                 <div class="text-center">
-                    <a href="@Url.Action("CenterDetails","Center",new { id = Model.CenterId })">
-                        <img src="@Model.FieldPicure" class="jg-loading-img m-t-xs img-responsive"  style="max-height:168px"/>
+                    <a href="@Url.Action("CenterDetails", "Center", new { id = Model.CenterId })">
+                        <div class="text-center">
+                            <img alt="image" class="m-t-xs img-responsive" src="@Model.FieldPicure.ToString()">
+                            @*<div class="m-t-xs font-bold">Graphics designer</div>*@
+                        </div>
                     </a>
+
                 </div>
             </div>
             <div class="col-sm-6">
@@ -38,7 +42,7 @@
                 </p>
                 <p>
                     <h3 class="font-bold no-margins">
-                        <i class="fa fa-map-marker"></i> @Model.Distance
+                        <i class="fa fa-map-marker"></i> @Model.Distance 
                     </h3>
                 </p>
                 <address>

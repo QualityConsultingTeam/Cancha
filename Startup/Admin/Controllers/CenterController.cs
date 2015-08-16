@@ -14,7 +14,7 @@ namespace Admin.Controllers
     {
         public async Task<ActionResult> CenterDetails(int id)
         {
-            var model = await Repository.FindByIdAsync(id, "Fields", "ImageField");
+            var model = await Repository.GetCenterDetailsAsync(id);
             return View(model);
         }
 

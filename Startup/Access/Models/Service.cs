@@ -15,6 +15,8 @@ namespace Access.Models
         [StringLength(100)]
         public string Name { get; set; }
 
+        [DisplayName("Id")]
+        public int? IdCenter { get; set; }
 
         [DisplayName("Type")]
         public int? Type { get; set; }
@@ -30,5 +32,7 @@ namespace Access.Models
         [Required]
         [StringLength(15)]
         public string OBJECTTYPE { get; set; }
+
+        public Center Center { get; set; }
     }
 }

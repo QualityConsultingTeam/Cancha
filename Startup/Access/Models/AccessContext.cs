@@ -50,6 +50,7 @@ namespace Access
 
         public DbSet<Setting> Settings { get; set; }
 
+        public DbSet<ImageField> ImageFields { get; set; }
 
         public DbSet<States> States { get; set; }
 
@@ -67,6 +68,8 @@ namespace Access
             modelBuilder.Configurations.Add(new BookingConfig());
             modelBuilder.Configurations.Add(new MessagesConfig());
             modelBuilder.Configurations.Add(new PaymentConfig());
+            modelBuilder.Configurations.Add(new ImageFieldConfig());
+            modelBuilder.Configurations.Add(new ServiceConfig());
             //modelBuilder.Configurations.Add(new CostConfig());
 
         }

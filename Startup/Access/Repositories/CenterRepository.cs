@@ -10,7 +10,21 @@ namespace Access.Repositories
 {
     public class CenterRepository : BaseRepository<AccessContext, Center>
     {
+        public async Task<Center> GetCenterDetailsAsync(int id) {
+            // var Center = FindByIdAsync(id,"Field","ImageField");
+            var Center = await Context.Centers.Include(p => p.Fields).Include(p => p.ImageField)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
+            if (true)//!Center.ImageField.Any())
+            {
+                Center.ImageField.Clear();
+                Center.ImageField.Add(new ImageField { imgUrl = "/Images/slide0.jpg", header1 = "Las mejores canchas" });
+                Center.ImageField.Add(new ImageField { imgUrl = "/Images/slide1.jpg", header1 = "Las mejores canchas" });
+                Center.ImageField.Add(new ImageField { imgUrl = "/Images/slide2.jpg", header1 = "Las mejores canchas" });
+            }
+
+            return Center;
+        } 
 
         #region Comoboxes
 

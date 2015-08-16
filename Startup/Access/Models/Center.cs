@@ -110,5 +110,7 @@ namespace Access.Models
         public List<ImageField> ImageField { get; set; }
 
         public List<CenterAccount> Employees { get; set; }
+
+        public List<Service> Services { get; set; }
     }
 }
