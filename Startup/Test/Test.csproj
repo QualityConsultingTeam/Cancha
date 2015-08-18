@@ -85,10 +85,6 @@
       <Project>{2E826B45-A782-49B2-A16B-EA28592F6945}</Project>
       <Name>Admin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Startup\Startup.csproj">
-      <Project>{dc4b5a5e-b047-4352-9f02-52bcb7571d1d}</Project>
-      <Name>Startup</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
