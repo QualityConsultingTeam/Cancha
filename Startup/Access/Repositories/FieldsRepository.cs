@@ -277,11 +277,13 @@ namespace Access
         }
 
         
-        public Task<List<Field>> GetFieldsFromCenterAsync( int centerId, string keywords="", int skip = 0, int take = 10)
+        public Task<List<Field>> GetFieldsFromCenterAsync( int centerId, string keywords="")
         {
             var query = Search(keywords);
-            return query.OrderBy(f=> f.Name).Skip(skip).Take(take).ToListAsync();
+            return query.OrderBy(f=> f.Name) .ToListAsync();
         }
+
+       
 
         public void AddOrUpdateBooking(Booking booking)
         {

@@ -100,6 +100,12 @@ namespace Admin.Controllers
         }
 
        
-
+        [Authorize]
+        public async Task<JsonResult> GetFieldsFromCenter(int centerId,string keywords = "")
+        {
+            var model = (await Repository.GetFieldsFromCenterAsync(centerId, keywords))
+                        .Select(f => new { Id = f.Id, Text = f.Name }).ToList();
+            return Json( model,JsonRequestBehavior.AllowGet);
+        }
     }
 }
