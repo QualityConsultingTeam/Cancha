@@ -31,8 +31,11 @@ namespace Admin.Controllers
             return View();
         }
 
-        public ActionResult Calendar()
+
+        public async Task<ActionResult> Calendar()
         {
+            var repo = new FieldsRepository() { Context = Context };
+            ViewBag.fields = await repo.GetFieldsFromCenterAsync(LoggedUser.Value);
             return View();
         }
 
@@ -94,6 +97,7 @@ namespace Admin.Controllers
                     End = b.End.ToSpecificKind(),
                     UserId = b.Userid,
                     Description = "",
+                    Idcancha = b.Idcancha,
                 }).AsQueryable();
            
             var model = query.ToDataSourceResult(request);
@@ -166,15 +170,7 @@ namespace Admin.Controllers
             return Json( model, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult BookingStates()
-        {
-            var states = Repository.Statuses.Select(st => new
-            {
-                id = (int) st,
-                text = st.ToString(),
-            });
-            return Json(states, JsonRequestBehavior.AllowGet);
-        }
+       
 
         public async Task<ActionResult> UpdateBookingStatus(int id,BookingStatus status)
         {

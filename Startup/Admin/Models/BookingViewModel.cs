@@ -27,6 +27,9 @@ namespace Admin.Models
         [DisplayName("Final")]
         public DateTime End { get; set; }
 
+        [DisplayName("Cancha")]
+        public int? Idcancha { get; set; }
+
         public string StartTimezone { get; set; }
         public string EndTimezone { get; set; }
         public string RecurrenceRule { get; set; }

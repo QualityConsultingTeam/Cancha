@@ -41,6 +41,7 @@ namespace Access
             return await states.Select(s => new {id = s.Id, text = s.State}).ToListAsync();
         }
 
+       
         public async Task<IEnumerable<object>> GetCitiesAsync(int? stateId, string keywords)
         {
             IQueryable<City> cities = stateId.HasValue ?
@@ -283,7 +284,17 @@ namespace Access
             return query.OrderBy(f=> f.Name) .ToListAsync();
         }
 
-       
+        public async Task<List<Field>> GetFieldsFromCenterAsync(Guid userid)
+        {
+            int? centerId = await Context.CenterAccounts
+                            .Where(c=> c.AccountId== userid)
+                            .Select(c => c.CenterId)
+                           .FirstOrDefaultAsync() ;
+
+            return await GetFieldsFromCenterAsync(centerId ??0,"");
+        }
+
+
 
         public void AddOrUpdateBooking(Booking booking)
         {

@@ -2,29 +2,38 @@
 @{
     Layout = null;
     var date = DateTime.Now;
-    var CenterId = ViewBag.centerId !=null ? ((int)ViewBag.centerId) :0;
+    var CenterId = ViewBag.centerId != null ? ((int)ViewBag.centerId) : 0;
 }
+
+
+
 <div class="row">
-    <div class="col-sm-4 m-b-xs">
-      
-       @(Html.Kendo().ComboBox()
-          .Name("selectedField")
-          .DataTextField("Text")
-          .DataValueField("Id")
-          .HtmlAttributes(new { style = "width:250px" })
-          .Filter("contains")
-          .AutoBind(false)
-          .MinLength(3)
-          .DataSource(source =>
-          {
-              source.Read(read =>
+    <div class="col-sm-10 m-b-xs" id="checkFields">
+
+        @*@(Html.Kendo().ComboBox()
+              .Name("selectedField")
+              .DataTextField("Text")
+              .DataValueField("Id")
+              .HtmlAttributes(new { style = "width:250px" })
+              .Filter("contains")
+              .AutoBind(false)
+              .MinLength(3)
+              .DataSource(source =>
               {
-                  read.Action("GetFieldsFromCenter", "Canchas",new { centerId = CenterId });
+                  source.Read(read =>
+                  {
+                      read.Action("GetFieldsFromCenter", "Canchas",new { centerId = CenterId });
+                  })
+                  .ServerFiltering(true);
               })
-              .ServerFiltering(true);
-          })
-          .Events(e=> e.Select("onSelect"))
-        )
+              .Events(e=> e.Select("onSelect"))
+            )*@
+        @foreach (var field in (List<Field>)ViewBag.fields)
+        {
+             
+            <input type="checkbox"  value="@field.Id" class="js-switch"/>
+            <label >@field.Name</label>
+        }
     </div>
 </div>
 
@@ -71,11 +80,11 @@
         .Read("Read", "Booking")
             .Create("Create", "Booking")
             .Destroy("Destroy", "Booking")
-            .Update("Update", "Booking") ))
+            .Update("Update", "Booking")))
 
 @Scripts.Render("~/plugins/knockout")
 <script type="text/javascript">
-   
+
     function error_handler(e) {
         if (e.errors) {
             var message = "Errors:\n";
@@ -98,28 +107,49 @@
     }
 
     function onSelect(e) {
-         
-            var dataItem = this.dataItem(e.item.index());
-            console.log(dataItem);
+
+        var dataItem = this.dataItem(e.item.index());
+        console.log(dataItem);
+        var filter = {
+            logic: "or",
+            filters: $.map(dataItem.Id, function (value) {
+                return {
+                    operator: "eq", field: "Id", value: value
+                };
+            })
+        };
+
+        var scheduler = $("#scheduler").data("kendoScheduler");
+
+        console.log(scheduler);
+        scheduler.dataSource.filter(filter);
+        scheduler.refresh();
+
+    }
+    $(function () {
+        $("#checkFields :checkbox").change(function (e) {
+            var checked = $.map($("#checkFields :checked"), function (checkbox) {
+                return parseInt($(checkbox).val());
+            });
+
             var filter = {
                 logic: "or",
-                filters: $.map(dataItem.Id, function (value) {
+                filters: $.map(checked, function (value) {
                     return {
-                        operator: "eq", field: "Id", value: value
+                        operator: "eq",
+                        field: "UserId",
+                        value: value
                     };
                 })
             };
 
             var scheduler = $("#scheduler").data("kendoScheduler");
 
-            console.log(scheduler);
             scheduler.dataSource.filter(filter);
-            scheduler.refresh();
-            
-    }
+        });
+    })
 
-   
 
-    
-     
+
+
 </script>
