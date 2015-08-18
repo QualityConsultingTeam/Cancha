@@ -39,23 +39,7 @@ namespace Admin.Controllers
             return View("Partials/SearchFields", items);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> FullSpecsInRange(int id,DateTime? date,DateTime? end,string distance)
-        {
-            ViewBag.Filter = new FilterOptionModel {date = date, end = end};
-            var field = await Repository.FullSearchAsync(id, date,end,distance);
-            
-            return View("Partials/FullSpecs",field);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> FullSpecs(int id)
-        {
-            ViewBag.Filter = new FilterOptionModel() {date = DateTime.Now.Date};
-            var field = await Repository.FullSearchAsync(id, DateTime.Now, null, "");
-
-            return View("Partials/FullSpecs", field);
-        }
+         
          
         
         [HttpPost]

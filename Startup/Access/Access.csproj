@@ -96,7 +96,6 @@
     <Compile Include="Repositories\CenterRepository.cs" />
     <Compile Include="Repositories\CompanyRepository.cs" />
     <Compile Include="Repositories\CostRepository.cs" />
-    <Compile Include="Repositories\FieldRepository.cs" />
     <Compile Include="Repositories\FieldsRepository.cs" />
   </ItemGroup>
   <ItemGroup>

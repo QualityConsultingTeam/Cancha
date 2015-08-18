@@ -65,7 +65,7 @@ namespace Test
         [TestMethod]
         public void TestSearchEngine()
         {
-            var repo = new FieldRepository() {Context = AccessContext.Create()};
+            var repo = new FieldsRepository() {Context = AccessContext.Create()};
             var fields = repo.FullSearchAsync(new FilterOptionModel()
             {
                 date = new DateTime(2015, 7, 10, 11, 0, 0),

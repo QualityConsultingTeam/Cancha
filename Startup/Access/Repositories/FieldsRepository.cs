@@ -75,7 +75,8 @@ namespace Access
         {
             var today = DateTime.Now.Date;
             IQueryable<Field> query = Context.Fields
-                .Include(f=> f.Center);
+                .Include(f => f.Center)
+                .Include(f => f.Cost);
                 //.Include(f=>f.Shedules.Where(sch=> sch.Date >= today))
                 //.Include(f=> f.Bookings.Where(b=> b.Start >= today));
             if (string.IsNullOrEmpty(keywords)) keywords = "";
@@ -102,11 +103,14 @@ namespace Access
         {
             IQueryable<Field> fields = Search(filter);
 
+
+            // crear rangos de  busqueda 4 por defecto
             var ranges = BookingExtensions.BuildTimes(filter).ToList();
 
             var startTimes = ranges.Select(r => r.Start).ToList();
             var endTimes = ranges.Select(r => r.End).ToList();
 
+            // join por hora exacta de inicio
             IQueryable<Booking> _books = Context.Bookings.Where(b => b.Start.HasValue && startTimes.Contains(b.Start.Value)
                 //&& b.End.HasValue && endTimes.Contains(b.End.Value) 
                                                 );
@@ -150,7 +154,8 @@ namespace Access
                 // add available bookings 
                 // son 4 botones por defecto si estan disponibles o no
                 var books = ranges.Where(t =>
-                            !resultItem.Books.Where(b => b != null && b.Start.HasValue).Any(b => b.Start == t.Start && b.End == t.End))
+                            !resultItem.Books
+                            .Where(b => b != null && b.Start.HasValue).Any(b => b.Start == t.Start && b.End == t.End))
                             .OrderBy(b => b.Start.Value)
                             .Select(t => new Booking()
                             {
@@ -162,10 +167,41 @@ namespace Access
 
                             }).Take(4).ToList();
                 item.field.Bookings.AddRange(books);
+                
                 // asegurar 4 Botones (por temas de estilo)
                 item.field.Bookings = item.field.Bookings.OrderBy(o => o.Start.Value).Take(4).ToList();
-               item.field.Bookings = item.field.Bookings.OrderBy(o => o.Start).ToList();
+              
                 item.field.Cost = item.cost;
+
+                //filtrar nuevamente los bookings tomando en cuenta los horarios de inicio del centro.
+                var date = item.field.Bookings.Where(b => b.Start.HasValue).Select(b => b.Start.Value.Date).FirstOrDefault();
+
+                var centerOpenTime = date.AddHours(item.center.Opentime);
+
+                var centerEndTime = date.AddHours(item.center.Closetime);
+
+                var resultBooks = item.field.Bookings;
+
+                Func<Booking, DateTime, DateTime, bool> IsOnCenterWorkRange = (book, open, close) =>
+                   {
+                       return book.Start >= open && book.End <= close;
+                   };
+
+                item.field.Bookings = item.field.Bookings
+                    .Where(book=> IsOnCenterWorkRange(book,centerEndTime,centerEndTime)).ToList();
+
+                // TOOD el usuario esta buscando horarios en la madrugada supongo 
+                //so , preguntar a Juan Si requiere agregar nuevamente la busqueda o esto sacrificara ligeramente el rendimiento del Search Engine.
+                if (!item.field.Bookings.Any())
+                {
+                    // TODO Agregar nuevamente la busqueda. por el momento mostrarlos como no disponible
+                    // El id ni modo , se usa para identificar si esta disponible con la propiedad IsBusy
+                    resultBooks.ForEach(b => b.Id = IsOnCenterWorkRange(b, centerOpenTime, centerEndTime) ? 0: 1);
+                    item.field.Bookings = resultBooks;
+
+
+
+                }
             }
 
             return result.Select(r => r.field).ToList();
@@ -173,40 +209,6 @@ namespace Access
         }
 
 
-        public async Task<Field> FullSearchAsync(int fieldId,DateTime? date, DateTime?  end,string distance)
-        {
-
-           
-            var result = await (from field in Context.Fields.Where(f=> f.Id== fieldId).AsNoTracking()
-                                join center in Context.Centers.AsNoTracking() on field.CenterId equals center.Id
-                                join cost in Context.Costs on field.Id equals cost.IdCancha
-                                    into dc
-                                from defaultCost in dc.DefaultIfEmpty()
-                                where field.Coordinates != null
-                               
-                                select new SearchWrapper()
-                                {
-                                    field = field,
-                                    center = center,
-                                    cost = defaultCost,
-                                }).ToListAsync();
-
-            foreach (var item in result)
-            {
-                item.field.Distance = distance;
-                var resultItem = result.FirstOrDefault(r => r.field == item.field);
-                if (resultItem == null) continue;
-                item.field.Center = resultItem.center;
-            }
-
-            var _fields = result.Select(f => f.field).ToList();
-
-            var times = BuildTimes(_fields, date, forPreview: false);
-
-            _fields.ForEach(f => f.Bookings = times.Where(t => t.Idcancha == f.Id).ToList());
-            return _fields.FirstOrDefault(); 
-        }
-         
         private  List<Booking> BuildTimes(List<Field> fields , DateTime? date ,bool forPreview )
         {
            
@@ -295,17 +297,7 @@ namespace Access
             return Context.Bookings.FindAsync(id);
         }
 
-        private class SearchWrapper
-        {
-            public Field field { get; set; }
-
-            public Center center { get; set; }
-
-            public Cost cost { get; set; }
-
-            public Booking booking { get; set; }
-
-        }
+        
 
         
     }
