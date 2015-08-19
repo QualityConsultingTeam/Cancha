@@ -12,7 +12,7 @@ using Microsoft.AspNet.Identity;
 
 namespace Admin.Controllers
 {
-    [Globalization]
+    ///[Globalization]
     [RequireHttps]
     public class CanchasController : BaseController<FieldsRepository,AccessContext,Field>
     {
