@@ -1,5 +1,5 @@
 ﻿
-
+ 
 <div class="row border-bottom white-bg">
     <nav class="navbar navbar-static-top navbar-fixed-top" role="navigation">
         <div class="navbar-header">
@@ -38,16 +38,16 @@
                         <div class="input-group">
                             @(Html.Kendo().DatePicker()
                                   .Name("date")
-                                  .Value(DateTime.Now)
+                                  .Value(DateTime.Now.ToUniversalTime())
                                   .Format("dd/MM/yyyy")
                                   .HtmlAttributes(new { id = "date" })
-                                  .Min(DateTime.Now)
+                                  .Min(DateTime.UtcNow.ToUniversalTime())
                             )
                             @*</div>
                                 <div class="input-group" style="width: 15px">*@
                             @(Html.Kendo().TimePicker()
                                   .Name("time")
-                                  .Value(DateTime.Now)
+                                  .Value(DateTime.UtcNow)
                                   .Format("hh:00 tt").Min("7:00 AM").Max("11:00 PM").Interval(60)
                                   .HtmlAttributes(new { id = "time" })
                             )
@@ -128,6 +128,13 @@
         $("#lon").val(Mylongitude);
 
         var d = new Date();
+        var datevalue = d.getDate();
+        console.log(datevalue);
+
+        var hour = d.getHours();
+
+        //$("#date").val(datevalue);
+        //$("#time").val(hour);
 
         var filter = {
             keywords: '',
@@ -136,21 +143,12 @@
             date: d.getDate(),
             hour: d.getHours(),
     };
-        doSearch(filter);
+        // doSearch(filter);
+        $("#searchFieldsForm").submit();
     }
 
-    function doSearch(filter) {
-        $.ajax({
-            type: "POST",
-            url: '@Url.Action("SearchFields", "Canchas")',
-            data: filter,
-            datatype: "html",
-            success: function (data) {
-                $('#fieldsContainer').html(data);
-            }
-        });
-    }
-
+   
+   
     function errorHandler(err) {
         if (err.code == 1) {
             alert("Error: El acceso al GPS fue denegado,habilitalo para una mejor experiencia de usuario!");
@@ -185,7 +183,10 @@
             date: d.getDate(),
             hour: d.getHours(),
         };
-        doSearch(filter);
+
+        var d = new Date();
+       
+        $("#searchFieldsForm").submit();
         //
     }
     //function activeCarousel() {
