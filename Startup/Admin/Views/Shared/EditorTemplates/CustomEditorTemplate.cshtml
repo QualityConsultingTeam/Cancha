@@ -80,13 +80,32 @@
 </div>
 
 <div data-container-for="UserId" class="k-edit-field">
-  
-    @Html.AutocompleteFor(m => m.Title, model => model.UserId, "GetUserNames", "Account", true)
+  @Html.HiddenFor(m=>m.UserId)
+    @Html.AutocompleteFor(m => m.Title, model => model.UserId, "GetUserNames", "Account", true, "k-textbox")
 </div>
-@*<div data-container-for="isAllDay" class="k-edit-field">
-        <input data-bind="checked: isAllDay" data-val="true" id="IsAllDay" name="IsAllDay" type="checkbox" />
-    </div>*@
 
+<div class="k-edit-label">
+    @(Html.LabelFor(model => model.Idcancha))
+</div>
+
+<div data-container-for="Idcancha" class="k-edit-field">
+    @Html.HiddenFor(m => m.UserId)
+    @Html.AutocompleteFor(m => m.FieldSearchName, model => model.Idcancha, "GetFieldsFromCenter", "Canchas", true, "k-textbox")
+</div>
+
+<div class="k-edit-label">
+    @(Html.LabelFor(model => model.CustomPrice))
+</div>
+<div data-container-for="CustomPrice" class="k-edit-field">
+    @(Html.TextBoxFor(model => model.CustomPrice, new { @class = "k-textbox", data_bind = "value:CustomPrice" }))
+</div>
+
+<div class="k-edit-label">
+    @(Html.LabelFor(model => model.Off))
+</div>
+<div data-container-for="Off" class="k-edit-field">
+    @(Html.TextBoxFor(model => model.Off, new { @class = "k-textbox", data_bind = "value:Off" }))
+</div>
 @*<div class="endTimezoneRow">
     <div class="k-edit-label"></div>
     <div class="k-edit-field">
