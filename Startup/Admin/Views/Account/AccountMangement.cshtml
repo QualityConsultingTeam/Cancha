@@ -15,21 +15,37 @@
 @model  List<Admin.Models.IdentityUserViewModel>
 
 @Scripts.Render("~/plugins/knockout")
-
+ <div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-9">
+        <h2> </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="@Url.Action("Dashboard_1", "Dashboards")"> </a>
+            </li>
+            <li>
+                
+            </li>
+            <li class="active">
+                <strong> </strong>
+            </li>
+        </ol>
+    </div>
+</div>
 <div class="wrapper wrapper-content animated fadeInRight" id="userAdminSection">
-    <div class="row fixed" >
+   
+    <div class="row">
         <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title animated fadeInUpBig">
-                    <h2>Usuarios</h2>
-                    <div class="ibox-tools">
-                        @*@Html.ActionLink("Create New", "EditApplicationUser", null, new { @class = "btn btn-primary btn-xs" })*@
-                        @Ajax.ActionLink(" ", "EditApplicationUser", null, options, new { @class = "btn btn-danger btn-circle btn-outline fa fa-plus" })
-                    </div>
+
+            <div class="row">
+                <h2>Usuarios</h2>
+                <div class="">
+                    @*@Html.ActionLink("Create New", "EditApplicationUser", null, new { @class = "btn btn-primary btn-xs" })*@
+                    @Ajax.ActionLink(" ", "EditApplicationUser", null, options, new { @class = "btn btn-danger btn-circle btn-outline fa fa-plus" })
                 </div>
-                <div class="ibox-content animated fadeInUpBig">
-                    <div class="row">
-                        @using (Ajax.BeginForm("SearchAccounts", "Account", null, new AjaxOptions
+            </div>
+            <div class="ibox-content animated fadeInUpBig">
+                <div class="row">
+                    @using (Ajax.BeginForm("SearchAccounts", "Account", null, new AjaxOptions
                         {
                             HttpMethod = "post",
                             InsertionMode = InsertionMode.Replace,
@@ -38,47 +54,47 @@
 
                         }, new {id = "searchaccountsform"}))
                         {
-                            <div class="col-sm-4 m-b-xs">
-                                <select class="input-sm form-control input-s-sm inline" id="role" name="role" data-bind="
+                        <div class="col-sm-4 m-b-xs">
+                            <select class="input-sm form-control input-s-sm inline" id="role" name="role" data-bind="
                                     options: roles,
                                     optionsText: 'Text',
                                     optionsValue: 'Text',event:{ change: onSelectionChange},
                                     optionsCaption: 'Seleccione Rol...' "></select>
-                            </div>
+                        </div>
 
                             if(User.IsInRole("Admin"))
                             {
-                            <div class="col-sm-5 m-b-xs">
-                                <select class="input-sm form-control input-s-sm inline" id="centerid" name="centerid" data-bind="
+                        <div class="col-sm-5 m-b-xs">
+                            <select class="input-sm form-control input-s-sm inline" id="centerid" name="centerid" data-bind="
                                     options: centers,
                                     optionsText: 'Text',
                                     optionsValue: 'Id',event:{ change: onCenterChange},
                                     optionsCaption: 'Seleccione Centro...' "></select>
-                            </div>
+                        </div>
                             }
-                            <input type="hidden" data-bind="value:limit" name="limit" id="limit" />
-                            <input type="hidden" data-bind="value:page" name="page" id="page" />
-                            <div class="col-sm-3">
-                                <div class="input-group">
-                                    <input type="text" placeholder="Search" id="keywords" name="keywords" class="input-sm form-control"> <span class="input-group-btn">
-                                        <button type="submit" class="btn btn-sm btn-primary"> Go!</button>
-                                    </span>
-                                </div>
+                        <input type="hidden" data-bind="value:limit" name="limit" id="limit" />
+                        <input type="hidden" data-bind="value:page" name="page" id="page" />
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="text" placeholder="Search" id="keywords" name="keywords" class="input-sm form-control"> <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"> Go!</button>
+                                </span>
                             </div>
+                        </div>
                         }
 
-                    </div>
-                    @*<div class="table-responsive" id="tablecontaier">
+                </div>
+                @*<div class="table-responsive" id="tablecontaier">
                         @Html.Partial(@"~/Views/Account/Partials/UserManagementGrid.cshtml", Model)
                     </div>*@
-                </div>
             </div>
+
         </div>
     </div>
-<div class="row" id="tablecontaier">
-@Html.Partial("Partials/UserManagementGrid",Model)
+    <div class="row" id="tablecontaier">
+        @Html.Partial("Partials/UserManagementGrid", Model)
 
-</div>
+    </div>
     <div class="row">
         <div class="btn-group">
             <button type="button" class="btn btn-white" data-bind="click:previousPage">

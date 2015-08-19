@@ -14,26 +14,17 @@
 
     @foreach (var item in Model)
     {
-        
-      
+
+
+       
     <div class="col-lg-4">
         <div class="contact-box animated flip">
             <a href="#">
-                
                 <div class="col-sm-4">
-                    <div class="text-center">
-                        <a href="#"  class="thumbnail">
+                    <div class="text-center"> 
                             <img alt="image" class="img-circle m-t-xs img-responsive"   src="@item.ProfilePictureDefault">
-                         </a>
-                            <div class="m-t-xs font-bold">@item.Role</div>
-
-                            @*@foreach (var workItem in item.WorkSummary)
-            {
-                <div class="m-t-xs font-bold">
-                    @string.Format("{0} : {1}",workItem.StatusName,workItem.Count )
-                </div>
-            }*@
-
+                          
+                            <div class="m-t-xs font-bold">@item.Role</div> 
                         </div>
                 </div>
                 <div class="col-sm-8">

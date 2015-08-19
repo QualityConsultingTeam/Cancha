@@ -11,52 +11,65 @@
 <script type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4mbXflTyT-qgUjKpXrl2OQ7RE0BuMsaU">
 </script>
-<div class="animated fadeInRight" style="padding-top :7%">
-    <div class="row">
-        <div class="wrapper wrapper-content " id="fieldsContainer">
 
-            @Html.Partial("LoaderCircle")
-        </div>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-9">
+        <h2> </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#"> </a>
+            </li>
+            <li>
+
+            </li>
+            <li class="active">
+                <strong> </strong>
+            </li>
+        </ol>
     </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight" id="fieldsContainer">
+    <div class="row" style="margin-left:50%;margin-right:50%">
 
-
+        @Html.Partial("LoaderCircle")
+    </div>
 
 </div>
 
-<div class="modal fade" id="CreateAppointment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h1 class="modal-title" id="myModalLabel">Reserva tu Cancha</h1>
-            </div>
-            <div class="modal-body">
+    <div class="modal fade" id="CreateAppointment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h1 class="modal-title" id="myModalLabel">Reserva tu Cancha</h1>
+                </div>
+                <div class="modal-body">
 
-                <div id="bookingModal">
-                    @Html.Partial("Partials/CreateBookPartial", Model)
-                </div> 
-                
+                    <div id="bookingModal">
+                        @Html.Partial("Partials/CreateBookPartial", Model)
+                    </div>
+
+                </div>
+
             </div>
-           
         </div>
     </div>
-</div>
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    $(function () {
-         
-        $('#CreateAppointment').modal('show');
-        RunSearch();
-    });
+        $(function () {
 
-    function sendToModal(formid) {
+            $('#CreateAppointment').modal('show');
+            RunSearch();
+        });
 
-        
-        $("#bookingModal").html('');
-        $("#" + formid).submit();
-    }
+        function sendToModal(formid) {
 
 
-  
-</script>
+            $("#bookingModal").html('');
+            $("#" + formid).submit();
+        }
+
+
+
+    </script>

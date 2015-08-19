@@ -31,7 +31,7 @@
         @foreach (var field in (List<Field>)ViewBag.fields)
         {
              
-            <input type="checkbox"  value="@field.Id" class="js-switch"/>
+            <input type="checkbox"  value="@field.Id" class="btn btn-primary btn-outline"/>
             <label >@field.Name</label>
         }
     </div>
@@ -106,26 +106,26 @@
         }
     }
 
-    function onSelect(e) {
+    //function onSelect(e) {
 
-        var dataItem = this.dataItem(e.item.index());
-        console.log(dataItem);
-        var filter = {
-            logic: "or",
-            filters: $.map(dataItem.Id, function (value) {
-                return {
-                    operator: "eq", field: "Id", value: value
-                };
-            })
-        };
+    //    var dataItem = this.dataItem(e.item.index());
+    //    console.log(dataItem);
+    //    var filter = {
+    //        logic: "or",
+    //        filters: $.map(dataItem.Id, function (value) {
+    //            return {
+    //                operator: "eq", field: "Id", value: value
+    //            };
+    //        })
+    //    };
 
-        var scheduler = $("#scheduler").data("kendoScheduler");
+    //    var scheduler = $("#scheduler").data("kendoScheduler");
 
-        console.log(scheduler);
-        scheduler.dataSource.filter(filter);
-        scheduler.refresh();
+    //    console.log(scheduler);
+    //    scheduler.dataSource.filter(filter);
+    //    scheduler.refresh();
 
-    }
+    //}
     $(function () {
         $("#checkFields :checkbox").change(function (e) {
             var checked = $.map($("#checkFields :checked"), function (checkbox) {
@@ -137,7 +137,7 @@
                 filters: $.map(checked, function (value) {
                     return {
                         operator: "eq",
-                        field: "UserId",
+                        field: "Idcancha",
                         value: value
                     };
                 })

@@ -7,20 +7,31 @@
  
 
 @Html.Partial("KendoRef")
-<script type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4mbXflTyT-qgUjKpXrl2OQ7RE0BuMsaU">
-</script>
-<div class="animated fadeInRight" style="padding-top :7%">
-    <div class="row">
-        <div class="wrapper wrapper-content " id="fieldsContainer">
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-9">
+        <h2> </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="#"> </a>
+            </li>
+            <li>
 
-            @Html.Partial("LoaderCircle")
-        </div>
+            </li>
+            <li class="active">
+                <strong> </strong>
+            </li>
+        </ol>
     </div>
-
-
-
 </div>
+<div class="wrapper wrapper-content animated fadeInRight" id="fieldsContainer">
+
+
+    <div class="row" style="margin-left:50%;margin-right:50%">
+
+        @Html.Partial("LoaderCircle")
+    </div>
+</div>
+
 
 <div class="modal fade" id="CreateAppointment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
