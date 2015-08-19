@@ -9,6 +9,7 @@ using Access;
 using Access.Extensions;
 using Access.Models;
 using Microsoft.AspNet.Identity;
+using Admin.Models;
 
 namespace Admin.Controllers
 {
@@ -107,8 +108,15 @@ namespace Admin.Controllers
             var model = (centerId==0?
                 await Repository.GetFieldsFromCenterAsync(LoggedUser.Value):
                 await Repository.GetFieldsFromCenterAsync(centerId, keywords))
-                        .Select(f => new { Id = f.Id, Text = f.Name }).ToList();
+                        .Select(f => new  { Id = f.Id, Text = f.Name }).ToList();
             return Json( model,JsonRequestBehavior.AllowGet);
+        }
+        [Authorize]
+        public async Task<JsonResult> GetFieldsForAutoComplete(string query)
+        {
+            var model = await Repository.GetFieldsFromCenterAsync(LoggedUser.Value);
+
+            return Json(model.ToAutocomplete(), JsonRequestBehavior.AllowGet);
         }
     }
 }

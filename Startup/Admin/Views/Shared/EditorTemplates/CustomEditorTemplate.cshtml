@@ -90,7 +90,7 @@
 
 <div data-container-for="Idcancha" class="k-edit-field">
     @Html.HiddenFor(m => m.UserId)
-    @Html.AutocompleteFor(m => m.FieldSearchName, model => model.Idcancha, "GetFieldsFromCenter", "Canchas", true, "k-textbox")
+    @Html.AutocompleteFor(m => m.FieldSearchName, model => model.Idcancha, "GetFieldsForAutoComplete", "Canchas", true, "k-textbox")
 </div>
 
 <div class="k-edit-label">

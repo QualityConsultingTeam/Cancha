@@ -68,5 +68,13 @@ namespace Admin.Models
             }).ToList();
         }
 
+        public static List<Autocomplete> ToAutocomplete(this List<Field> model)
+        {
+            return model.Select(c => new Autocomplete()
+            {
+                Id = c.Id,
+                Name = String.Format("{0} - {1}", c.Name.ToUpper())
+            }).ToList();
+        }
     }
 }
