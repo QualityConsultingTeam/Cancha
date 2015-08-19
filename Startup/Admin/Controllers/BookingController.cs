@@ -88,13 +88,13 @@ namespace Admin.Controllers
         public virtual async Task<JsonResult> Read([DataSourceRequest] DataSourceRequest request)
         {
 
-            IQueryable<BookingViewModel> query = Repository.GetSummary(LoggedUser.Value).ToList()
+            IQueryable<BookingViewModel> query = Repository.GetSummary(LoggedUser.Value)
                 .Select(b => new BookingViewModel()
                 {
                     Id = b.Id,
-                    Title = "Reserva de cancha",
-                    Start = b.Start.ToSpecificKind(),
-                    End = b.End.ToSpecificKind(),
+                    Title = b.Field.Name,
+                    Start = b.Start.Value,
+                    End = b.End.Value,
                     UserId = b.Userid,
                     Description = "",
                     Idcancha = b.Idcancha,
@@ -103,7 +103,7 @@ namespace Admin.Controllers
             var model = query.ToDataSourceResult(request);
 
             
-           model.Data = await IdentityManagerService.UpdateAccountInfoFoScheduler(model.Data as List<BookingViewModel>);
+           //model.Data = await IdentityManagerService.UpdateAccountInfoFoScheduler(model.Data as List<BookingViewModel>);
 
             return Json(model); 
 

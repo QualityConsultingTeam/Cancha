@@ -331,7 +331,7 @@ namespace Admin.Models
                 item.End= DateTime.SpecifyKind(item.End, DateTimeKind.Utc);
                 if(item.UserInfo!=null && !string.IsNullOrEmpty(item.UserInfo.Name)) 
                 {
-                    item.Title = item.UserInfo.Name;
+                    item.Title += " "+ item.UserInfo.Name;
                 }
                 if (item.UserId == Guid.Empty) item.UserId = Guid.NewGuid();
             }
