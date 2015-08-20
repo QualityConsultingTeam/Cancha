@@ -42,7 +42,7 @@ namespace Admin.Models
         public int Id { get; internal set; }
 
         [DisplayName("Cliente")]
-        public Guid UserId { get; internal set; }
+        public Guid Userid { get; internal set; }
 
         public UserInfo UserInfo { get; set; }
 

@@ -1,185 +1,191 @@
 ﻿@model Access.Models.Booking
-
+@using Admin.Models
 @{
     ViewBag.Title = "EditBooking";
     if (Request.IsAjaxRequest()) { Layout = null; }
+    var options = new AjaxOptions()
+    {
+        HttpMethod = "post",
+
+    };
 }
 
-<div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-sm-4">
-        <h2>EditBooking</h2>
-        <ol class="breadcrumb">
-            <li>
-                @Html.ActionLink("Atras", "Manage")
-            </li>
-            <li class="active">
-                <strong>EditBooking</strong>
-            </li>
-        </ol>
-    </div>
-    <div class="col-sm-8">
-        <div class="title-action">
-			@Html.ActionLink("Atras", "Index", null, new { @class = "btn btn-primary"})
-        </div>
-    </div>
-</div>
-<script src="~/Scripts/typeahead.bundle.min.js"></script>
+ 
+@*<script src="~/Scripts/typeahead.bundle.min.js"></script>
 <script src="~/Scripts/typeahead.jquery.min.js"></script>
-<script src="~/Scripts/typeahead.mvc.model.js"></script>
+<script src="~/Scripts/typeahead.mvc.model.js"></script>*@
 
 
-<div class="wrapper wrapper-content animated fadeInRight">
+
     <div class="row">
         <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>EditBooking Booking</h5>
-                </div>
+             
+                   
                 <div class="ibox-content">
 
-				@using (Html.BeginForm("AddOrUpdate","Booking",FormMethod.Post))
-{
-    @*@Html.AntiForgeryToken()*@
-    
-    <div class="form-horizontal">
+                    @using (Ajax.BeginForm("AddOrUpdate", "Booking",options))
+                    {
+                        @*@Html.AntiForgeryToken()*@
 
-        @Html.ValidationSummary(true)
-        @Html.HiddenFor(model => model.Id)
+                        <div class="form-horizontal">
 
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.UserSign, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserSign)
-                @Html.ValidationMessageFor(model => model.UserSign)
-            </div>
-        </div>*@
+                            @Html.ValidationSummary(true)
+                            @Html.HiddenFor(model => model.Id)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Userid, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Userid)
-                @Html.ValidationMessageFor(model => model.Userid)
-            </div>
-        </div>
+                            @*<div class="form-group">
+                                    @Html.LabelFor(model => model.UserSign, new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.UserSign)
+                                        @Html.ValidationMessageFor(model => model.UserSign)
+                                    </div>
+                                </div>*@
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Idcancha, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Idcancha)
-                @Html.ValidationMessageFor(model => model.Idcancha)
-            </div>
-        </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Userid, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @*@Html.AutocompleteFor(model => model.UserInfo.Name,model=> model.Userid, "GetUserNames","Account",true,"form-control")*@
+                                    @(Html.Kendo().ComboBoxFor(model => model.Userid)
+                                                .HtmlAttributes(new { data_bind = "value:UserId", style = "width: 300px" })
+                                                .DataTextField("Name")
+                                                .DataValueField("Id")
+                                                .Filter("contains")
+                                                .AutoBind(false)
+                                                .MinLength(3)
+                                                //.Template("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Name\\#")
+                                                .DataSource(source => source.Read(r => r.Action("GetUserNames", "Account")).ServerFiltering(true)))
+                                    @Html.ValidationMessageFor(model => model.Userid)
+                                </div>
+                            </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Start, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Start)
-                @Html.ValidationMessageFor(model => model.Start)
-            </div>
-        </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Idcancha, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @*@Html.AutocompleteFor(model => model.UserInfo.Comment, model => model.Idcancha, "GetUserNames", "Account", true, "form-control")*@
+                                    @(Html.Kendo().ComboBoxFor(model => model.Idcancha)
+                                    .HtmlAttributes(new { data_bind = "value:Idcancha", style = "width: 300px" })
+                                    .DataTextField("Name")
+                                    .DataValueField("Id")
+                                    //.OptionLabel("Cancha")
+                                    .ValuePrimitive(true)
+                                        //.Template("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Name\\#")
+                                       .DataSource(source => source.Read(r => r.Action("GetFieldsForAutoComplete", "Canchas"))))
+                                    @Html.ValidationMessageFor(model => model.Idcancha)
+                                </div>
+                            </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.End, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.End)
-                @Html.ValidationMessageFor(model => model.End)
-            </div>
-        </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Start, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Start)
+                                    @Html.ValidationMessageFor(model => model.Start)
+                                </div>
+                            </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Invoice, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Invoice)
-                @Html.ValidationMessageFor(model => model.Invoice)
-            </div>
-        </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.End, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.End)
+                                    @Html.ValidationMessageFor(model => model.End)
+                                </div>
+                            </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Price, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Price)
-                @Html.ValidationMessageFor(model => model.Price)
-            </div>
-        </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Invoice, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Invoice)
+                                    @Html.ValidationMessageFor(model => model.Invoice)
+                                </div>
+                            </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.DownPayment, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DownPayment)
-                @Html.ValidationMessageFor(model => model.DownPayment)
-            </div>
-        </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Price, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Price)
+                                    @Html.ValidationMessageFor(model => model.Price)
+                                </div>
+                            </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.HasDownpay, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.HasDownpay)
-                @Html.ValidationMessageFor(model => model.HasDownpay)
-            </div>
-        </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DownPayment, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.DownPayment)
+                                    @Html.ValidationMessageFor(model => model.DownPayment)
+                                </div>
+                            </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Pending, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Pending)
-                @Html.ValidationMessageFor(model => model.Pending)
-            </div>
-        </div>
+                            @*<div class="form-group">
+                                @Html.LabelFor(model => model.HasDownpay, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.HasDownpay)
+                                    @Html.ValidationMessageFor(model => model.HasDownpay)
+                                </div>
+                            </div>*@
 
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.Team1, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Team1)
-                @Html.ValidationMessageFor(model => model.Team1)
-            </div>
-        </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Pending, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Pending)
+                                    @Html.ValidationMessageFor(model => model.Pending)
+                                </div>
+                            </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Team2, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Team2)
-                @Html.ValidationMessageFor(model => model.Team2)
-            </div>
-        </div>*@
+                            @*<div class="form-group">
+                                    @Html.LabelFor(model => model.Team1, new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Team1)
+                                        @Html.ValidationMessageFor(model => model.Team1)
+                                    </div>
+                                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreateDate, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreateDate)
-                @Html.ValidationMessageFor(model => model.CreateDate)
-            </div>
-        </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Team2, new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Team2)
+                                        @Html.ValidationMessageFor(model => model.Team2)
+                                    </div>
+                                </div>*@
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreateTime, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreateTime)
-                @Html.ValidationMessageFor(model => model.CreateTime)
-            </div>
-        </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CreateDate, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.CreateDate)
+                                    @Html.ValidationMessageFor(model => model.CreateDate)
+                                </div>
+                            </div>
 
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.OBJECTTYPE, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.OBJECTTYPE)
-                @Html.ValidationMessageFor(model => model.OBJECTTYPE)
-            </div>
-        </div>*@
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CreateTime, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.CreateTime)
+                                    @Html.ValidationMessageFor(model => model.CreateTime)
+                                </div>
+                            </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-primary" />
-				@Html.ActionLink("Cancelar", "Manage", null, new { @class = "btn btn-white"})
-            </div>
-        </div>
-    </div>
-}
+                            @*<div class="form-group">
+                                    @Html.LabelFor(model => model.OBJECTTYPE, new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.OBJECTTYPE)
+                                        @Html.ValidationMessageFor(model => model.OBJECTTYPE)
+                                    </div>
+                                </div>*@
+
+                            <div class="modal-footer animated fadeInRightBig">
+
+
+                                <button type="submit" class="btn btn-info btn-circle btn-lg btn-outline">
+                                    <i class="fa fa-check"></i>
+                                </button>
+
+                                <button id="closemodalbtn" class="btn btn-warning btn-circle btn-lg btn-outline" data-dismiss="modal" type="button">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    }
 
 
                 </div>
-            </div>
+             
         </div>
     </div>
- </div>
-
-
+ 

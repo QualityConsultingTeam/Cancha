@@ -52,7 +52,7 @@
         views.AgendaView();
     })
      .MinorTickCount(1)
-     .Selectable(true)
+     //.Selectable(true)
      .Events(e=> e.Edit("edit"))
      .Editable(editable =>
      {
@@ -181,7 +181,10 @@
         var object = e.event;
         console.log(object);
         console.log(object.end);
-        consol.log8(object.start);
+        console.log(object.start);
+
+        showmodal();
+        GetBookingUpdateView('@Url.Action("AddOrUpdate","booking")'+"?start="+object.start+"&end="+object.end)
 
     }
     function GetBookingUpdateView(url) {

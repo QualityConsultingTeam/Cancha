@@ -146,12 +146,12 @@
     </div>*@
  
 <div class="k-edit-label">
-        @(Html.LabelFor(model => model.UserId))
+        @(Html.LabelFor(model => model.Userid))
     </div>
 
     <div data-container-for="UserId" class="k-edit-field">
      
-        @(Html.Kendo().ComboBoxFor(model => model.UserId)
+        @(Html.Kendo().ComboBoxFor(model => model.Userid)
             .HtmlAttributes(new { data_bind = "value:UserId", style = "width: 300px" })
             .DataTextField("Name")
             .DataValueField("Id")

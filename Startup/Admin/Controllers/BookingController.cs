@@ -41,7 +41,7 @@ namespace Admin.Controllers
 
         public async Task<ActionResult> AddOrUpdate(int? id = null, DateTime? start = null, DateTime? end = null)
         {
-            var model = id.HasValue ? await Repository.FindByIdAsync(id) : new Booking();
+            var model = id.HasValue ? await Repository.FindByIdAsync(id) : new Booking() ;
             if(start.HasValue&& end.HasValue)
             {
                 model.Start = start;
@@ -99,7 +99,7 @@ namespace Admin.Controllers
                     Title = b.Field.Name,
                     Start = b.Start.Value,
                     End = b.End.Value,
-                    UserId = b.Userid,
+                    Userid = b.Userid,
                     Description = "",
                     Idcancha = b.Idcancha,
                 }).AsQueryable();
