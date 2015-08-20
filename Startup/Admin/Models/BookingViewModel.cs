@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Access.Models;
 using Kendo.Mvc.UI;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Admin.Models
 {
@@ -14,6 +15,8 @@ namespace Admin.Models
 
         [DisplayName("Titulo")]
         public string Title { get; set; }
+
+        public string FieldSearchName { get; set; }
 
         [DisplayName("Descripcion")]
         public string Description { get; set; }
@@ -37,8 +40,23 @@ namespace Admin.Models
 
         public int RecurrenceId { get; set; }
         public int Id { get; internal set; }
+
+        [DisplayName("Cliente")]
         public Guid UserId { get; internal set; }
 
         public UserInfo UserInfo { get; set; }
+
+        [DataType(DataType.Currency)]
+        [DisplayName("Precio Promo")]
+        public decimal ? CustomPrice { get; set; }
+
+        [DisplayName("Descuento %")]
+        public decimal ? Off { get; set; }
+
+
+        public bool HasPromo
+        {
+            get { return CustomPrice.HasValue || Off.HasValue; }
+        }
     }
 }

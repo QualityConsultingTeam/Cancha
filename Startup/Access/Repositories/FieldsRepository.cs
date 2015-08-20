@@ -284,19 +284,19 @@ namespace Access
 
         
         public Task<List<Field>> GetFieldsFromCenterAsync( int centerId, string keywords="")
-        {
+        { 
             var query = Search(keywords);
             return query.OrderBy(f=> f.Name) .ToListAsync();
         }
 
-        public async Task<List<Field>> GetFieldsFromCenterAsync(Guid userid)
+        public async Task<List<Field>> GetFieldsFromCenterAsync(Guid userid,string keywords="")
         {
             int? centerId = await Context.CenterAccounts
                             .Where(c=> c.AccountId== userid)
                             .Select(c => c.CenterId)
                            .FirstOrDefaultAsync() ;
 
-            return await GetFieldsFromCenterAsync(centerId ??0,"");
+            return await GetFieldsFromCenterAsync(centerId ??0,keywords);
         }
 
 

@@ -9,6 +9,7 @@ using Access;
 using Access.Extensions;
 using Access.Models;
 using Microsoft.AspNet.Identity;
+using Admin.Models;
 
 namespace Admin.Controllers
 {
@@ -100,13 +101,23 @@ namespace Admin.Controllers
             return View(model );
         }
 
-       
+        #region AutoCompletes / Lista De Canchas en Scheduler
         [Authorize]
-        public async Task<JsonResult> GetFieldsFromCenter(int centerId,string keywords = "")
+        public async Task<JsonResult> GetFieldsFromCenter(int centerId=0,string keywords = "")
         {
-            var model = (await Repository.GetFieldsFromCenterAsync(centerId, keywords))
-                        .Select(f => new { Id = f.Id, Text = f.Name }).ToList();
+            var model = (centerId==0?
+                await Repository.GetFieldsFromCenterAsync(LoggedUser.Value):
+                await Repository.GetFieldsFromCenterAsync(centerId, keywords))
+                        .Select(f => new  { Id = f.Id, Text = f.Name }).ToList();
             return Json( model,JsonRequestBehavior.AllowGet);
         }
+        [Authorize]
+        public async Task<JsonResult> GetFieldsForAutoComplete(string query)
+        {
+            var model = await Repository.GetFieldsFromCenterAsync(LoggedUser.Value,query);
+
+            return Json(model.ToAutocomplete(), JsonRequestBehavior.AllowGet);
+        }
+        #endregion  
     }
 }
