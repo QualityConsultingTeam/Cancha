@@ -52,6 +52,8 @@
         views.AgendaView();
     })
      .MinorTickCount(1)
+     .Selectable(true)
+     .Events(e=> e.Edit("edit"))
      .Editable(editable =>
      {
          editable.TemplateName("CustomEditorTemplate");
@@ -149,7 +151,10 @@
             scheduler.dataSource.filter(filter);
         });
     })
-
+    function edit(e) {
+        console.log("Edit");
+        console.log(e);
+    }
 
 
 
