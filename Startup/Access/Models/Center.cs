@@ -19,14 +19,15 @@ namespace Access.Models
             CreateTime = DateTime.Now.Hour;
         }
 
-        public int? Idcompany { get; set; }
-
         [DisplayName("Nombre")]
         [StringLength(100)]
         public string Name { get; set; }
 
         [DisplayName("Tipo")]
         public string Type { get; set; }
+
+        [DataType(DataType.ImageUrl)]
+        public string FieldPicure { get; set; }
 
         [DisplayName("Ubicacion")]
         [StringLength(200)]

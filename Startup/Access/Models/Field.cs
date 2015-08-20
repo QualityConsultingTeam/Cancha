@@ -18,8 +18,8 @@ namespace Access.Models
             CreateTime = DateTime.Now.Hour;
         }
 
-        [DataType(DataType.ImageUrl)]
-        public string FieldPicure { get; set; }
+        //[DataType(DataType.ImageUrl)]
+        //public string FieldPicure { get; set; }
 
         [DisplayName("Nombre")]
         [StringLength(100)]
@@ -31,14 +31,14 @@ namespace Access.Models
         [DisplayName("Tipo de Cancha")]
         public FieldType Type { get; set; }
 
-        [DisplayName("Ubicacion")]
-        [StringLength(200)]
-        public string Location { get; set; }
+        //[DisplayName("Ubicacion")]
+        //[StringLength(200)]
+        //public string Location { get; set; }
 
 
-        [ScriptIgnore]
-        [DisplayName("Coordenadas")]
-        public DbGeography Coordinates { get; set; }
+        //[ScriptIgnore]
+        //[DisplayName("Coordenadas")]
+        //public DbGeography Coordinates { get; set; }
         
         [NotMapped]
         [DisplayName("Distancia")]
@@ -52,18 +52,18 @@ namespace Access.Models
         [StringLength(250)]
         public string Comments { get; set; }
 
-        [DisplayName("Cuidad")]
-        public int? Town { get; set; }
+        //[DisplayName("Cuidad")]
+        //public int? Town { get; set; }
 
-        [DisplayName("Departamento")]
-        public int? Department { get; set; }
+        //[DisplayName("Departamento")]
+        //public int? Department { get; set; }
 
-        [DisplayName("Pais")]
-        public int? Country { get; set; }
+        //[DisplayName("Pais")]
+        //public int? Country { get; set; }
 
-        [DisplayName("Cuidad / Barrio")]
-        [StringLength(100)]
-        public string Neighborhood { get; set; }
+        //[DisplayName("Cuidad / Barrio")]
+        //[StringLength(100)]
+        //public string Neighborhood { get; set; }
 
         
         [DisplayName("Longitud")]

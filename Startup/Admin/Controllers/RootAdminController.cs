@@ -273,7 +273,7 @@ namespace Admin.Controllers
         public async Task<ActionResult> CompanyCenters(int id)
         {
             ViewBag.CompanyId = id;
-            var companies = await CenterRepository.AsIQueryable().Where(c => c.Idcompany == id).ToListAsync();
+            var companies = await CenterRepository.AsIQueryable().Where(c => c.Id == id).ToListAsync();
 
             return View(companies);
         }
@@ -296,7 +296,7 @@ namespace Admin.Controllers
 
                 await CenterRepository.SaveAsync(LoggedUser);
 
-                return RedirectToAction("CompanyCenters", new {id = center.Idcompany});
+                return RedirectToAction("CompanyCenters", new {id = center.Id});
             }
             return View(center);
         }

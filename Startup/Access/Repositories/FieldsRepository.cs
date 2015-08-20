@@ -66,7 +66,7 @@ namespace Access
             IQueryable<Field> query = Search(filter.keywords ?? "");
 
             query = filter.Point != null
-                ? query.OrderBy(f => f.Coordinates.Distance(filter.Point))
+                ? query.OrderBy(f => f.Center.Coordinates.Distance(filter.Point))
                 : query.OrderBy(f => f.Name);
 
             return query;
@@ -86,8 +86,8 @@ namespace Access
             .ToList().ForEach(key =>
 
                 query = query.Where(f => f.Name.ToLower().Contains(key)
-                                         || f.Location.ToLower().Contains(key)
-                                         || f.Neighborhood.ToLower().Contains(key))
+                                         || f.Center.Location.ToLower().Contains(key)
+                                         || f.Center.Neighborhood.ToLower().Contains(key))
             );
 
             return query;
@@ -116,6 +116,11 @@ namespace Access
                 //&& b.End.HasValue && endTimes.Contains(b.End.Value) 
                                                 );
 
+            var data1 = await (from field in fields.AsNoTracking()
+                              select new
+                              {
+                                  field = field,                                 
+                              }).ToListAsync();
 
             var data = await (from field in fields.AsNoTracking()
                               join center in Context.Centers.AsNoTracking() on field.CenterId equals center.Id
@@ -124,7 +129,7 @@ namespace Access
                               from defaultBooks in dfb.DefaultIfEmpty()
                               join cost in Context.Costs on field.Id equals cost.IdCancha
 
-                              orderby field.Coordinates.Distance(filter.Point)
+                              orderby center.Coordinates.Distance(filter.Point)
 
                               select new
                               {
@@ -146,7 +151,7 @@ namespace Access
 
             foreach (var item in result)
             {
-                item.field.Distance = item.field.DistanceFromMe(filter.Point);
+                item.field.Distance = item.center.DistanceFromMe(filter.Point);
                 var resultItem = result.FirstOrDefault(r => r.field == item.field);
                 if (resultItem == null) continue;
                 item.field.Center = resultItem.center;
