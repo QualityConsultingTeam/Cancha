@@ -6,32 +6,27 @@
 
 <div class="row">
     <div class="ibox-content">
-        <h4>COMPLEJO</h4>
+        <h5>COMPLEJO</h5>
         <h2><strong> @Model.Field.Center.Name</strong></h2>
-        <h4> CANCHA </h4>
+        <h5> CANCHA </h5>
         <h2> <strong> @Model.Field.Name</strong></h2>
     </div>
     <div class="ibox-content">
-        <h3><strong>Fecha</strong> </h3>
-        <h2></h2>
-        <h2>@Model.Start.Value.ToString("f")</h2>
-        @*<h2> @string.Format("{0:ddd, MMM d, yyyy}", Model.Start.Value.ToShortDateString())</h2>*@
-        <h2> Hora  @string.Format("{0:HH:mm}", Model.Start.Value)</h2>
-        @*<h2> Hora Final  @string.Format("{0:HH:mm}", Model.End.Value)</h2>*@
-        @*<h2> Hora Final @string.Format("{0}", Model.End.Value.ToString("t"))</h2>*@
+        <h5>FECHA</h5>
+        <h2><strong>@Model.Start.Value.ToString("dd MMMM yyyy")</strong></h2>
+        <h5>HORA</h5>
+        <h2><strong> @string.Format("{0:HH:mm}", Model.Start.Value)</strong></h2>
     </div>
     <div class="ibox-content">
-        <h4>PRECIO</h4>
+        <h5>PRECIO</h5>
         <h2>
-            <strong>
-                @Html.DisplayFor(m => m.Field.Cost.Price)
-            </strong>
+            <strong> @Html.DisplayFor(m => m.Price) </strong>
         </h2>
 
     </div>
 </div>
 
-@using (Html.BeginForm("Confirmar", "Canchas",FormMethod.Post))
+@using (Html.BeginForm("Confirmar", "Canchas", FormMethod.Post))
 {
     @Html.HiddenFor(m => m.Userid)
     @Html.HiddenFor(m => m.Id)
@@ -57,16 +52,16 @@
             @{
                 var buttonText = User.Identity.IsAuthenticated ? "Reservar Cancha" : "Logearse para Reservar";
             }
-           @buttonText  
+            @buttonText
         </button>
 
-            @*<button class="btn btn-warning btn-circle btn-lg" data-dismiss="modal" type="button">
-                    <i class="fa fa-times"></i>
-                </button>*@
+        @*<button class="btn btn-warning btn-circle btn-lg" data-dismiss="modal" type="button">
+                <i class="fa fa-times"></i>
+            </button>*@
     </div>
-}
+                }
 
 
 <script type="text/javascript">
 
-    </script>
+</script>
