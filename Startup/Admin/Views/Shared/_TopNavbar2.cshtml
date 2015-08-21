@@ -38,16 +38,16 @@
                         <div class="input-group">
                             @(Html.Kendo().DatePicker()
                                   .Name("date")
-                                  .Value(DateTime.Now.ToUniversalTime())
+                                  .Value(DateTime.Now)
                                   .Format("dd/MM/yyyy")
                                   .HtmlAttributes(new { id = "date" })
-                                  .Min(DateTime.UtcNow.ToUniversalTime())
+                                  .Min(DateTime.Now)
                             )
                             @*</div>
                                 <div class="input-group" style="width: 15px">*@
                             @(Html.Kendo().TimePicker()
                                   .Name("time")
-                                  .Value(DateTime.UtcNow)
+                                  .Value(DateTime.Now)
                                   .Format("hh:00 tt").Min("7:00 AM").Max("11:00 PM").Interval(60)
                                   .HtmlAttributes(new { id = "time" })
                             )

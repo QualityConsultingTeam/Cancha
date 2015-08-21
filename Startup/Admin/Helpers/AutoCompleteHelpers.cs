@@ -73,7 +73,7 @@ namespace Admin.Models
             return model.Select(c => new Autocomplete()
             {
                 Id = c.Id,
-                Name = String.Format("{0} - {1}", c.Name.ToUpper())
+                Name = c.Name
             }).ToList();
         }
     }

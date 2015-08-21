@@ -19,6 +19,7 @@ namespace Access.Models
             Start = DateTime.Now;
             End = DateTime.Now;
             UserInfo = new UserInfo();
+            OBJECTTYPE = "1";
         }
 
 
