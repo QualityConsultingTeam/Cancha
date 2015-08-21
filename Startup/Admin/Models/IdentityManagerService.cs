@@ -36,7 +36,7 @@ namespace Admin.Models
                     .ToListAsync();
         }
 
-        private IQueryable<ApplicationUser> CommonSearch(FilterOptionModel filter,AccessContext Context)
+        private IQueryable<ApplicationUser> CommonSearch(FilterOptionModel filter,AccessContext Context,bool onlyUsers=false)
         {
             IQueryable<ApplicationUser> users = identityContex.Users.Include(i => i.Roles).Include(u=>u.Claims);
 
@@ -47,6 +47,16 @@ namespace Admin.Models
                 var roleId = identityContex.Roles.FirstOrDefault(r => r.Name == filter.role).Id;
                 users = (from user in identityContex.Users
                          join roles in identityContex.UserRoles.Where(r => r.RoleId == roleId) on user.Id equals roles.UserId
+                         select user);
+            }
+            //To Exclude any types of admin
+            if(string.IsNullOrEmpty(filter.role) && onlyUsers)
+            {
+                users = (from user in users
+                         join userRole in identityContex.UserRoles on user.Id equals userRole.UserId
+                         into gu
+                         from defaultUserRole in gu.DefaultIfEmpty()
+                         where defaultUserRole == null
                          select user);
             }
 
@@ -75,10 +85,10 @@ namespace Admin.Models
             }).ToListAsync();
         }
 
-        public async Task<List<ApplicationUser>> GetUsersAsync(FilterOptionModel filter ,AccessContext Context)
+        public async Task<List<ApplicationUser>> GetUsersAsync(FilterOptionModel filter ,AccessContext Context,bool onlyUsers=false)
         {
 
-            IQueryable<ApplicationUser> users = CommonSearch(filter,Context);
+            IQueryable<ApplicationUser> users = CommonSearch(filter,Context,onlyUsers);
 
             var accounts = await  users.OrderBy(u => u.UserName).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
 

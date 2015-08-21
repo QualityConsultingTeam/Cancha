@@ -28,7 +28,7 @@ namespace Access.Repositories
         }
 
         #region Common
-        public IQueryable<Booking> GetSummary(Guid userid )
+        public IQueryable<Booking> GetSummary(Guid userid ,bool onlyAvailables=false)
         {
 
             // filtrar por nievel de acceso 
@@ -39,6 +39,8 @@ namespace Access.Repositories
             // agregar nivel de acceso para visibilidad
                           
             IQueryable<Booking> query =Context.Bookings.Include("Field");
+
+            if (onlyAvailables) query = query.Where(b => b.Status != BookingStatus.Denegado);
             
             if (fieldsIds.Any()) query = query.Where(b => b.Start.HasValue &&
                                                           b.End.HasValue && 

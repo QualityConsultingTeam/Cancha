@@ -130,27 +130,7 @@
             })
         }
     }
-
-    //function onSelect(e) {
-
-    //    var dataItem = this.dataItem(e.item.index());
-    //    console.log(dataItem);
-    //    var filter = {
-    //        logic: "or",
-    //        filters: $.map(dataItem.Id, function (value) {
-    //            return {
-    //                operator: "eq", field: "Id", value: value
-    //            };
-    //        })
-    //    };
-
-    //    var scheduler = $("#scheduler").data("kendoScheduler");
-
-    //    console.log(scheduler);
-    //    scheduler.dataSource.filter(filter);
-    //    scheduler.refresh();
-
-    //}
+     
     $(function () {
         $("#checkFields :checkbox").change(function (e) {
             var checked = $.map($("#checkFields :checked"), function (checkbox) {
@@ -184,12 +164,12 @@
         console.log(object.start);
 
         showmodal();
-        GetBookingUpdateView('@Url.Action("AddOrUpdate","booking")'+"?start="+object.start+"&end="+object.end)
+        GetBookingUpdateView('@Url.Action("AddOrUpdate","booking")' + "?begin=" + object.start + "&finish=" + object.end)
 
     }
     function GetBookingUpdateView(url) {
         $.ajax({
-            type: "POST",
+            type: "get",
             url: url,
             //data: ,
             datatype: "html",
@@ -204,5 +184,6 @@
         $("#modalLoader").fadeIn();
         $('#ChangeState').modal('show');
     }
+ 
 
 </script>

@@ -230,6 +230,7 @@
     </Compile>
     <Compile Include="Helpers\AutoCompleteHelpers.cs" />
     <Compile Include="Helpers\DataExtensions.cs" />
+    <Compile Include="Helpers\EnumerableExtensions.cs" />
     <Compile Include="Helpers\GlobalizationAttribute.cs" />
     <Compile Include="Helpers\HMTLHelperExtensions.cs" />
     <Compile Include="Helpers\IdentityHelpers.cs" />

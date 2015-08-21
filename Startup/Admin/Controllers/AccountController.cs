@@ -508,9 +508,9 @@ namespace Admin.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<JsonResult> GetUserNames(string text)
+        public async Task<JsonResult> GetUserNames(string query)
         {
-            var users = await IdentityManagerService.GetUsersAsync(new FilterOptionModel() { keywords= text},Context);
+            var users = await IdentityManagerService.GetUsersAsync(new FilterOptionModel() { keywords= query},Context,onlyUsers:true);
 
             var model = users.ToIdentityUserViewModel().Select(u => new AutoCompleteModel { Id = u.Id, Name = string.Format("{0}-{1}", u.FirstName, u.Email) }).ToList() ;
 

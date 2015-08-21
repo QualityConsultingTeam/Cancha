@@ -12,10 +12,11 @@ using Admin.Models;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using Microsoft.AspNet.Identity.Owin;
+using System.Globalization;
 
 namespace Admin.Controllers
 {
-    [Globalization]
+    //[Globalization]
     [Authorize]
     public class BookingController : BaseController<BookingRepository, AccessContext, Booking>
     {
@@ -38,28 +39,39 @@ namespace Admin.Controllers
             ViewBag.fields = await repo.GetFieldsFromCenterAsync(LoggedUser.Value);
             return View();
         }
+         
 
-        public async Task<ActionResult> AddOrUpdate(int? id = null, DateTime? start = null, DateTime? end = null)
+        public async Task<ActionResult> AddOrUpdate(int? id = null, string begin = "", string finish = "")
         {
             var model = id.HasValue ? await Repository.FindByIdAsync(id) : new Booking() ;
-            if(start.HasValue&& end.HasValue)
+            if(!string.IsNullOrEmpty( begin)&&!string.IsNullOrEmpty( finish))
             {
-                model.Start = start;
-                model.End = end;
+                // TODO parse Strings
+                model.Start = DateTimeExtensions.ParseFromString(begin);
+                model.End = DateTimeExtensions.ParseFromString(finish);
             }
+            var repo = new FieldsRepository() { Context = Context };
+            var fields = (await repo.GetFieldsFromCenterAsync(LoggedUser.Value));
+
+            ViewBag.Fields = fields.ToSelectListItems(f => f.Name, f => f.Id.ToString(), model.Idcancha.ToString());
+                            
             return View("Partials/AddOrUpdate", model);
         }
 
         [HttpPost]
-
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> AddOrUpdate(Booking booking)
         {
             if (ModelState.IsValid)
             {
                 Repository.InsertOrUpdate(booking);
                 await Repository.SaveAsync(LoggedUser);
-                return RedirectToAction("Manage");
+                return RedirectToAction("Calendar");
             }
+            var repo = new FieldsRepository() { Context = Context };
+            var fields = (await repo.GetFieldsFromCenterAsync(LoggedUser.Value));
+
+            ViewBag.Fields = fields.ToSelectListItems(f => f.Name, f => f.Id.ToString(), booking.Idcancha.ToString());
             return View("Partials/AddOrUpdate", booking);
         }
 
@@ -92,7 +104,7 @@ namespace Admin.Controllers
         public virtual async Task<JsonResult> Read([DataSourceRequest] DataSourceRequest request)
         {
 
-            IQueryable<BookingViewModel> query = Repository.GetSummary(LoggedUser.Value)
+            IQueryable<BookingViewModel> query = Repository.GetSummary(LoggedUser.Value,onlyAvailables:true)
                 .Select(b => new BookingViewModel()
                 {
                     Id = b.Id,
@@ -107,7 +119,7 @@ namespace Admin.Controllers
             var model = query.ToDataSourceResult(request);
 
             
-           //model.Data = await IdentityManagerService.UpdateAccountInfoFoScheduler(model.Data as List<BookingViewModel>);
+            model.Data = await IdentityManagerService.UpdateAccountInfoFoScheduler(model.Data as List<BookingViewModel>);
 
             return Json(model); 
 

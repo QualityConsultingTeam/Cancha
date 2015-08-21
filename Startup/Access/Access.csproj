@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Extensions\BookingExtensions.cs" />
     <Compile Include="Extensions\DataExtensions.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\FieldExtensions.cs" />
     <Compile Include="Extensions\IQueryableExtensions.cs" />
     <Compile Include="Extensions\TokenExtensions.cs" />
