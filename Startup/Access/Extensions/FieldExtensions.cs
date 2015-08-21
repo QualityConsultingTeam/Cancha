@@ -8,23 +8,31 @@ using Access.Models;
 
 namespace Access.Extensions
 {
+    public static class CenterExtensions
+    {
+
+
+    }
+
     public static class FieldExtensions
     {
+        
+        
 
         public static string ConfirmShoesType(this Field field,bool function )
         {
             return function ? "Si" : "No";
         }
 
-        public static string DistanceFromMe(this Field field, DbGeography point)
+        public static string DistanceFromMe(this Center center, DbGeography point)
         {
-            return ( (field.Coordinates != null && point!=null )? 
-                String.Format("{0:0.##} km", (field.Coordinates.Distance(point)) / 1000) : "-");
+            return ( (center.Coordinates != null && point!=null )? 
+                String.Format("{0:0.##} km", (center.Coordinates.Distance(point)) / 1000) : "-");
         }
 
-        public static string DistanceFromMe(this Field field, string lat, string lon)
+        public static string DistanceFromMe(this Center center, string lat, string lon)
         {
-            return DistanceFromMe(field, GetPointFrom(lat, lon));
+            return DistanceFromMe(center, GetPointFrom(lat, lon));
         }
 
         public static DbGeography GetPointFrom(float lat, float lon)

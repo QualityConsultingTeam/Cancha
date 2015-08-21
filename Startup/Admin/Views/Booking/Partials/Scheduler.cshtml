@@ -52,6 +52,8 @@
         views.AgendaView();
     })
      .MinorTickCount(1)
+     //.Selectable(true)
+     .Events(e=> e.Edit("edit"))
      .Editable(editable =>
      {
          editable.TemplateName("CustomEditorTemplate");
@@ -83,7 +85,29 @@
             .Destroy("Destroy", "Booking")
             .Update("Update", "Booking")))
 
-@Scripts.Render("~/plugins/knockout")
+
+<div class="modal fade" id="ChangeState" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header animated shake">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Reservar</h4>
+            </div>
+
+            <div class="modal-body" id="modalLoader">
+                @Html.Partial("LoaderCircle")
+            </div>
+            <div class="modal-body" id="bookingModal">
+
+            </div>
+            @*<div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                </div>*@
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
 
     function error_handler(e) {
@@ -149,8 +173,36 @@
             scheduler.dataSource.filter(filter);
         });
     })
+    function edit(e) {
+        console.log("Edit");
+        console.log(e);
+        e.preventDefault();
+        
+        var object = e.event;
+        console.log(object);
+        console.log(object.end);
+        console.log(object.start);
 
+        showmodal();
+        GetBookingUpdateView('@Url.Action("AddOrUpdate","booking")'+"?start="+object.start+"&end="+object.end)
 
-
+    }
+    function GetBookingUpdateView(url) {
+        $.ajax({
+            type: "POST",
+            url: url,
+            //data: ,
+            datatype: "html",
+            success: function (data) {
+                $('#bookingModal').html(data);
+                $("#modalLoader").fadeOut();
+            }
+        });
+    }
+    function showmodal() {
+        $("#bookingModal").html(null);
+        $("#modalLoader").fadeIn();
+        $('#ChangeState').modal('show');
+    }
 
 </script>

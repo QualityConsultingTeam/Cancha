@@ -74,25 +74,7 @@
     <span data-bind="text: endTimezone"></span>
     <span data-for="end" class="k-invalid-msg"></span>
 </div>
-
-<div class="k-edit-label">
-    @(Html.LabelFor(model => model.UserId))
-</div>
-
-<div data-container-for="UserId" class="k-edit-field">
-  @Html.HiddenFor(m=>m.UserId)
-    @Html.AutocompleteFor(m => m.Title, model => model.UserId, "GetUserNames", "Account", true, "k-textbox")
-</div>
-
-<div class="k-edit-label">
-    @(Html.LabelFor(model => model.Idcancha))
-</div>
-
-<div data-container-for="Idcancha" class="k-edit-field">
-    @Html.HiddenFor(m => m.Idcancha)
-    @Html.AutocompleteFor(m => m.FieldSearchName, model => model.Idcancha, "GetFieldsForAutoComplete", "Canchas", true, "k-textbox"
-    )
-</div>
+ 
 
 <div class="k-edit-label">
     @(Html.LabelFor(model => model.CustomPrice))
@@ -162,30 +144,38 @@
         @(Html.Kendo().RecurrenceEditorFor(model => model.RecurrenceRule)
             .HtmlAttributes(new { data_bind = "value:recurrenceRule" }))
     </div>*@
+ 
+<div class="k-edit-label">
+        @(Html.LabelFor(model => model.Userid))
+    </div>
+
+    <div data-container-for="UserId" class="k-edit-field">
+     
+        @(Html.Kendo().ComboBoxFor(model => model.Userid)
+            .HtmlAttributes(new { data_bind = "value:UserId", style = "width: 300px" })
+            .DataTextField("Name")
+            .DataValueField("Id")
+            .Filter("contains")
+            .AutoBind(false)
+            .MinLength(3)
+            //.Template("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Name\\#")
+            .DataSource(source => source.Read(r => r.Action("GetUserNames", "Account")).ServerFiltering(true)).ToClientTemplate()
+        )
+    </div>
 
 <div class="k-edit-label">
-    @(Html.LabelFor(model => model.Description))
+    @(Html.LabelFor(model => model.Idcancha))
 </div>
-<div data-container-for="description" class="k-edit-field">
-    @(Html.TextAreaFor(model => model.Description, new { @class = "k-textbox", data_bind = "value:description" }))
-</div>
-
-<div class="k-edit-label">
-    @*@(Html.LabelFor(model => model.RoomID))*@
-</div>
-<div data-container-for="RoomID" class="k-edit-field">
-    @*@(Html.Kendo().DropDownListFor(model => model.RoomID)
-            .HtmlAttributes(new { data_bind = "value:RoomID", style = "width: 200px" })
-            .DataTextField("Text")
-            .DataValueField("Value")
-            .OptionLabel("None")
+<div data-container-for="Idcancha" class="k-edit-field">
+    @(Html.Kendo().ComboBoxFor(model => model.Idcancha)
+            .HtmlAttributes(new { data_bind = "value:Idcancha", style = "width: 300px" })
+            .DataTextField("Name")
+            .DataValueField("Id")
+            //.OptionLabel("Cancha")
             .ValuePrimitive(true)
-            .Template("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Text\\#")
-            .BindTo(new[] {
-                    new { Text = "Meeting Room 101", Value = 1, Color = "\\#6eb3fa" },
-                    new { Text = "Meeting Room 201", Value = 2, Color = "\\#f58a8a" }
-                }).ToClientTemplate()
-        )*@
+            //.Template("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Name\\#")
+            .DataSource(source=> source.Read(r=>r.Action("GetFieldsForAutoComplete", "Canchas"))).ToClientTemplate()
+        )
 </div>
 
 <div class="k-edit-label">
@@ -203,9 +193,16 @@
             .DataSource(ds => ds.Read("Customers", "Customers"))
         )*@
 </div>
+<div class="k-edit-label">
+    @(Html.LabelFor(model => model.Description))
+</div>
+<div data-container-for="description" class="k-edit-field">
+    @(Html.TextAreaFor(model => model.Description, new { @class = "k-textbox", data_bind = "value:description" }))
+</div>
 
 @{
     ViewContext.FormContext = null;
-}<script src="~/Scripts/typeahead.bundle.min.js"></script>
+}
+@*<script src="~/Scripts/typeahead.bundle.min.js"></script>
 <script src="~/Scripts/typeahead.jquery.min.js"></script>
-<script src="~/Scripts/typeahead.mvc.model.js"></script>
+<script src="~/Scripts/typeahead.mvc.model.js"></script>*@

@@ -18,9 +18,6 @@ namespace Access.Models
             CreateTime = DateTime.Now.Hour;
         }
 
-        [DataType(DataType.ImageUrl)]
-        public string FieldPicure { get; set; }
-
         [DisplayName("Nombre")]
         [StringLength(100)]
         public string Name { get; set; }
@@ -30,15 +27,6 @@ namespace Access.Models
 
         [DisplayName("Tipo de Cancha")]
         public FieldType Type { get; set; }
-
-        [DisplayName("Ubicacion")]
-        [StringLength(200)]
-        public string Location { get; set; }
-
-
-        [ScriptIgnore]
-        [DisplayName("Coordenadas")]
-        public DbGeography Coordinates { get; set; }
         
         [NotMapped]
         [DisplayName("Distancia")]
@@ -51,20 +39,6 @@ namespace Access.Models
         [DisplayName("Comentarios")]
         [StringLength(250)]
         public string Comments { get; set; }
-
-        [DisplayName("Cuidad")]
-        public int? Town { get; set; }
-
-        [DisplayName("Departamento")]
-        public int? Department { get; set; }
-
-        [DisplayName("Pais")]
-        public int? Country { get; set; }
-
-        [DisplayName("Cuidad / Barrio")]
-        [StringLength(100)]
-        public string Neighborhood { get; set; }
-
         
         [DisplayName("Longitud")]
         [Column(TypeName = "numeric")]
@@ -89,10 +63,6 @@ namespace Access.Models
         [DisplayName("Estado")]
         public Status Status { get; set; }
 
-        //[DisplayName("Usuario")]
-        //// user thats create or update object in context
-        //public int? UserSign { get; set; }
-
         [DisplayName("Fecha Creacion")]
         [Required]
         public DateTime CreateDate { get; set; }
@@ -115,7 +85,6 @@ namespace Access.Models
         public List<Booking> Bookings { get; set; }
 
         public Cost Cost { get; set; }
-        //public int CostId { get; set; }
         
         public Center Center { get; set; }
 

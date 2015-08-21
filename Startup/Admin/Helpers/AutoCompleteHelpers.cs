@@ -73,7 +73,7 @@ namespace Admin.Models
             return model.Select(c => new Autocomplete()
             {
                 Id = c.Id,
-                Name = c.Name
+                Name = c.Name,
             }).ToList();
         }
     }
