@@ -110,8 +110,24 @@ namespace Access.Repositories
             }
             
         }
-       
 
-       
+        public async Task UpdateAccountLevel(Booking booking, Guid LoggedUser, bool ignoreStatus = false)
+        {
+            if (booking.Status == BookingStatus.Reservada || ignoreStatus)
+            {
+                var center = await Context.Centers.Where(c => c.Fields.Any(f => f.Id == booking.Idcancha))
+                                                .FirstOrDefaultAsync();
+
+                if (!await Context.AccountAccess.AnyAsync(c => c.CenterId == center.Id))
+                {
+                    Context.AccountAccess.Add(new AccountAccessLevel()
+                    {
+                        UserId = booking.Userid,
+                        Center = center,
+                    });
+                    await SaveAsync(LoggedUser);
+                }
+            }
+        }
     }
 }

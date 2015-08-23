@@ -202,7 +202,9 @@ namespace Admin.Controllers
         {
              
             Repository.InsertOrUpdate(booking); 
-            await Repository.SaveAsync(LoggedUser); 
+            await Repository.SaveAsync(LoggedUser);
+
+            await Repository.UpdateAccountLevel(booking,LoggedUser.Value);
 
             return Json(booking.Status.ToString().ToUpper(), JsonRequestBehavior.AllowGet);
             //return View("Partials/ConfirmBookingAction", await Repository.FindByIdAsync(booking.Id, "Field"));

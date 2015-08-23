@@ -12,7 +12,7 @@ namespace Access
     public class BaseRepository<TContext, TEntity>
         where TContext : DbContext
         where TEntity : BaseModel
-       //where TEntity : class 
+        //where TEntity : class 
     {
 
         //[Dependency]
@@ -82,6 +82,13 @@ namespace Access
             entities.ToList().ForEach(InsertOrUpdate);
         }
 
+        public virtual void InsertOrupdateModel<Tmodel>(Tmodel model)where Tmodel :BaseModel
+        {
+            if (model.Id != 0) Context.Entry(model).State = EntityState.Modified;
+
+            else Context.Set<Tmodel>().Add(model);
+        }
+            
 
 
         public virtual void Delete(TEntity entity) //where TEntity : BaseModel

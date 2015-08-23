@@ -154,7 +154,7 @@
         });
     })
     function edit(e) {
-        console.log("Edit");
+        @*console.log("Edit");
         console.log(e);
         e.preventDefault();
         
@@ -164,7 +164,7 @@
         console.log(object.start);
 
         showmodal();
-        GetBookingUpdateView('@Url.Action("AddOrUpdate","booking")' + "?begin=" + object.start + "&finish=" + object.end)
+        GetBookingUpdateView('@Url.Action("AddOrUpdate","booking")' + "?begin=" + object.start + "&finish=" + object.end)*@
 
     }
     function GetBookingUpdateView(url) {

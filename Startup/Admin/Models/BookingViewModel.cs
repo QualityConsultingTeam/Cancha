@@ -7,6 +7,7 @@ using Access.Models;
 using Kendo.Mvc.UI;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Access.Extensions;
 
 namespace Admin.Models
 {
@@ -42,7 +43,23 @@ namespace Admin.Models
         public int Id { get; internal set; }
 
         [DisplayName("Cliente")]
-        public Guid Userid { get; internal set; }
+        public Guid Userid
+        {
+            get
+            {
+                //logica de conversion por el bug de CustomEditor en el Scheduler
+                return _userId != Guid.Empty ? _userId : (_userId = UserKey.IntToGuid());
+            }
+            set
+            {
+                _userId = value;
+            }
+        }
+
+        private Guid _userId { get; set; }
+
+        [DisplayName("LLave Cliente")]
+        public int UserKey  { get; set; }
 
         public UserInfo UserInfo { get; set; }
 

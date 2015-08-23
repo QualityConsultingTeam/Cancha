@@ -16,6 +16,7 @@ using Access;
 using Access.Repositories;
 using Access.Models;
 using System.Data.Entity;
+using Access.Extensions;
 
 namespace Admin.Controllers
 {
@@ -508,11 +509,17 @@ namespace Admin.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<JsonResult> GetUserNames(string query)
+        public async Task<JsonResult> GetUserNames(string text)
         {
-            var users = await IdentityManagerService.GetUsersAsync(new FilterOptionModel() { keywords= query},Context,onlyUsers:true);
+            var users = await IdentityManagerService.GetUsersAsync(new FilterOptionModel() { keywords= text},Context,onlyUsers:true);
 
-            var model = users.ToIdentityUserViewModel().Select(u => new AutoCompleteModel { Id = u.Id, Name = string.Format("{0}-{1}", u.FirstName, u.Email) }).ToList() ;
+            var model = users.ToIdentityUserViewModel()
+                .Select(u =>
+                new Autocomplete
+                {
+                    Id = (new Guid( u.Id)).GuidToInt(),
+                    Name = string.Format("{0}-{1}", u.FirstName, u.Email)
+                }).ToList() ;
 
             return Json(model, JsonRequestBehavior.AllowGet);
         }

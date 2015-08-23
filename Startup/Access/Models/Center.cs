@@ -113,5 +113,9 @@ namespace Access.Models
         public List<CenterAccount> Employees { get; set; }
 
         public List<Service> Services { get; set; }
+
+        public List<AccountAccessLevel> AccountAccess { get; set; }
+        
+        
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Text;
@@ -34,6 +35,9 @@ namespace Access.Models
             Property(p => p.RowVersion).IsConcurrencyToken();
             HasOptional(p => p.Center).WithMany(p => p.Fields)
                 .HasForeignKey(f => f.CenterId).WillCascadeOnDelete(true);
+
+            
+            
         }
     }
 
@@ -82,7 +86,8 @@ namespace Access.Models
     {
         public CenterConfig()
         {
-            
+            //HasOptional(p => p.AccountAccess).WithMany(a => a.Centers)
+            //    .HasForeignKey(p => p.AccountAccessId).WillCascadeOnDelete(false);
         }
     }
 
@@ -104,5 +109,16 @@ namespace Access.Models
         }
     }
 
-    
+    internal class AccountAccessLevelConsfig : EntityTypeConfiguration<AccountAccessLevel>
+    {
+        public AccountAccessLevelConsfig()
+        {
+
+            HasRequired(p => p.Center).WithMany(p => p.AccountAccess).HasForeignKey(p => p.CenterId).WillCascadeOnDelete(false);
+
+        }
+
+
+    }
+
 }

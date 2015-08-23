@@ -56,6 +56,9 @@ namespace Access
 
         public DbSet<Team> Teams { get; set; }
 
+       public DbSet<AccountAccessLevel> AccountAccess { get; set; }
+
+
         public DbSet<CenterAccount> CenterAccounts { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -70,6 +73,8 @@ namespace Access
             modelBuilder.Configurations.Add(new PaymentConfig());
             modelBuilder.Configurations.Add(new ImageFieldConfig());
             modelBuilder.Configurations.Add(new ServiceConfig());
+            modelBuilder.Configurations.Add(new CenterConfig());
+            modelBuilder.Configurations.Add(new AccountAccessLevelConsfig());
             //modelBuilder.Configurations.Add(new CostConfig());
 
         }

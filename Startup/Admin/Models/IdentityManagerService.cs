@@ -57,6 +57,8 @@ namespace Admin.Models
                          into gu
                          from defaultUserRole in gu.DefaultIfEmpty()
                          where defaultUserRole == null
+                         let id = new Guid(user.Id)
+                         join level in Context.AccountAccess on id equals level.UserId
                          select user);
             }
 
@@ -66,6 +68,7 @@ namespace Admin.Models
                     .Select(c => c.AccountId.ToString()).ToList();
 
                 users = users.Where(u => usersInCenter.Contains(u.Id));
+
             }
            filter.SearchKeys.ForEach(key =>
                         users = users.Where(u => u.UserName.ToLower().Contains(key)

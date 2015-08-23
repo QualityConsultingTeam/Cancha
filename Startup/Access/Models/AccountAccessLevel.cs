@@ -6,10 +6,18 @@ using System.Threading.Tasks;
 
 namespace Access.Models
 {
-    public class AccountAccessLevel
+    public class AccountAccessLevel : BaseModel
     {
 
-        public List<int>  CentersKeys { get; set; }
-        public List<int> FieldsKeys { get; set; }
+        public List<int> CentersKeys { get; set; }
+
+
+        public Center Center { get; set; }
+
+        public int CenterId { get; set; }
+
+        public Guid UserId { get; set; }
+
+
     }
 }
