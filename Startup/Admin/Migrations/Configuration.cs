@@ -32,6 +32,19 @@ namespace Admin.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
+            if(!context.Roles.Any(a=> a.Name == "Manager"))
+            {
+                var roleStore = new RoleStore<IdentityRole>(context);
+                var roleManager = new RoleManager<IdentityRole>(roleStore);
+                var role = new IdentityRole
+                {
+                    Name = "Manager"
+                };
+                roleManager.Create(role);
+            }
+           
+
             if (!context.Roles.Any())
             {
                 var roleStore = new RoleStore<IdentityRole>(context);
