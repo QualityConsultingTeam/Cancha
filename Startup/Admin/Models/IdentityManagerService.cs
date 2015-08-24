@@ -191,7 +191,7 @@ namespace Admin.Models
             }
             var roles = await userManager.GetRolesAsync(model.Id);
 
-            if (!roles.Any())
+            if (!roles.Any() && !string.IsNullOrEmpty(model.Role))
             {
                 var res = userManager.AddToRoleAsync(model.Id, model.Role);
             }
