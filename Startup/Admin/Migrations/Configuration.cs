@@ -45,7 +45,7 @@ namespace Admin.Migrations
             }
            
 
-            if (!context.Roles.Any())
+            if (!context.Roles.Any(a=> a.Name=="Admin"))
             {
                 var roleStore = new RoleStore<IdentityRole>(context);
                 var roleManager = new RoleManager<IdentityRole>(roleStore);

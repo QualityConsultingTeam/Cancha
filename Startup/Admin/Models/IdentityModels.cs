@@ -97,6 +97,10 @@ namespace Admin.Models
 
             EntityTypeConfiguration<IdentityUser> table =  modelBuilder.Entity<IdentityUser>().ToTable("AspNetUsers");
 
+            table.HasMany(c => c.Claims).WithOptional().HasForeignKey(c => c.UserId);
+            table.HasMany(c => c.Logins).WithOptional().HasForeignKey(c => c.UserId);
+            table.HasMany(c => c.Roles).WithOptional().HasForeignKey(c => c.UserId);
+
             modelBuilder.Entity<IdentityUserLogin>().HasKey(l => new { l.UserId, l.LoginProvider, l.ProviderKey }).ToTable("AspNetUserLogins");
             modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId }).ToTable("AspNetUserRoles");
           //  modelBuilder.Entity<IdentityUserClaim>().HasKey(k=>k.Id).ToTable("AspNetUserClaims");

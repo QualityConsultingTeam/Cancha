@@ -10,6 +10,8 @@ using Admin.Helpers;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Access.Extensions;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Security.Claims;
 
 namespace Admin.Models
 {
@@ -65,15 +67,16 @@ namespace Admin.Models
                 var idsToFilter = new List<string>();
                 // TODO verificar si el rendimiento es impactado al hacer QUerys separadaas.
 
+                
+                users = users.Where(u => u.CenterId.HasValue && u.CenterId == filter.centerid.Value);
+
                 if (!onlyUsers)
                 {
                     idsToFilter.AddRange(Context.AccountAccess.Where(al => al.CenterId == filter.centerid)
                                 .Select(c => c.UserId.ToString()).ToList());
-                    users = users.Where(u => idsToFilter.Contains(u.Id));
+                    if(idsToFilter.Any())    users = users.Where(u => idsToFilter.Contains(u.Id));
                 }
-                //idsToFilter.AddRange( Context.CenterAccounts.Where(c => c.CenterId == filter.centerid)
-                //    .Select(c => c.AccountId.ToString()).ToList());
-                users = users.Where(u => u.CenterId.HasValue && u.CenterId == filter.centerid.Value);
+              
 
             }
            filter.SearchKeys.ForEach(key =>
@@ -201,17 +204,18 @@ namespace Admin.Models
 
             if(model.CenterId!=0 )
             {
-                var claims = await userManager.GetClaimsAsync(model.Id);
 
-                if (!claims.Any(c => c.Type == "CenterId"))
+                var claim = await identityContex.UserClaims.FirstOrDefaultAsync(c => c.UserId == user.Id && c.ClaimType == "CenterId");
+
+                var claims = await userManager.GetClaimsAsync(user.Id);
+                if (claim!=null)
                 {
-                    userManager.AddClaim(model.Id, new System.Security.Claims.Claim("CenterId", model.CenterId.ToString()));
+                    claim.ClaimValue = model.CenterId.Value.ToString();
+                    await identityContex.SaveChangesAsync();
                 }
                 else
                 {
-                    var claim = claims.FirstOrDefault(c => c.Type == "CenterId");
-                    if (claim != null) userManager.RemoveClaim(model.Id, claim);
-                    userManager.AddClaim(model.Id, new System.Security.Claims.Claim("CenterId", model.CenterId.ToString()));
+                    await userManager.AddClaimAsync(model.Id, new System.Security.Claims.Claim("CenterId", model.CenterId.ToString()));
                 }
             }
 

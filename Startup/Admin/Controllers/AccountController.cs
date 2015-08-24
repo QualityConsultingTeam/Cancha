@@ -587,10 +587,10 @@ namespace Admin.Controllers
             var user = await UserManager.FindByIdAsync(id.ToString());
             
             // TODO agregar a user Claims 
-            var claims =  await UserManager.GetClaimsAsync(id.ToString());
+            //var claims =  await UserManager.GetClaimsAsync(id.ToString());
 
-            if (!claims.Any(c => c.Type == "CenterId")&& user.CenterId.HasValue)
-                await UserManager.AddClaimAsync(id.ToString(), new Claim("CenterId", user.CenterId.Value.ToString()));
+            //if (!claims.Any(c => c.Type == "CenterId")&& user.CenterId.HasValue)
+            //    await UserManager.AddClaimAsync(id.ToString(), new Claim("CenterId", user.CenterId.Value.ToString()));
             return user.CenterId.ToString();
         }
 
