@@ -507,9 +507,9 @@ namespace Admin.Controllers
  
         public async Task<JsonResult> GetUserNamesForSchedule(string text)
         {
-            
+           
             var users = await IdentityManagerService.GetUsersAsync(
-                new FilterOptionModel(ClaimsPrincipal.Current.Claim("CenterId"))
+                new FilterOptionModel(await GetCenterIdForLoggedUser())
                 {
                     keywords = text,
             
@@ -576,12 +576,30 @@ namespace Admin.Controllers
             }
         }
 
+        private async Task<string> GetCenterIdForLoggedUser()
+        {
+            if (User.IsInRole("Admin")) return string.Empty;
+            var centerClaim =  ClaimsPrincipal.Current.Claim("CenterId");
+
+            if (centerClaim != null) return centerClaim;
+
+            var id = new Guid(User.Identity.GetUserId());
+            var user = await UserManager.FindByIdAsync(id.ToString());
+            
+            // TODO agregar a user Claims 
+            var claims =  await UserManager.GetClaimsAsync(id.ToString());
+
+            if (!claims.Any(c => c.Type == "CenterId")&& user.CenterId.HasValue)
+                await UserManager.AddClaimAsync(id.ToString(), new Claim("CenterId", user.CenterId.Value.ToString()));
+            return user.CenterId.ToString();
+        }
+
         [Authorize(Roles = "Admin,Manager")]
         //[AllowAnonymous]
         public async Task<ActionResult> AccountMangement()
         {
             
-            var filter = new FilterOptionModel(ClaimsPrincipal.Current.Claim("CenterId")) {
+            var filter = new FilterOptionModel(await GetCenterIdForLoggedUser()) {
                 Limit = 12,
             };
             var users = await IdentityManagerService.GetUsersAsync(filter, Context);
@@ -623,7 +641,7 @@ namespace Admin.Controllers
             if (ModelState.IsValid)
             {
                 await IdentityManagerService.InsertOrUpdate(model, UserManager);
-                await CenterRepository.UpdateEmployeeCenter(model.Id, model.CenterId,new Guid(User.Identity.GetUserId()));
+                //await CenterRepository.UpdateEmployeeCenter(model.Id, model.CenterId,new Guid(User.Identity.GetUserId()));
               
                 return RedirectToAction("AccountMangement");
             }
@@ -646,6 +664,8 @@ namespace Admin.Controllers
 
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+
+        
 
         #endregion
 

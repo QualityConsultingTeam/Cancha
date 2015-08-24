@@ -169,7 +169,8 @@ namespace Admin.Models
 
         public dynamic WorkSummary { get; set; }
 
-        public int CenterId { get; set; }
+        [Display(Name ="Complejo")]
+        public int? CenterId { get; set; }
 
         [DisplayName("Nombre de Complejo")]
         public string CenterSearchName { get; set; }

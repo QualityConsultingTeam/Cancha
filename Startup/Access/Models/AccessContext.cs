@@ -59,7 +59,7 @@ namespace Access
        public DbSet<AccountAccessLevel> AccountAccess { get; set; }
 
 
-        public DbSet<CenterAccount> CenterAccounts { get; set; }
+        //public DbSet<CenterAccount> CenterAccounts { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

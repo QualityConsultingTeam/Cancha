@@ -30,22 +30,25 @@ namespace Access.Repositories
         #region Common
         public IQueryable<Booking> GetSummary(Guid userid ,bool onlyAvailables=false)
         {
-
-            // filtrar por nievel de acceso 
-            var fieldsIds = Context.Centers.Include("Fields")
-                .Where(c =>  c.Employees.Any(employee => employee.AccountId == userid))
-                .SelectMany(c => c.Fields.Select(f => f.Id)).ToList();
-        
+            
             // agregar nivel de acceso para visibilidad
                           
             IQueryable<Booking> query =Context.Bookings.Include("Field");
 
             if (onlyAvailables) query = query.Where(b => b.Status != BookingStatus.Denegado);
-            
-            if (fieldsIds.Any()) query = query.Where(b => b.Start.HasValue &&
+
+            // filtrar por nievel de acceso 
+            var centerId = ClaimsPrincipal.Current.Claim("CenterId");
+
+            if (centerId != null)
+            {
+                var centerid = Convert.ToInt32(centerId);
+                query = query.Where(b => b.Field.CenterId == centerid);
+            }
+
+             query = query.Where(b => b.Start.HasValue &&
                                                           b.End.HasValue && 
-                                                          b.Userid != Guid.Empty &&
-                                                          fieldsIds.Contains(b.Field.Id));
+                                                          b.Userid != Guid.Empty);
 
             return query;
         }

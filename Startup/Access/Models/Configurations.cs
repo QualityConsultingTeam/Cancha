@@ -100,14 +100,14 @@ namespace Access.Models
         //}
     }
 
-    internal class CenterAccountsConfig : EntityTypeConfiguration<CenterAccount>
-    {
-        public CenterAccountsConfig()
-        {
-            HasOptional(p=>p.Center).WithMany(c=> c.Employees)
-                .HasForeignKey(p=>p.CenterId).WillCascadeOnDelete(false);
-        }
-    }
+    //internal class CenterAccountsConfig : EntityTypeConfiguration<CenterAccount>
+    //{
+    //    public CenterAccountsConfig()
+    //    {
+    //        HasOptional(p=>p.Center).WithMany(c=> c.Employees)
+    //            .HasForeignKey(p=>p.CenterId).WillCascadeOnDelete(false);
+    //    }
+    //}
 
     internal class AccountAccessLevelConsfig : EntityTypeConfiguration<AccountAccessLevel>
     {

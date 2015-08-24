@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Access.Extensions;
 using Access.Models;
+using System.Security.Claims;
 
 namespace Access
 {
@@ -291,12 +292,13 @@ namespace Access
 
         public async Task<List<Field>> GetFieldsFromCenterAsync(Guid userid,string keywords="")
         {
-            int? centerId = await Context.CenterAccounts
-                            .Where(c=> c.AccountId== userid)
-                            .Select(c => c.CenterId)
-                           .FirstOrDefaultAsync() ;
+            //int? centerId = await Context.CenterAccounts
+            //                .Where(c=> c.AccountId== userid)
+            //                .Select(c => c.CenterId)
+            //               .FirstOrDefaultAsync() ;
+            var idCenter =  ClaimsPrincipal.Current.Claim("CenterId") ??"0";
 
-            return await GetFieldsFromCenterAsync(centerId ??0,keywords);
+            return await GetFieldsFromCenterAsync(Convert.ToInt32(idCenter) ,keywords);
         }
 
 

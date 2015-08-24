@@ -69,11 +69,11 @@ namespace Admin.Models
                 {
                     idsToFilter.AddRange(Context.AccountAccess.Where(al => al.CenterId == filter.centerid)
                                 .Select(c => c.UserId.ToString()).ToList());
+                    users = users.Where(u => idsToFilter.Contains(u.Id));
                 }
-                idsToFilter.AddRange( Context.CenterAccounts.Where(c => c.CenterId == filter.centerid)
-                    .Select(c => c.AccountId.ToString()).ToList());
-
-                users = users.Where(u => idsToFilter.Contains(u.Id));
+                //idsToFilter.AddRange( Context.CenterAccounts.Where(c => c.CenterId == filter.centerid)
+                //    .Select(c => c.AccountId.ToString()).ToList());
+                users = users.Where(u => u.CenterId.HasValue && u.CenterId == filter.centerid.Value);
 
             }
            filter.SearchKeys.ForEach(key =>
@@ -210,11 +210,9 @@ namespace Admin.Models
                 else
                 {
                     var claim = claims.FirstOrDefault(c => c.Type == "CenterId");
-                    if(claim!= null) userManager.RemoveClaim(model.Id, claim);
+                    if (claim != null) userManager.RemoveClaim(model.Id, claim);
                     userManager.AddClaim(model.Id, new System.Security.Claims.Claim("CenterId", model.CenterId.ToString()));
                 }
-
-
             }
 
 

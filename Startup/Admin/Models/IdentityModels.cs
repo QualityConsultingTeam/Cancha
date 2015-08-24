@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.ComponentModel;
+using System.Data.Entity.ModelConfiguration;
 
 namespace Admin.Models
 {
@@ -67,6 +68,9 @@ namespace Admin.Models
         [DisplayName("Profile Picture")]
         public string ProfilePicture { get; set; }
 
+        [Display(Name = "Complejo")]
+        public int? CenterId { get; set; }
+
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -90,10 +94,16 @@ namespace Admin.Models
             base.OnModelCreating(modelBuilder);
             // to avoid the "has no keys" errors when running Update-Database on PM
             modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id).ToTable("AspNetRoles");
-            modelBuilder.Entity<IdentityUser>().ToTable("AspNetUsers");
+
+            EntityTypeConfiguration<IdentityUser> table =  modelBuilder.Entity<IdentityUser>().ToTable("AspNetUsers");
+
             modelBuilder.Entity<IdentityUserLogin>().HasKey(l => new { l.UserId, l.LoginProvider, l.ProviderKey }).ToTable("AspNetUserLogins");
             modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId }).ToTable("AspNetUserRoles");
-            modelBuilder.Entity<IdentityUserClaim>().ToTable("AspNetUserClaims");
+          //  modelBuilder.Entity<IdentityUserClaim>().HasKey(k=>k.Id).ToTable("AspNetUserClaims");
+
+
+           
+            //    modelBuilder.Entity<IdentityUserClaim>().ToTable("AspNetUserClaims");
 
         }
     }
