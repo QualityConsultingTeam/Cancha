@@ -440,10 +440,7 @@ namespace Admin.Controllers
             return View();
         }
 
-        private void AddCustomClaims(ApplicationUser user)
-        { 
-            //user.Claims.Add();
-        }
+        
         //
         // GET: /Account/ExternalLoginFailure
         [AllowAnonymous]
@@ -507,30 +504,35 @@ namespace Admin.Controllers
 
             return Json(centers, JsonRequestBehavior.AllowGet);
         }
-
-        [AllowAnonymous]
-        public async Task<JsonResult> GetUserNames(string text)
+ 
+        public async Task<JsonResult> GetUserNamesForSchedule(string text)
         {
-            var users = await IdentityManagerService.GetUsersAsync(new FilterOptionModel() { keywords= text},Context,onlyUsers:true);
+            
+            var users = await IdentityManagerService.GetUsersAsync(
+                new FilterOptionModel(ClaimsPrincipal.Current.Claim("CenterId"))
+                {
+                    keywords = text,
+            
+                },Context,onlyUsers:true);
 
             var model = users.ToIdentityUserViewModel()
                 .Select(u =>
                 new Autocomplete
                 {
                     Id = (new Guid( u.Id)).GuidToInt(),
-                    Name = string.Format("{0}-{1}", u.FirstName, u.Email)
+                    Name = string.Format("{0} - {1}", u.FirstName, u.Email)
                 }).ToList() ;
 
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
-        [AllowAnonymous]
-        public async Task<JsonResult> GetAllUserNames()
-        {
-            var users = await IdentityManagerService.GetAllUserNames(Context);
+        //[AllowAnonymous]
+        //public async Task<JsonResult> GetAllUserNames()
+        //{
+        //    var users = await IdentityManagerService.GetAllUserNames(Context);
 
-            return Json(users.ToIdentityUserViewModel(), JsonRequestBehavior.AllowGet);
-        }
+        //    return Json(users.ToIdentityUserViewModel(), JsonRequestBehavior.AllowGet);
+        //}
 
       
         [HttpPost]
@@ -578,7 +580,10 @@ namespace Admin.Controllers
         //[AllowAnonymous]
         public async Task<ActionResult> AccountMangement()
         {
-            var filter = new FilterOptionModel() { Limit = 12 };
+            
+            var filter = new FilterOptionModel(ClaimsPrincipal.Current.Claim("CenterId")) {
+                Limit = 12,
+            };
             var users = await IdentityManagerService.GetUsersAsync(filter, Context);
             ViewBag.PageLimit = await IdentityManagerService.GetPageLimit(filter, Context);
 
@@ -619,6 +624,7 @@ namespace Admin.Controllers
             {
                 await IdentityManagerService.InsertOrUpdate(model, UserManager);
                 await CenterRepository.UpdateEmployeeCenter(model.Id, model.CenterId,new Guid(User.Identity.GetUserId()));
+              
                 return RedirectToAction("AccountMangement");
             }
             ViewBag.Roles = new SelectList(await IdentityManagerService.GetRolesAsync());

@@ -159,7 +159,7 @@
             .AutoBind(false)
             .MinLength(3)
             //.Template("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Name\\#")
-            .DataSource(source => source.Read(r => r.Action("GetUserNames", "Account")).ServerFiltering(true)).ToClientTemplate()
+            .DataSource(source => source.Read(r => r.Action("GetUserNamesForSchedule", "Account")).ServerFiltering(true)).ToClientTemplate()
         )
     </div>
 

@@ -18,6 +18,12 @@ namespace Access.Models
             Limit = 10;
 
         }
+        public FilterOptionModel(string centerIdClaim )
+        {
+            page = 1;
+            Limit = 10;
+            centerid = !string.IsNullOrEmpty(centerIdClaim) ? Convert.ToInt32(centerIdClaim) : 0;
+        }
         public string keywords { get; set; }
 
         public DateTime? date { get; set; }

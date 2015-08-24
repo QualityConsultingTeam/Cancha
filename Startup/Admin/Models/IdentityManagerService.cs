@@ -57,17 +57,23 @@ namespace Admin.Models
                          into gu
                          from defaultUserRole in gu.DefaultIfEmpty()
                          where defaultUserRole == null
-                         let id = new Guid(user.Id)
-                         join level in Context.AccountAccess on id equals level.UserId
                          select user);
             }
 
-            if (filter.centerid.HasValue)
+            if (filter.centerid.HasValue && filter.centerid!= 0)
             {
-                var usersInCenter = Context.CenterAccounts.Where(c => c.CenterId == filter.centerid)
-                    .Select(c => c.AccountId.ToString()).ToList();
+                var idsToFilter = new List<string>();
+                // TODO verificar si el rendimiento es impactado al hacer QUerys separadaas.
 
-                users = users.Where(u => usersInCenter.Contains(u.Id));
+                if (!onlyUsers)
+                {
+                    idsToFilter.AddRange(Context.AccountAccess.Where(al => al.CenterId == filter.centerid)
+                                .Select(c => c.UserId.ToString()).ToList());
+                }
+                idsToFilter.AddRange( Context.CenterAccounts.Where(c => c.CenterId == filter.centerid)
+                    .Select(c => c.AccountId.ToString()).ToList());
+
+                users = users.Where(u => idsToFilter.Contains(u.Id));
 
             }
            filter.SearchKeys.ForEach(key =>
@@ -92,6 +98,7 @@ namespace Admin.Models
         {
 
             IQueryable<ApplicationUser> users = CommonSearch(filter,Context,onlyUsers);
+             
 
             var accounts = await  users.OrderBy(u => u.UserName).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
 
@@ -192,6 +199,23 @@ namespace Admin.Models
             }
             roles.Where(r => r != model.Role).ToList().ForEach(role => userManager.RemoveFromRole(model.Id, role));
 
+            if(model.CenterId!=0 )
+            {
+                var claims = await userManager.GetClaimsAsync(model.Id);
+
+                if (!claims.Any(c => c.Type == "CenterId"))
+                {
+                    userManager.AddClaim(model.Id, new System.Security.Claims.Claim("CenterId", model.CenterId.ToString()));
+                }
+                else
+                {
+                    var claim = claims.FirstOrDefault(c => c.Type == "CenterId");
+                    if(claim!= null) userManager.RemoveClaim(model.Id, claim);
+                    userManager.AddClaim(model.Id, new System.Security.Claims.Claim("CenterId", model.CenterId.ToString()));
+                }
+
+
+            }
 
 
             return true;
