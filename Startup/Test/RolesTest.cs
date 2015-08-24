@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Admin.Models;
 using Access;
+using Admin;
+using System.Linq;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Access.Extensions;
 
 namespace Test
 {
@@ -66,12 +70,37 @@ namespace Test
             //
             // TODO: Add test logic here
             //
-            var service = new IdentityManagerService(ApplicationDbContext.Create());
+            var context = AccessContext.Create();
+            var identityContext = ApplicationDbContext.Create();
+            var service = new IdentityManagerService(identityContext);
 
-            var users = service.GetUsersAsync(new Access.Models.FilterOptionModel(), AccessContext.Create()).Result;
+            var users = service.GetUsersAsync(new Access.Models.FilterOptionModel(), context).Result;
+
+            var center = context.Centers.FirstOrDefault();
+
+            var user = users[1];
+
+            user.CenterId = center.Id;
+
+            var userStore = new UserStore<ApplicationUser>(identityContext);
+            var manager = new ApplicationUserManager(userStore);
+
+            var model = new IdentityUserViewModel();
+            model.Assign(user);
+            
+             var result = service.InsertOrUpdate(model,manager).Result;
 
             Assert.IsNotNull(users);
             
         }
+
+        [TestMethod]
+        public void TestUserClaims()
+        {
+            var service = new IdentityManagerService(ApplicationDbContext.Create());
+
+            
+        }
+            
     }
 }

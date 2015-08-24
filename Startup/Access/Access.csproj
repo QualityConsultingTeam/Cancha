@@ -62,9 +62,9 @@
     <Compile Include="Extensions\FieldExtensions.cs" />
     <Compile Include="Extensions\IQueryableExtensions.cs" />
     <Compile Include="Extensions\TokenExtensions.cs" />
-    <Compile Include="Migrations\201508241437536_update.cs" />
-    <Compile Include="Migrations\201508241437536_update.Designer.cs">
-      <DependentUpon>201508241437536_update.cs</DependentUpon>
+    <Compile Include="Migrations\201508241511382_update1.cs" />
+    <Compile Include="Migrations\201508241511382_update1.Designer.cs">
+      <DependentUpon>201508241511382_update1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccessContext.cs" />
@@ -108,8 +108,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201508241437536_update.resx">
-      <DependentUpon>201508241437536_update.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201508241511382_update1.resx">
+      <DependentUpon>201508241511382_update1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
