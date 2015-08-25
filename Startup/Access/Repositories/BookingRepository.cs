@@ -34,19 +34,19 @@ namespace Access.Repositories
             // agregar nivel de acceso para visibilidad
 
             IQueryable<Booking> query = Context.Bookings.Include(b => b.Field);
-            
+
             //// filtrar por nievel de acceso 
-            //var centerId = ClaimsPrincipal.Current.CenterId();
+            var centerId = ClaimsPrincipal.Current.CenterId();
 
-            //if (centerId.HasValue)
-            //{
-            //    query = (from booking in Context.Bookings
-            //             join field in Context.Fields.Where(f => f.CenterId == centerId)
-            //             on booking.Idcancha equals field.Id
-            //             select booking);
+            if (centerId.HasValue)
+            {
+                query = (from booking in Context.Bookings
+                         join field in Context.Fields.Where(f => f.CenterId == centerId)
+                         on booking.Idcancha equals field.Id
+                         select booking);
 
-            //}
-            //else Context.Bookings.Include(b => b.Field);
+            }
+            else Context.Bookings.Include(b => b.Field);
 
             if (onlyAvailables) query = query.Where(b => b.Status != BookingStatus.Denegado);
 
@@ -70,7 +70,7 @@ namespace Access.Repositories
 
             if (filter.BookingStatus.HasValue) query = query.Where(b => b.Status == filter.BookingStatus.Value);
 
-             if (filter.centerid.HasValue) query = query.Where(c => c.Field.CenterId == filter.centerid);
+           //  if (filter.centerid.HasValue) query = query.Where(c => c.Field.CenterId == filter.centerid);
 
             return filter.HasOrderByProperty ? query.CustomOrderby(filter) : query.OrderBy(o => o.Start);
         }
