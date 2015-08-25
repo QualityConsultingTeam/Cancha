@@ -23,10 +23,12 @@ namespace Access.Extensions
             return claim != null ? claim.Value : null;
         }
 
-        //public static void Add(this ClaimsPrincipal principal, AccountAccessLevel access)
-        //{
-             
-        //}
+        public static int? CenterId (this ClaimsPrincipal principal)
+        {
+            var claim = principal.Claim("CenterId");
+
+            return !string.IsNullOrEmpty(claim) ?( int?) Convert.ToInt32(claim) : null;
+        }
 
         
     }

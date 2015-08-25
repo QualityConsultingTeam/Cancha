@@ -38,7 +38,7 @@ namespace Access.Repositories
             if (onlyAvailables) query = query.Where(b => b.Status != BookingStatus.Denegado);
 
             // filtrar por nievel de acceso 
-            var centerId = ClaimsPrincipal.Current.Claim("CenterId");
+            var centerId = ClaimsPrincipal.Current.CenterId();
 
             if (centerId != null)
             {
@@ -64,6 +64,8 @@ namespace Access.Repositories
             if (filter.end.HasValue) query = query.Where(q => q.End <= filter.end.Value);
 
             if (filter.BookingStatus.HasValue) query = query.Where(b => b.Status == filter.BookingStatus.Value);
+
+            if (filter.centerid.HasValue) query = query.Where(c => c.Field.CenterId == filter.centerid);
 
             return filter.HasOrderByProperty ? query.CustomOrderby(filter) : query.OrderBy(o => o.Start);
         }

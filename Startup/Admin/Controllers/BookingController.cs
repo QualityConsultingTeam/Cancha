@@ -13,6 +13,8 @@ using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using Microsoft.AspNet.Identity.Owin;
 using System.Globalization;
+using System.Security.Claims;
+using Access.Extensions;
 
 namespace Admin.Controllers
 {
@@ -78,6 +80,7 @@ namespace Admin.Controllers
 
         public async Task<ActionResult> SearchAync(FilterOptionModel filter)
         {
+            filter.centerid = ClaimsPrincipal.Current.CenterId();
             var model = await Repository.GetSummaryAsync(filter,LoggedUser.Value);
             ViewBag.PageLimit = await Repository.GetPageLimit(filter, LoggedUser.Value) ;
 

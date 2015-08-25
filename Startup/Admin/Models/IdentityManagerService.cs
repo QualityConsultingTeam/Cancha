@@ -52,6 +52,7 @@ namespace Admin.Models
                          select user);
             }
             //To Exclude any types of admin
+            // los usuarios que no tienen rol asignado es para el cliente final que hace reservas.
             if(string.IsNullOrEmpty(filter.role) && onlyUsers)
             {
                 users = (from user in users
@@ -64,19 +65,21 @@ namespace Admin.Models
 
             if (filter.centerid.HasValue && filter.centerid!= 0)
             {
-                var idsToFilter = new List<string>();
+                var idsToFilter =  
                 // TODO verificar si el rendimiento es impactado al hacer QUerys separadaas.
-
-                
-                users = users.Where(u => u.CenterId.HasValue && u.CenterId == filter.centerid.Value);
-
-                if (!onlyUsers)
+                  (Context.AccountAccess.Where(al => al.CenterId == filter.centerid)
+                                 .Select(c => c.UserId.ToString()).ToList());
+                if (onlyUsers)
                 {
-                    idsToFilter.AddRange(Context.AccountAccess.Where(al => al.CenterId == filter.centerid)
-                                .Select(c => c.UserId.ToString()).ToList());
-                    if(idsToFilter.Any())    users = users.Where(u => idsToFilter.Contains(u.Id));
+                    if (idsToFilter.Any()) users = users.Where(u => idsToFilter.Contains(u.Id));
                 }
-              
+             
+                else
+                {
+                    users = users.Where(u =>
+                         idsToFilter.Contains(u.Id) ||
+                         (u.CenterId.HasValue && u.CenterId == filter.centerid.Value));
+                }
 
             }
            filter.SearchKeys.ForEach(key =>
@@ -193,7 +196,7 @@ namespace Admin.Models
 
             if (!roles.Any() && !string.IsNullOrEmpty(model.Role))
             {
-                var res = userManager.AddToRoleAsync(model.Id, model.Role);
+                var res = await userManager.AddToRoleAsync(model.Id, model.Role);
             }
 
             if (roles.All(r => r != model.Role) &&roles.Any())

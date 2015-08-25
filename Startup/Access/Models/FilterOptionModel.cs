@@ -24,6 +24,12 @@ namespace Access.Models
             Limit = 10;
             centerid = !string.IsNullOrEmpty(centerIdClaim) ? Convert.ToInt32(centerIdClaim) : 0;
         }
+        public FilterOptionModel(int? centerId)
+        {
+            page = 1;
+            Limit = 10;
+            this. centerid = centerId;
+        }
         public string keywords { get; set; }
 
         public DateTime? date { get; set; }

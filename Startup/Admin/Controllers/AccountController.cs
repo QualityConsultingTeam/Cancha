@@ -509,7 +509,7 @@ namespace Admin.Controllers
         {
            
             var users = await IdentityManagerService.GetUsersAsync(
-                new FilterOptionModel(await GetCenterIdForLoggedUser())
+                new FilterOptionModel(ClaimsPrincipal.Current.CenterId())
                 {
                     keywords = text,
             
@@ -526,14 +526,7 @@ namespace Admin.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
-        //[AllowAnonymous]
-        //public async Task<JsonResult> GetAllUserNames()
-        //{
-        //    var users = await IdentityManagerService.GetAllUserNames(Context);
-
-        //    return Json(users.ToIdentityUserViewModel(), JsonRequestBehavior.AllowGet);
-        //}
-
+      
       
         [HttpPost]
 
@@ -576,30 +569,14 @@ namespace Admin.Controllers
             }
         }
 
-        private async Task<string> GetCenterIdForLoggedUser()
-        {
-            if (User.IsInRole("Admin")) return string.Empty;
-            var centerClaim =  ClaimsPrincipal.Current.Claim("CenterId");
-
-            if (centerClaim != null) return centerClaim;
-
-            var id = new Guid(User.Identity.GetUserId());
-            var user = await UserManager.FindByIdAsync(id.ToString());
-            
-            // TODO agregar a user Claims 
-            //var claims =  await UserManager.GetClaimsAsync(id.ToString());
-
-            //if (!claims.Any(c => c.Type == "CenterId")&& user.CenterId.HasValue)
-            //    await UserManager.AddClaimAsync(id.ToString(), new Claim("CenterId", user.CenterId.Value.ToString()));
-            return user.CenterId.ToString();
-        }
+       
 
         [Authorize(Roles = "Admin,Manager")]
         //[AllowAnonymous]
         public async Task<ActionResult> AccountMangement()
         {
             
-            var filter = new FilterOptionModel(await GetCenterIdForLoggedUser()) {
+            var filter = new FilterOptionModel(ClaimsPrincipal.Current.CenterId()) {
                 Limit = 12,
             };
             var users = await IdentityManagerService.GetUsersAsync(filter, Context);
@@ -614,6 +591,8 @@ namespace Admin.Controllers
         //[Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult> SearchAccounts(FilterOptionModel filter)
         {
+            filter.centerid = ClaimsPrincipal.Current.CenterId();
+
             var users = await IdentityManagerService.GetUsersAsync(filter,Context);
 
             var model =  users.ToIdentityUserViewModel();
@@ -656,14 +635,14 @@ namespace Admin.Controllers
             return View(await model.ToIdentityUserViewModelAsync(IdentityManagerService));
         }
 
-        public async Task<JsonResult> GetApplicationUsers()
-        {
-            var users = await IdentityManagerService.GetApplicationUsers();
+        //public async Task<JsonResult> GetApplicationUsers()
+        //{
+        //    var users = await IdentityManagerService.GetApplicationUsers();
 
-            var model = users.Select(u => u.ToIdentityUserViewModel()).ToList();
+        //    var model = users.Select(u => u.ToIdentityUserViewModel()).ToList();
 
-            return Json(model, JsonRequestBehavior.AllowGet);
-        }
+        //    return Json(model, JsonRequestBehavior.AllowGet);
+        //}
 
         
 

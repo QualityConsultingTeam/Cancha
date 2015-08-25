@@ -102,16 +102,19 @@
                                     @Html.ValidationMessageFor(model => model.Category)
                                 </div>
                             </div>
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Role, new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.DropDownListFor(model => model.Role, (IEnumerable<SelectListItem>)ViewBag.Roles, "Asignar Rol", new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.Role)
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Role, new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.DropDownListFor(model => model.Role, (IEnumerable<SelectListItem>)ViewBag.Roles, "Asignar Rol", new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Role)
+                                    </div>
                                 </div>
-                            </div>
+                            }
 
                             <div class="form-group">
-                                @Html.LabelFor(model => model.ForceChangePassword, new {@class = "control-label col-md-2"})
+                                @Html.LabelFor(model => model.ForceChangePassword, new { @class = "control-label col-md-2" })
                                 <div class="col-md-10">
 
                                     @Html.CheckBoxFor(model => model.ForceChangePassword,
@@ -132,7 +135,7 @@
                                 <div class="collapse" id="collapseExample">
                                     <div class="well">
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.Password, new {@class = "control-label col-md-2"})
+                                            @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
                                                 @Html.EditorFor(model => model.Password)
                                                 @Html.ValidationMessageFor(model => model.Password)
@@ -150,16 +153,18 @@
                                     Html.HiddenFor(model => model.ForceChangePassword);
                                     Html.HiddenFor(model => model.Password);
                                 }*@
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.CenterSearchName, new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.HiddenFor(m => m.CenterId)
-                                    @Html.AutocompleteFor(m => m.CenterSearchName, model => model.CenterId, "CenterAutoComplete", "RootAdmin", true)
-                                    @*@Html.AutocompleteFor(model => model.Customer.SearchName, model => model.CustomerId, "CustomerAutoComplete", "Checkin", true)*@
-                                    @Html.ValidationMessageFor(model => model.Password)
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CenterSearchName, new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.HiddenFor(m => m.CenterId)
+                                        @Html.AutocompleteFor(m => m.CenterSearchName, model => model.CenterId, "CenterAutoComplete", "RootAdmin", true)
+                                        @*@Html.AutocompleteFor(model => model.Customer.SearchName, model => model.CustomerId, "CustomerAutoComplete", "Checkin", true)*@
+                                        @Html.ValidationMessageFor(model => model.Password)
+                                    </div>
                                 </div>
-                            </div>
+                            }
 
 
                             <div class="form-group">
