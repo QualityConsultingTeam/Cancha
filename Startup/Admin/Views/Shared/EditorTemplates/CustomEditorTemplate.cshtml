@@ -151,10 +151,10 @@
 
     <div data-container-for="UserId" class="k-edit-field">
      
-        @(Html.Kendo().ComboBoxFor(model => model.Userid)
-            .HtmlAttributes(new { data_bind = "value:UserId", style = "width: 300px" })
+        @(Html.Kendo().ComboBoxFor(model => model.UserKey)
+            .HtmlAttributes(new { data_bind = "value:UserKey", style = "width: 300px" })
             .DataTextField("Name")
-            .DataValueField("UserKey")
+            .DataValueField("Id")
             .Filter(FilterType.Contains)
             .AutoBind(false)
             .MinLength(3)

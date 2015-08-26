@@ -3,7 +3,7 @@
     ViewBag.Title = "Calendario";
 
     if (Request.IsAjaxRequest())
-     {
+    {
         Layout = null;
     }
     var options = new AjaxOptions()
@@ -13,8 +13,10 @@
         LoadingElementId = "loader",
         UpdateTargetId = "BookingListSection"
     };
-}
 
+    var name = Model != null ? Model.Name : "ADMINISTRADOR DE LA PLATAFORMA";
+}
+@model Center
 @Html.Partial("KendoRef")  
 
 <div class="row wrapper border-bottom white-bg page-heading">
@@ -38,6 +40,9 @@
  
 <div class="wrapper wrapper-content animated fadeInRightBig" id="bookingAdminSection" >
 
+    <div class="row">
+        <h2>Complejo : @name</h2>
+    </div>
 
     <div class="row" id="schedulerContainer">
 

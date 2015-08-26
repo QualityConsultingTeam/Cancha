@@ -12,8 +12,10 @@
         LoadingElementId = "loader",
         UpdateTargetId = "BookingListSection"
     };
+
+    var name = Model != null ? Model.Name : "ADMINISTRADOR DE LA PLATAFORMA";
 }
-@model  IEnumerable<Booking>
+@model   Center
 
 @Scripts.Render("~/plugins/knockout")
 
@@ -23,13 +25,13 @@
         <h2> </h2>
         <ol class="breadcrumb">
             <li>
-                <a href="#"> </a>
+                <a href="#">  </a>
             </li>
             <li>
 
             </li>
             <li class="active">
-                <strong> </strong>
+                <strong>  </strong>
             </li>
         </ol>
     </div>
@@ -39,9 +41,11 @@
 <div class="wrapper wrapper-content animated fadeInRightBig" id="bookingAdminSection" >
     
     
-     
                             <div class="row">
-                                <h2>Confirmacion de Reservas </h2>
+                                <h2>Complejo : @name</h2>
+                            </div>
+                            <div class="row">
+                                <h3>Confirmacion de Reservas </h3>
                             </div>
                             <div class="row">
                                 @using (Ajax.BeginForm("SearchAync", "Booking", null, new AjaxOptions

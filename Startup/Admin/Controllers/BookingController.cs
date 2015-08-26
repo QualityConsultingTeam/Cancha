@@ -28,18 +28,28 @@ namespace Admin.Controllers
             return View();
         }
 
-
-        public  ActionResult Manage()
+        private async Task<Center> GetCenterAsync()
         {
-            return View();
+            var centerId = ClaimsPrincipal.Current.CenterId();
+            var repo = new CenterRepository() { Context = Context };
+            return  centerId.HasValue ? (await repo.FindByIdAsync(centerId.Value)) : null;
         }
 
+        public async Task<ActionResult> Manage()
+        {
+            return View(await GetCenterAsync());
+        }
+
+        private object await(CenterRepository centerRepository)
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task<ActionResult> Calendar()
         {
             var repo = new FieldsRepository() { Context = Context };
             ViewBag.fields = await repo.GetFieldsFromCenterAsync(LoggedUser.Value);
-            return View();
+            return View(await GetCenterAsync());
         }
          
 
@@ -140,19 +150,23 @@ namespace Admin.Controllers
 
             return Json(new[] { task }.ToDataSourceResult(request, ModelState));
         }
-
+        [Globalization]
         public virtual async Task<JsonResult> Create([DataSourceRequest] DataSourceRequest request, BookingViewModel task)
         {
-            if (ModelState.IsValid)
-            {
+            try { 
                 var booking = new Booking();
                 booking.CopyFrom(task);
+                booking.Price = task.ComputePrice();
+                booking.Start = task.Start.ToLocalTime();
+                booking.End = task.End.ToLocalTime();
                 Repository.InsertOrUpdate(booking);
                 await Repository.SaveAsync(LoggedUser);
-                
+                return Json(new[] { task }.ToDataSourceResult(request, ModelState));
             }
-
-            return Json(new[] { task }.ToDataSourceResult(request, ModelState));
+            catch(Exception ex)
+            {
+                return Json(null);
+            } 
         }
 
         public virtual async Task<JsonResult> Update([DataSourceRequest] DataSourceRequest request, BookingViewModel task)

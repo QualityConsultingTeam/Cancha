@@ -21,5 +21,7 @@ namespace Access
 
             return (DateTime.TryParse(date, out result)) ? result : DateTime.Now ;
         }
+
+       
     }
 }

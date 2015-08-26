@@ -517,9 +517,9 @@ namespace Admin.Controllers
 
             var model = users.ToIdentityUserViewModel()
                 .Select(u =>
-                new Autocomplete
+                new AutoCompleteModel
                 {
-                    Id = (new Guid( u.Id)).GuidToInt(),
+                    Id = u.Id,
                     Name = string.Format("{0} - {1}", u.FirstName, u.Email)
                 }).ToList() ;
 

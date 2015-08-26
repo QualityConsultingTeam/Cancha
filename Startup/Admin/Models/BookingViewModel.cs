@@ -31,6 +31,10 @@ namespace Admin.Models
         [DisplayName("Final")]
         public DateTime End { get; set; }
 
+        public string StartString { get; set; }
+
+        public string EndString { get; set; }
+
         [DisplayName("Cancha")]
         public int? Idcancha { get; set; }
 
@@ -47,8 +51,8 @@ namespace Admin.Models
         {
             get
             {
-                //logica de conversion por el bug de CustomEditor en el Scheduler
-                return _userId != Guid.Empty ? _userId : (_userId = UserKey.IntToGuid());
+                return _userId != Guid.Empty ? _userId
+                     : (_userId = !string.IsNullOrEmpty(UserKey)? new Guid(UserKey) : Guid.Empty);
             }
             set
             {
@@ -59,7 +63,13 @@ namespace Admin.Models
         private Guid _userId { get; set; }
 
         [DisplayName("LLave Cliente")]
-        public int UserKey  { get; set; }
+        public string UserKey
+        {
+            get;
+            set;
+        }
+
+        
 
         public UserInfo UserInfo { get; set; }
 
@@ -74,6 +84,15 @@ namespace Admin.Models
         public bool HasPromo
         {
             get { return CustomPrice.HasValue || Off.HasValue; }
+        }
+
+        internal decimal? ComputePrice()
+        {
+            if (CustomPrice.HasValue) return CustomPrice.Value;
+
+            // Apply Discount
+            return 0;
+            
         }
     }
 }
