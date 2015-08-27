@@ -45,6 +45,7 @@ namespace Admin.Controllers
             throw new NotImplementedException();
         }
 
+        [Globalization]
         public async Task<ActionResult> Calendar()
         {
             var repo = new FieldsRepository() { Context = Context };
@@ -113,7 +114,7 @@ namespace Admin.Controllers
 
 
         #region Scheduler Functions
-
+        [Globalization]
         public virtual async Task<JsonResult> Read([DataSourceRequest] DataSourceRequest request)
         {
 
@@ -122,8 +123,8 @@ namespace Admin.Controllers
                 {
                     Id = b.Id,
                     Title = b.Field.Name,
-                    Start = b.Start.Value,
-                    End = b.End.Value,
+                    Start =  b.Start.Value ,
+                    End =  b.End.Value,
                     Userid = b.Userid,
                     Description = "",
                     Idcancha = b.Idcancha,
@@ -236,7 +237,10 @@ namespace Admin.Controllers
             return View("Partials/UserSummary", model);
         }
 
- 
+
+       
+        
+
         #endregion
     }
 }

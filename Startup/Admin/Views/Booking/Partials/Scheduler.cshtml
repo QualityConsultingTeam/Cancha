@@ -3,6 +3,8 @@
     Layout = null;
     var date = DateTime.Now;
     var CenterId = ViewBag.centerId != null ? ((int)ViewBag.centerId) : 0;
+
+    var currentTimeZone = TimeZone.CurrentTimeZone.DaylightName ;
 }
 
 
@@ -70,7 +72,8 @@
         m.DeleteWindowTitle("Borrar registro");
         m.Destroy("Eliminar");
     })
-    .Timezone("Etc/UTC")
+    //.Timezone("Etc/UTC")
+   //.Timezone(currentTimeZone)
    .DataSource(d => d
         .Model(m =>
         {

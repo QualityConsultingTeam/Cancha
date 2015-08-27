@@ -369,8 +369,8 @@ namespace Admin.Models
             foreach (var item in data)
             {
                 item.UserInfo = users.FirstOrDefault(u => u.Id == item.Userid) ?? new UserInfo();
-                item.Start = DateTime.SpecifyKind(item.Start, DateTimeKind.Utc);
-                item.End= DateTime.SpecifyKind(item.End, DateTimeKind.Utc);
+                item.Start = item.Start;// DateTime.SpecifyKind(item.Start, DateTimeKind.Utc);
+                item.End = item.End; //DateTime.SpecifyKind(item.End, DateTimeKind.Utc);
                 if(item.UserInfo!=null && !string.IsNullOrEmpty(item.UserInfo.Name)) 
                 {
                     item.Title += " "+ item.UserInfo.Name;

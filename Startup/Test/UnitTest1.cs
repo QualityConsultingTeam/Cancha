@@ -114,6 +114,17 @@ namespace Test
             return new Random().Next(20, 30);
         }
 
+        [TestMethod]
+        public void TimezoneTest()
+        {
+
+            var date = DateTime.Now;
+
+            var universal = date.ToUniversalTime();
+            var utc = universal.ToLocalTime();
+
+            
+        }
 
 
     }
