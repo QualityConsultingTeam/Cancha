@@ -17,6 +17,11 @@ namespace WebApi
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
+            config.Formatters.JsonFormatter.SerializerSettings = new Newtonsoft.Json.JsonSerializerSettings
+            {
+                
+            };
+
             // Web API routes
             config.MapHttpAttributeRoutes();
 

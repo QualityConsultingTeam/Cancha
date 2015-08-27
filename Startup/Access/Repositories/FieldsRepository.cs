@@ -117,11 +117,11 @@ namespace Access
                 //&& b.End.HasValue && endTimes.Contains(b.End.Value) 
                                                 );
 
-            var data1 = await (from field in fields.AsNoTracking()
-                              select new
-                              {
-                                  field = field,                                 
-                              }).ToListAsync();
+            //var data1 = await (from field in fields.AsNoTracking()
+            //                  select new
+            //                  {
+            //                      field = field,                                 
+            //                  }).ToListAsync();
 
             var data = await (from field in fields.AsNoTracking()
                               join center in Context.Centers.AsNoTracking() on field.CenterId equals center.Id
