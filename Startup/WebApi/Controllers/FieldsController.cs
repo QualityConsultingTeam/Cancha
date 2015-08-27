@@ -14,9 +14,10 @@ namespace WebApi.Controllers
     {
 
         [HttpGet]
-        public async Task< IHttpActionResult> Fields(string keywords="" ,string lat ="", string lon="")
+        [Route("api/canchas")]
+        public async Task< IHttpActionResult> Fields(string keywords="" ,string lat ="", string lon="",DateTime? date =null)
         {
-            var filter = new FilterOptionModel() { keywords = keywords, lat = lat, lon = lon };
+            var filter = new FilterOptionModel() { keywords = keywords, lat = lat, lon = lon, date = date };
 
             var model = await Repository.FullSearchAsync(filter);
 
@@ -24,5 +25,17 @@ namespace WebApi.Controllers
 
             return Ok(model);
          }
+
+        [HttpPost]
+        [Route("api/canchas")]
+        public async Task<IHttpActionResult> Fields(FilterOptionModel filter)
+        {
+            
+            var model = await Repository.FullSearchAsync(filter);
+
+            if (model == null) return NotFound();
+
+            return Ok(model);
+        }
     }
 }
