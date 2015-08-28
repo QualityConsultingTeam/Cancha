@@ -104,9 +104,9 @@ namespace Admin.Models
         {
 
             IQueryable<ApplicationUser> users = CommonSearch(filter,Context,onlyUsers);
-             
+           
 
-            var accounts = await  users.OrderBy(u => u.UserName).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
+            var accounts = await  users.Include(u=> u.Claims).OrderBy(u => u.UserName).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
 
             //refresh profile pictures from extenal login
 

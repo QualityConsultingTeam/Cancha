@@ -259,11 +259,16 @@
     <Content Include="Content\email.css" />
     <Content Include="Content\kendo\kendo.common-material.core.min.css" />
     <Content Include="Content\kendo\kendo.common-material.min.css" />
+    <Content Include="Content\kendo\kendo.common-office365.min.css" />
     <Content Include="Content\kendo\kendo.common.core.min.css" />
     <Content Include="Content\kendo\kendo.common.min.css" />
     <Content Include="Content\kendo\kendo.dataviz.material.min.css" />
+    <Content Include="Content\kendo\kendo.dataviz.office365.min.css" />
     <Content Include="Content\kendo\kendo.material.min.css" />
     <Content Include="Content\kendo\kendo.material.mobile.min.css" />
+    <Content Include="Content\kendo\kendo.mobile.office365.min.css" />
+    <Content Include="Content\kendo\kendo.office365.min.css" />
+    <Content Include="Content\kendo\kendo.office365.mobile.min.css" />
     <Content Include="Content\kendo\Material\editor.png" />
     <Content Include="Content\kendo\Material\imagebrowser.png" />
     <Content Include="Content\kendo\Material\indeterminate.gif" />
@@ -489,7 +494,6 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\plugins\bootstrap-rtl\bootstrap-rtl.css.map" />
-    <Content Include="Images\Thumbs.db" />
     <Content Include="fonts\font-awesome\fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\font-awesome\fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\font-awesome\fonts\fontawesome-webfont.woff" />
@@ -1561,6 +1565,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\kendo\Office365\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
