@@ -281,6 +281,20 @@
     <Content Include="Content\kendo\Material\sprite_2x.png" />
     <Content Include="Content\kendo\Material\sprite_kpi.png" />
     <Content Include="Content\kendo\Material\sprite_kpi_2x.png" />
+    <Content Include="Content\kendo\Office365\editor.png" />
+    <Content Include="Content\kendo\Office365\imagebrowser.png" />
+    <Content Include="Content\kendo\Office365\indeterminate.gif" />
+    <Content Include="Content\kendo\Office365\loading-image.gif" />
+    <Content Include="Content\kendo\Office365\loading.gif" />
+    <Content Include="Content\kendo\Office365\loading_2x.gif" />
+    <Content Include="Content\kendo\Office365\markers.png" />
+    <Content Include="Content\kendo\Office365\markers_2x.png" />
+    <Content Include="Content\kendo\Office365\slider-h.gif" />
+    <Content Include="Content\kendo\Office365\slider-v.gif" />
+    <Content Include="Content\kendo\Office365\sprite.png" />
+    <Content Include="Content\kendo\Office365\sprite_2x.png" />
+    <Content Include="Content\kendo\Office365\sprite_kpi.png" />
+    <Content Include="Content\kendo\Office365\sprite_kpi_2x.png" />
     <Content Include="Content\landing\avatar_all.png" />
     <Content Include="Content\landing\header_one.jpg" />
     <Content Include="Content\landing\header_two.jpg" />
@@ -549,6 +563,7 @@
     <Content Include="Content\plugins\footable\fonts\footable.ttf" />
     <Content Include="Content\plugins\footable\fonts\footable.woff" />
     <Content Include="ApplicationInsights.config" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Properties\PublishProfiles\enlacancha - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\enlacancha - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\enlacancha.pubxml" />
@@ -1565,7 +1580,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\kendo\Office365\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
