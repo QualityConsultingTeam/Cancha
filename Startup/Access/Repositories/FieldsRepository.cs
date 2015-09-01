@@ -181,8 +181,8 @@ namespace Access
                 item.field.Cost = item.cost;
 
                 //filtrar nuevamente los bookings tomando en cuenta los horarios de inicio del centro.
-                //var date = item.field.Bookings.Where(b => b.Start.HasValue).Select(b => b.Start.Value.Date).FirstOrDefault();
-                var date = DateTime.Now.Date;
+                var date = item.field.Bookings.Where(b => b.Start.HasValue).Select(b => b.Start.Value.Date).FirstOrDefault();
+                //var date = DateTime.Now.Date;
 
                 var centerOpenTime = date.AddHours(item.center.Opentime);
 
