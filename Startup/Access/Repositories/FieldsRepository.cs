@@ -188,14 +188,9 @@ namespace Access
                 var centerEndTime = date.AddHours(item.center.Closetime);
 
                 var resultBooks = item.field.Bookings;
-
-                Func<Booking, DateTime, DateTime, bool> IsOnCenterWorkRange = (book, open, close) =>
-                   {
-                       return book.Start >= open && book.End <= close;
-                   };
-
+                 
                 item.field.Bookings = item.field.Bookings
-                    .Where(book=> IsOnCenterWorkRange(book,centerEndTime,centerEndTime)).ToList();
+                    .Where(book=> IsOnWorkRange(book,centerOpenTime,centerEndTime)).ToList();
 
                 // TOOD el usuario esta buscando horarios en la madrugada supongo 
                 //so , preguntar a Juan Si requiere agregar nuevamente la busqueda o esto sacrificara ligeramente el rendimiento del Search Engine.
@@ -203,8 +198,8 @@ namespace Access
                 {
                     // TODO Agregar nuevamente la busqueda. por el momento mostrarlos como no disponible
                     // El id ni modo , se usa para identificar si esta disponible con la propiedad IsBusy
-                    resultBooks.ForEach(b => b.Id = IsOnCenterWorkRange(b, centerOpenTime, centerEndTime) ? 0: 1);
-                    item.field.Bookings = resultBooks;
+                    //resultBooks.ForEach(b => b.Id = IsOnCenterWorkRange(b, centerOpenTime, centerEndTime) ? 0: 1);
+                    //item.field.Bookings = resultBooks;
 
 
 
@@ -270,6 +265,12 @@ namespace Access
                         }).ToList();
 
                 }
+
+        private bool IsOnWorkRange(Booking book, DateTime open, DateTime close)
+        {
+
+            return book.Start >= open && book.End <= close;
+        }
 
         #endregion
 
