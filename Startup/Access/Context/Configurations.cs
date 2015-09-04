@@ -93,11 +93,11 @@ namespace Access.Models
 
     internal class CostConfig : EntityTypeConfiguration<Cost>
     {
-        //public CostConfig()
-        //{
-        //    HasRequired(p => p.Field)
-        //        .WithRequiredPrincipal(p => p.Cost).WillCascadeOnDelete(true);
-        //}
+        public CostConfig()
+        {
+            //HasRequired(p => p.Field)
+            //    .WithRequiredPrincipal(p => p.Cost).WillCascadeOnDelete(true);
+        }
     }
 
     //internal class CenterAccountsConfig : EntityTypeConfiguration<CenterAccount>

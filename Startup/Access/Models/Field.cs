@@ -84,8 +84,12 @@ namespace Access.Models
         [ScriptIgnore]
         public List<Booking> Bookings { get; set; }
 
-        public Cost Cost { get; set; }
         
+        public Cost Cost { get; set; }
+
+        [ForeignKey("Cost")]
+        public int? CostId { get; set; }
+
         public Center Center { get; set; }
 
          
