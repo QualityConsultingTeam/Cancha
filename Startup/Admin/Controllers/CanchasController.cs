@@ -97,6 +97,7 @@ namespace Admin.Controllers
                 End = endDate,
                 UserSign = LoggedUser.Value,
             };
+            model.Price = model.Field.Cost.Price;
 
             return View(model );
         }
