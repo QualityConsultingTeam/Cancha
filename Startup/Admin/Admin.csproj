@@ -1573,6 +1573,10 @@
     <Content Include="Views\Account\ApplicationUserDetails.cshtml" />
     <Content Include="Views\Center\Index.cshtml" />
     <Content Include="Views\Center\CenterDetails.cshtml" />
+    <Content Include="Views\Shared\_Layout_3.cshtml" />
+    <Content Include="Views\Shared\_Layout_4.cshtml" />
+    <Content Include="Views\Shared\_NavigationOffCanvas.cshtml" />
+    <Content Include="Views\Shared\_RightSidebar.cshtml" />
     <None Include="Web.Azure_Website.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

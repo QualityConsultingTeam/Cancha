@@ -17,6 +17,8 @@
     <!-- Primary Inspinia style -->     
     @Styles.Render("~/font-awesome/css")                                                
     @Styles.Render("~/Content/css")
+    <script src="~/Scripts/kendo/jquery.min.js"></script>
+    @Styles.Render("~/Content/customcss")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
 </head>
 <body class="canvas-menu">
 
@@ -34,8 +36,12 @@
             @Html.Partial("_TopNavbar")
 
             <!-- Main view  -->
-            @RenderBody()
-
+            <div id="loaderSection" style="display: none">
+                @Html.Partial("LoaderCircle")
+            </div>
+            <div id="bodycontainer">
+                @RenderBody()
+            </div>
             <!-- Footer -->
             @Html.Partial("_Footer")
 
@@ -48,7 +54,11 @@
     </div>
     <!-- End wrapper-->
     <!-- Section for main scripts render -->
-    @Scripts.Render("~/bundles/jquery")
+    @*@Scripts.Render("~/bundles/jquery")*@
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/plugins/slimScroll")
     @Scripts.Render("~/bundles/inspinia")
