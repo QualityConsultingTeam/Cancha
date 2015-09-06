@@ -5,9 +5,9 @@
 <div class="wrapper wrapper-content" style="padding-top: 7%">
     <div class="row">
         @{
-            if (User.IsInRole("Admin")|| User.IsInRole("Manager"))
+            if (User.IsInRole("Admin") || User.IsInRole("Manager"))
             {
-                 
+
                 <a href="@Url.Action("AccountMangement", "Account")" class="col-lg-3  animated flipInX">
                     <div class="widget style1 navy-bg">
                         <div class="row">
@@ -24,38 +24,42 @@
                     </div>
                 </a>
             }
-        }    
-        <a href="@Url.Action("Index", "RootAdmin")" class="col-lg-3  animated flipInX">
-            <div class="widget style1 navy-bg">
-                <div class="row">
-                    <div class="col-xs-4">
-                        <i class="fa fa-futbol-o fa-5x"></i>
+            if (User.IsInRole("Admin"))
+            {
+                <a href="@Url.Action("Index", "RootAdmin")" class="col-lg-3  animated flipInX">
+                    <div class="widget style1 navy-bg">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <i class="fa fa-futbol-o fa-5x"></i>
+                            </div>
+                            <div class="col-xs-8 text-right">
+                                <span>   </span>
+                                <h3 class="font-bold">
+                                    Canchas
+                                </h3>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-xs-8 text-right">
-                        <span>   </span>
-                        <h3 class="font-bold">
-                            Canchas
-                        </h3>
-                    </div>
-                </div>
-            </div>
-        </a>
+                </a>
+            }
+        }
 
-        <a href="@Url.Action("Dashboard_2", "Dashboards")" class="col-lg-3  animated flipInX">
-            <div class="widget style1 navy-bg">
-                <div class="row">
-                    <div class="col-xs-4">
-                        <i class="fa fa-area-chart fa-5x"></i>
-                    </div>
-                    <div class="col-xs-8 text-right">
-                        <span>   </span>
-                        <h3 class="font-bold">
-                            Ventas
-                        </h3>
+
+        @*<a href="@Url.Action("Dashboard_2", "Dashboards")" class="col-lg-3  animated flipInX">
+                <div class="widget style1 navy-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-area-chart fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span>   </span>
+                            <h3 class="font-bold">
+                                Ventas
+                            </h3>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </a>
+            </a>*@
         <a href="@Url.Action("Manage", "Booking")" class="col-lg-3 animated flipInX">
             <div class="widget style1 lazur-bg">
                 <div class="row">
@@ -69,7 +73,7 @@
                 </div>
             </div>
         </a>
-        
+
         <a href="@Url.Action("Calendar", "Booking")" class="col-lg-3  animated flipInX">
             <div class="widget style1 yellow-bg">
                 <div class="row">
@@ -77,54 +81,57 @@
                         <i class="fa fa-calendar fa-5x"></i>
                     </div>
                     <div class="col-xs-8 text-right">
-                        <span> Atributos  </span>
+                        <span>    </span>
                         <h3 class="font-bold"> Calendario </h3>
                     </div>
                 </div>
             </div>
         </a>
     </div>
-    <div class="row">
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="row">
 
-        <a href="@Url.Action("Centers", "RootAdmin")" class="col-lg-3  animated flipInX">
-            <div class="widget style1 navy-bg">
-                <div class="row">
-                    <div class="col-xs-4">
-                        <i class="fa fa-institution fa-5x"></i>
-                    </div>
-                    <div class="col-xs-8 text-right">
-                        <span> Centros </span>
-                        <h3 class="font-bold"> Centros</h3>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a href="#" class="col-lg-3 animated flipInX">
-            <div class="widget style1 lazur-bg">
-                <div class="row">
-                    <div class="col-xs-4">
-                        <i class="fa fa-gears fa-5x"></i>
-                    </div>
-                    <div class="col-xs-8 text-right">
-                        <span> Configuracion </span>
-                        <h2 class="font-bold"> </h2>
+            <a href="@Url.Action("Centers", "RootAdmin")" class="col-lg-3  animated flipInX">
+                <div class="widget style1 navy-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-institution fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> Centros </span>
+                            <h3 class="font-bold"> Centros</h3>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </a>
-        <a href="@Url.Action("Companies", "RootAdmin")" class="col-lg-3 animated flipInX">
-            <div class="widget style1 lazur-bg">
-                <div class="row">
-                    <div class="col-xs-4">
-                        <i class="fa fa-credit-card fa-5x"></i>
-                    </div>
-                    <div class="col-xs-8 text-right">
-                        <span>  </span>
-                        <h3 class="font-bold">Empresas</h3>
+            </a>
+            <a href="#" class="col-lg-3 animated flipInX">
+                <div class="widget style1 lazur-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-gears fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> Configuracion </span>
+                            <h2 class="font-bold"> </h2>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </a>
-    </div>
+            </a>
+            <a href="@Url.Action("Companies", "RootAdmin")" class="col-lg-3 animated flipInX">
+                <div class="widget style1 lazur-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-credit-card fa-5x"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span>  </span>
+                            <h3 class="font-bold">Empresas</h3>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
 </div>
 

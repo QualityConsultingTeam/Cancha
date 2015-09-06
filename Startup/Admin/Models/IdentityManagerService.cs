@@ -85,6 +85,8 @@ namespace Admin.Models
            filter.SearchKeys.ForEach(key =>
                         users = users.Where(u => u.UserName.ToLower().Contains(key)
                                             || u.ADDRESS.ToLower().Contains(key)
+                                            || u.FirstName.ToLower().Contains(key)
+                                            || u.LastName.ToLower().Contains(key)
                                             || u.DUI.ToLower().Contains(key)
                                             || u.Email.ToLower().Contains(key)));
 
