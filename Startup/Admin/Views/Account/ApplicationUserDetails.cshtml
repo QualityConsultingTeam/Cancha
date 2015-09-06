@@ -13,8 +13,8 @@
         LoadingElementId = "loaderSection",
         UpdateTargetId = "vertical-timeline"
     };
-    
-    var mainOptions  = new AjaxOptions()
+
+    var mainOptions = new AjaxOptions()
     {
         HttpMethod = "post",
         InsertionMode = InsertionMode.Replace,
@@ -51,7 +51,7 @@
                                     <p>
                                         <strong>@Html.DisplayNameFor(m => m.ADDRESS)</strong> @Html.DisplayFor(m => m.ADDRESS)
                                     </p>
-                                    
+
                                     <p>
                                         <strong>@Html.DisplayNameFor(m => m.PHONE_2)</strong> @Html.DisplayFor(m => m.PHONE_2)
                                     </p>
@@ -61,8 +61,15 @@
                                     <p>
                                         <strong>@Html.DisplayNameFor(m => m.Role)</strong> @Html.DisplayFor(m => m.Role)
                                     </p>
-                                    @Ajax.ActionLink(" Edit", "EditApplicationUser", new { id = Model.Id }, mainOptions, new { @class = "btn btn-primary" })
-                                    @Ajax.ActionLink(" Back", "AccountMangement", null, mainOptions, new { @class = "btn btn-white" })
+                                    <p>
+                                        <strong>Desactivar</strong>
+                                        @
+                                    </p>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        @Ajax.ActionLink(" Editar", "EditApplicationUser", new { id = Model.Id }, mainOptions, new { @class = "btn btn-primary" })
+                                    }
+                                    @Ajax.ActionLink(" Volver", "AccountMangement", null, mainOptions, new { @class = "btn btn-white" })
                                 </div>
                             </div>
                             <div class="client-detail">
@@ -71,18 +78,18 @@
                                     <strong>Summary</strong>
 
                                     @*<ul class="list-group clear-list">
-                                        @foreach (var item in Model.WorkSummary)
-                                        {
-                                            <li class="list-group-item fist-item">
-                                                <span class="pull-right">
-                                                    <button type="button" class="@item.StatusLabelFor()">
-                                                        @item.Count
-                                                    </button>
-                                                </span>
-                                                @item.StatusName
-                                            </li>
-                                        }
-                                    </ul>*@
+                                            @foreach (var item in Model.WorkSummary)
+                                            {
+                                                <li class="list-group-item fist-item">
+                                                    <span class="pull-right">
+                                                        <button type="button" class="@item.StatusLabelFor()">
+                                                            @item.Count
+                                                        </button>
+                                                    </span>
+                                                    @item.StatusName
+                                                </li>
+                                            }
+                                        </ul>*@
                                     <strong>Notes</strong>
                                     <p>
 
@@ -98,7 +105,7 @@
                 </div>
             </div>
         </div>
-       
+
     </div>
 </div>
 
@@ -129,7 +136,7 @@
             vm.shouldShowList(true);
             vm.shouldShowDetails(false);
         }
-        
+
     };
     // Initialize
 

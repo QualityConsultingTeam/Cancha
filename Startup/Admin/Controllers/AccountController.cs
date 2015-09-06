@@ -591,7 +591,7 @@ namespace Admin.Controllers
         //[Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult> SearchAccounts(FilterOptionModel filter)
         {
-            filter.centerid = ClaimsPrincipal.Current.CenterId();
+            if(!filter.centerid.HasValue && User.IsInRole("Manager") ) filter.centerid = ClaimsPrincipal.Current.CenterId();
 
             var users = await IdentityManagerService.GetUsersAsync(filter,Context);
 

@@ -10,48 +10,51 @@
     };
 }
 
- 
-
-    @foreach (var item in Model)
-    {
 
 
-       
+@foreach (var item in Model)
+{
+
+
+
     <div class="col-lg-4">
         <div class="contact-box animated flip">
             <a href="#">
                 <div class="col-sm-4">
-                    <div class="text-center"> 
-                            <img alt="image" class="img-circle m-t-xs img-responsive"   src="@item.ProfilePictureDefault">
-                          
-                            <div class="m-t-xs font-bold">@item.Role</div> 
-                        </div>
+                    <div class="text-center">
+                        <img alt="image" class="img-circle m-t-xs img-responsive" src="@item.ProfilePictureDefault">
+
+                        <div class="m-t-xs font-bold">@item.Role</div>
+                    </div>
                 </div>
                 <div class="col-sm-8">
                     <h3>
-                        <strong>@Html.DisplayFor(modelItem=> item.FirstName) @Html.DisplayFor(modelItem=> item.LastName)</strong>
+                        <strong>@Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)</strong>
                     </h3>
                     <p>
-                        <i class="fa fa-envelope m-r-xs"></i> @Html.DisplayFor(modelItem=> item.Email)
+                        <i class="fa fa-envelope m-r-xs"></i> @Html.DisplayFor(modelItem => item.Email)
                     </p>
                     <address>
                         <strong></strong><br>
-                        @Html.DisplayFor(modelItem => item.ADDRESS)<br/>
+                        @Html.DisplayFor(modelItem => item.ADDRESS)<br />
 
                         <abbr title="Phone">P:</abbr> @Html.DisplayFor(modelItem => item.PHONE_2)
                     </address>
                     @Ajax.ActionLink(" Detalles", "ApplicationUserDetails", "Account", new { id = item.Id }, options, new { @class = "btn btn-primary btn-sm fa fa-paste" })
-                    @Ajax.ActionLink(" Editar", "EditApplicationUser", "Account", new { id = item.Id }, options, new { @class = "btn btn-white btn-sm fa fa-check" })
-                </div>
-                <div class="clearfix"></div>
-               
-            </a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        @Ajax.ActionLink(" Editar", "EditApplicationUser", "Account", new { id = item.Id }, options, new { @class = "btn btn-white btn-sm fa fa-check" })
+                    }
+                    </div>
+                    <div class="clearfix"></div>
+
+                </a>
+            </div>
         </div>
-    </div>
 
-    }
+                    }
 
- 
-<script type="text/javascript">
-    pagelimit = '@ViewBag.PageLimit'
-</script>
+
+                    <script type="text/javascript">
+                        pagelimit = '@ViewBag.PageLimit'
+                    </script>

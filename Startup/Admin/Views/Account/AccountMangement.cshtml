@@ -72,7 +72,7 @@
                                     optionsCaption: 'Seleccione Centro...' "></select>
                         </div>
                             }
-                        <input type="hidden" data-bind="value:limit" name="limit" id="limit" />
+                        <input type="hidden" data-bind="value:Limit" name="Limit" id="Limit" />
                         <input type="hidden" data-bind="value:page" name="page" id="page" />
                         <div class="col-sm-3">
                             <div class="input-group">
@@ -117,7 +117,7 @@
     var pagelimit;
     var viewmodel = {
         roles: [],
-        limit: 12,
+        Limit: 6,
         page: ko.observable('1'), 
         onSelectionChange: function () {
             $("#page").val(0);
