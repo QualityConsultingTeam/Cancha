@@ -49,12 +49,12 @@ namespace Admin.Models
 
     public class LoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage ="El {0} l es requerido")]
         [Display(Name = "Email")]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage =" El {0} no es valido")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "El {0} es Requerido")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }

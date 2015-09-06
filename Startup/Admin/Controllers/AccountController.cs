@@ -95,7 +95,7 @@ namespace Admin.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", "Usuario o Constraseña Invalido.");
                     return View(model);
             }
         }
@@ -138,7 +138,7 @@ namespace Admin.Controllers
                     return View("Lockout");
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid code.");
+                    ModelState.AddModelError("", "Codigo Invalido");
                     return View(model);
             }
         }
