@@ -60,13 +60,10 @@ namespace Admin.Controllers
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("ConfirmaReserva",
                     new { fieldId = booking.Idcancha, start = booking.Start.Value.ToShortTimeString(), end = booking.End.Value.ToShortTimeString() });
-
-
-            booking.Userid = LoggedUser.Value;
-            booking.OBJECTTYPE = "1";
+            
             Repository.AddOrUpdateBooking(booking);
 
-            await Repository.SaveAsync(LoggedUser);
+            await Repository.SaveAsync();
 
 
             return View(booking);
@@ -95,7 +92,7 @@ namespace Admin.Controllers
                 Idcancha = fieldId,
                 Start = startDate,
                 End = endDate,
-                UserSign = LoggedUser.Value,
+                UserSign = new Guid( User.Identity.GetUserId ()),
             };
             model.Price = model.Field.Cost.Price;
 
@@ -104,18 +101,16 @@ namespace Admin.Controllers
 
         #region AutoCompletes / Lista De Canchas en Scheduler
         [Authorize]
-        public async Task<JsonResult> GetFieldsFromCenter(int centerId=0,string keywords = "")
+        public async Task<JsonResult> GetFieldsFromCenter(string keywords = "")
         {
-            var model = (centerId==0?
-                await Repository.GetFieldsFromCenterAsync(LoggedUser.Value):
-                await Repository.GetFieldsFromCenterAsync(centerId, keywords))
+            var model = (await Repository.GetFieldsFromCenterAsync())
                         .Select(f => new  { Id = f.Id, Text = f.Name }).ToList();
             return Json( model,JsonRequestBehavior.AllowGet);
         }
         [Authorize]
         public async Task<JsonResult> GetFieldsForAutoComplete(string query)
         {
-            var model = await Repository.GetFieldsFromCenterAsync(LoggedUser.Value,query);
+            var model = await Repository.GetFieldsFromCenterAsync(keywords: query);
 
             return Json(model.ToAutocomplete(), JsonRequestBehavior.AllowGet);
         }

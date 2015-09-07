@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Access.Models;
+using System.Security.Claims;
 
 namespace Access
 {
@@ -30,7 +31,20 @@ namespace Access
 
         #region IRepository<T> Members
 
+        private static string[] PotentialIdClaim = { System.Security.Claims.ClaimTypes.NameIdentifier, "sub" };
 
+
+        protected Guid UserId
+        {
+            get
+            {
+                var userIdClaim = ClaimsPrincipal.Current.FindFirst(c => PotentialIdClaim.Contains(c.Type));
+
+                if (userIdClaim == null)   throw new Exception("Authentication Failed, verify identity  Settings");
+
+                return new Guid(userIdClaim.Value);
+            }
+        }
 
         public virtual IQueryable<TEntity> AsQueryable { get { return Context.Set<TEntity>(); } }
 
@@ -101,12 +115,15 @@ namespace Access
             items.ToList().ForEach(i => Context.Set<TEntity>().Remove(i));
             await SaveAsync();
         }
-
+ 
         
-        public async Task SaveAsync(Guid? currentUserId =null)
+        public async Task SaveAsync(Guid? currentUserId = null)
         {
             try
             {
+                if (currentUserId == null)
+                  currentUserId = ClaimsPrincipal.Current.FindFirst(c => PotentialIdClaim.Contains(c.Type)) !=null? (Guid?) UserId:null;
+
                 if (currentUserId == null)
                 {
                     await Context.SaveChangesAsync();

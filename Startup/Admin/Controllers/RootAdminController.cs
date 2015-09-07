@@ -88,7 +88,7 @@ namespace Admin.Controllers
             {
                 Repository.InsertOrUpdate(field);
                 
-                await Repository.SaveAsync(LoggedUser);
+                await Repository.SaveAsync();
 
                 return RedirectToAction("FieldDetails","RootAdmin",new {fieldId = field.Id});
             }
@@ -166,7 +166,7 @@ namespace Admin.Controllers
             {
                 CenterRepository.InsertOrUpdate(model);
                 
-                await CenterRepository.SaveAsync(LoggedUser);
+                await CenterRepository.SaveAsync();
 
                 return RedirectToAction("FieldDetails", "RootAdmin", new { id = model.Id });
             }
@@ -211,17 +211,17 @@ namespace Admin.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Centers_Destroy([DataSourceRequest] DataSourceRequest request, [Bind(Prefix = "models")]IEnumerable<Center> centers)
+        public async Task<ActionResult> Centers_Destroy([DataSourceRequest] DataSourceRequest request, [Bind(Prefix = "models")]IEnumerable<Center> centers)
         {
             if (centers.Any())
             {
-                CenterRepository.Delete(centers);
+                await CenterRepository.Delete(centers);
             }
 
             return Json(centers.ToDataSourceResult(request, ModelState));
         }
 
-        
+
 
         public async Task<ActionResult> CenterFields(int id)
         {
@@ -255,7 +255,7 @@ namespace Admin.Controllers
             {
                 CompanyRepository.InsertOrUpdate(model);
 
-                await CompanyRepository.SaveAsync(LoggedUser);
+                await CompanyRepository.SaveAsync();
 
                 return RedirectToAction("Companies");
             }
@@ -294,7 +294,7 @@ namespace Admin.Controllers
             {
                 CenterRepository.InsertOrUpdate(center);
 
-                await CenterRepository.SaveAsync(LoggedUser);
+                await CenterRepository.SaveAsync();
 
                 return RedirectToAction("CompanyCenters", new {id = center.Id});
             }
@@ -345,7 +345,7 @@ namespace Admin.Controllers
             {
                 CostRepository.InsertOrUpdate(model);
                 
-                await CenterRepository.SaveAsync(LoggedUser);
+                await CenterRepository.SaveAsync();
 
                 return RedirectToAction("CostDetails", "RootAdmin", new { id = model.Id });
             }

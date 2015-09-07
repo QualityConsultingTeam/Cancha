@@ -40,17 +40,18 @@ namespace Admin.Controllers
                 };
             }
         }
+         
 
-        public Guid? LoggedUser
-        {
-            get
-            {
-                if (!User.Identity.IsAuthenticated) return null;
+        //public Guid? LoggedUser
+        //{
+        //    get
+        //    {
+        //        if (!User.Identity.IsAuthenticated) return null;
 
-                var id = User.Identity.GetUserId();
+        //        var id = User.Identity.GetUserId();
 
-                return new Guid(id);
-            }
-        }
+        //        return new Guid(id);
+        //    }
+        //}
     }
 }

@@ -28,7 +28,7 @@ namespace Access.Repositories
         }
 
         #region Common
-        public IQueryable<Booking> GetSummary(Guid userid ,bool onlyAvailables=false)
+        public IQueryable<Booking> GetSummary(Guid ?userid =null,bool onlyAvailables=false)
         {
 
             // agregar nivel de acceso para visibilidad
@@ -76,21 +76,21 @@ namespace Access.Repositories
         }
         #endregion
 
-        public Task<List<Booking>> GetSummaryAsync(Guid userid, int skip=0, int take=10)
+        public Task<List<Booking>> GetSummaryAsync( int skip=0, int take=10)
         {
-            return GetSummary(userid).OrderBy(c => c.CreateDate).Skip(skip).Take(take).ToListAsync();
+            return GetSummary(UserId).OrderBy(c => c.CreateDate).Skip(skip).Take(take).ToListAsync();
         }
 
       
 
-        public Task<List<Booking>> GetSummaryAsync(FilterOptionModel filter,Guid user)
+        public Task<List<Booking>> GetSummaryAsync(FilterOptionModel filter,Guid? user =null)
         {
-            return CommonSearch(filter, user).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
+            return CommonSearch(filter, user ??UserId).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
         }
 
-        public async Task <int> GetPageLimit(FilterOptionModel filter,Guid user)
+        public async Task <int> GetPageLimit(FilterOptionModel filter,Guid?  user=null)
         {
-            return (await CommonSearch(filter, user).CountAsync() )/ filter.Limit +1;
+            return (await CommonSearch(filter, user ??UserId).CountAsync() )/ filter.Limit +1;
         }
 
         public Task<Field> GetFieldForModel(Booking booking)
@@ -121,7 +121,7 @@ namespace Access.Repositories
             
         }
 
-        public async Task UpdateAccountLevel(Booking booking, Guid LoggedUser, bool ignoreStatus = false)
+        public async Task UpdateAccountLevel(Booking booking, bool ignoreStatus = false)
         {
             if (booking.Status == BookingStatus.Reservada || ignoreStatus)
             {
@@ -135,7 +135,7 @@ namespace Access.Repositories
                         UserId = booking.Userid,
                         Center = center,
                     });
-                    await SaveAsync(LoggedUser);
+                    await SaveAsync();
                 }
             }
         }

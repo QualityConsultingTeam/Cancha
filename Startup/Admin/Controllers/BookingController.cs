@@ -49,7 +49,7 @@ namespace Admin.Controllers
         public async Task<ActionResult> Calendar()
         {
             var repo = new FieldsRepository() { Context = Context };
-            ViewBag.fields = await repo.GetFieldsFromCenterAsync(LoggedUser.Value);
+            ViewBag.fields = await repo.GetFieldsFromCenterAsync();
             return View(await GetCenterAsync());
         }
          
@@ -64,7 +64,7 @@ namespace Admin.Controllers
                 model.End = DateTimeExtensions.ParseFromString(finish);
             }
             var repo = new FieldsRepository() { Context = Context };
-            var fields = (await repo.GetFieldsFromCenterAsync(LoggedUser.Value));
+            var fields = (await repo.GetFieldsFromCenterAsync());
 
             ViewBag.Fields = fields.ToSelectListItems(f => f.Name, f => f.Id.ToString(), model.Idcancha.ToString());
                             
@@ -78,11 +78,11 @@ namespace Admin.Controllers
             if (ModelState.IsValid)
             {
                 Repository.InsertOrUpdate(booking);
-                await Repository.SaveAsync(LoggedUser);
+                await Repository.SaveAsync();
                 return RedirectToAction("Calendar");
             }
             var repo = new FieldsRepository() { Context = Context };
-            var fields = (await repo.GetFieldsFromCenterAsync(LoggedUser.Value));
+            var fields = (await repo.GetFieldsFromCenterAsync());
 
             ViewBag.Fields = fields.ToSelectListItems(f => f.Name, f => f.Id.ToString(), booking.Idcancha.ToString());
             return View("Partials/AddOrUpdate", booking);
@@ -92,8 +92,8 @@ namespace Admin.Controllers
         public async Task<ActionResult> SearchAync(FilterOptionModel filter)
         {
             filter.centerid = ClaimsPrincipal.Current.CenterId();
-            var model = await Repository.GetSummaryAsync(filter,LoggedUser.Value);
-            ViewBag.PageLimit = await Repository.GetPageLimit(filter, LoggedUser.Value) ;
+            var model = await Repository.GetSummaryAsync(filter);
+            ViewBag.PageLimit = await Repository.GetPageLimit(filter) ;
 
             return View("Partials/ManageGrid",  await IdentityManagerService.UpdateAccountInfo(model));
         }
@@ -118,7 +118,7 @@ namespace Admin.Controllers
         public virtual async Task<JsonResult> Read([DataSourceRequest] DataSourceRequest request)
         {
 
-            IQueryable<BookingViewModel> query = Repository.GetSummary(LoggedUser.Value,onlyAvailables:true)
+            IQueryable<BookingViewModel> query = Repository.GetSummary(onlyAvailables:true)
                 .Select(b => new BookingViewModel()
                 {
                     Id = b.Id,
@@ -146,7 +146,7 @@ namespace Admin.Controllers
                 var booking = new Booking();
                 booking.CopyFrom(task);
                 Repository.Delete(booking);
-                await Repository.SaveAsync(LoggedUser);
+                await Repository.SaveAsync();
             }
 
             return Json(new[] { task }.ToDataSourceResult(request, ModelState));
@@ -161,7 +161,7 @@ namespace Admin.Controllers
                 booking.Start = task.Start.ToLocalTime();
                 booking.End = task.End.ToLocalTime();
                 Repository.InsertOrUpdate(booking);
-                await Repository.SaveAsync(LoggedUser);
+                await Repository.SaveAsync();
                 return Json(new[] { task }.ToDataSourceResult(request, ModelState));
             }
             catch(Exception ex)
@@ -177,7 +177,7 @@ namespace Admin.Controllers
                 var booking = new Booking();
                 booking.CopyFrom(task);
                   Repository.InsertOrUpdate(booking);
-                await Repository.SaveAsync(LoggedUser);
+                await Repository.SaveAsync();
 
             }
 
@@ -196,7 +196,7 @@ namespace Admin.Controllers
          
         public async Task<ActionResult> DataRead([DataSourceRequest] DataSourceRequest request)
         {
-            IQueryable<Booking> result = Repository.GetSummary(LoggedUser.Value);
+            IQueryable<Booking> result = Repository.GetSummary();
 
             var model = result.ToDataSourceResult(request);
 
@@ -220,9 +220,9 @@ namespace Admin.Controllers
         {
              
             Repository.InsertOrUpdate(booking); 
-            await Repository.SaveAsync(LoggedUser);
+            await Repository.SaveAsync();
 
-            await Repository.UpdateAccountLevel(booking,LoggedUser.Value);
+            await Repository.UpdateAccountLevel(booking);
 
             return Json(booking.Status.ToString().ToUpper(), JsonRequestBehavior.AllowGet);
             //return View("Partials/ConfirmBookingAction", await Repository.FindByIdAsync(booking.Id, "Field"));

@@ -286,31 +286,28 @@ namespace Access
         }
 
         
-        public Task<List<Field>> GetFieldsFromCenterAsync( int centerId, string keywords="")
-        { 
-            var query = Search(keywords);
+        public Task<List<Field>> GetFieldsFromCenterAsync( int? id =null, string keywords="")
+        {
+            var centerId = id ?? ClaimsPrincipal.Current.CenterId();
+
+            var query = centerId.HasValue
+                ?Search(keywords).Where(c=> c.CenterId == centerId.Value)
+                : Search(keywords);
+
             return query.OrderBy(f=> f.Name) .ToListAsync();
         }
 
-        public async Task<List<Field>> GetFieldsFromCenterAsync(Guid userid,string keywords="")
+
+
+        public   void AddOrUpdateBooking(Booking booking)
         {
-            //int? centerId = await Context.CenterAccounts
-            //                .Where(c=> c.AccountId== userid)
-            //                .Select(c => c.CenterId)
-            //               .FirstOrDefaultAsync() ;
-            var idCenter =  ClaimsPrincipal.Current.Claim("CenterId") ??"0";
-
-            return await GetFieldsFromCenterAsync(Convert.ToInt32(idCenter) ,keywords);
-        }
-
-
-
-        public void AddOrUpdateBooking(Booking booking)
-        {
+            booking.Userid = UserId;
+            booking.OBJECTTYPE = "1";
+            //var isLocked = await Context.UsersCenter.AnyAsync(u => u.UserId == UserId && u.CenterId == booking.Field.CenterId);
 
             if (booking.Id == 0) Context.Bookings.Add(booking);
 
-            else  Context.Entry(booking).State = EntityState.Modified;
+            else Context.Entry(booking).State = EntityState.Modified;
 
         }
 
