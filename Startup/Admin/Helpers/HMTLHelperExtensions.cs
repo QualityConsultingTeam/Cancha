@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Access.Extensions;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
@@ -177,32 +179,14 @@ namespace Admin
             return imglink.ToString();
 
         }
-        //        $("#Search").typeahead({
-        //    source: function (query, process) {
-        //        var countries = [];
-        //        map = {};
+     
 
-        //        // This is going to make an HTTP post request to the controller
-        //        return $.post('/Client/CountryLookup', { query: query }, function (data) {
+        public static string FacebookProfileSmallPicture(this HtmlHelper helper)
+        {
+            var claim =  ClaimsPrincipal.Current.FacebookProfileSmallPicture() ;
 
-        //            // Loop through and push to the array
-        //            $.each(data, function (i, country) {
-        //                map[country.Name] = country;
-        //                countries.push(country.Name);
-        //            });
-
-        //            // Process the details
-        //            process(countries);
-        //        });
-        //    },
-        //    updater: function (item) {
-        //        var selectedShortCode = map[item].ShortCode;
-
-        //        // Set the text to our selected id
-        //        $("#details").text("Selected : " + selectedShortCode);
-        //        return item;
-        //    }
-        //});
+            return !string.IsNullOrEmpty(claim) ? claim : "~/Images/profile.jpg";
+        }
 
 
     }

@@ -175,6 +175,7 @@ namespace Admin.Models
         [DisplayName("Nombre de Complejo")]
         public string CenterSearchName { get; set; }
 
-       
+        public bool DisableForCenter { get; set; }
+
     }
 }

@@ -63,7 +63,7 @@
                                     </p>
                                     <p>
                                         <strong>Desactivar</strong>
-                                        @
+                                        @Html.CheckBoxFor(m => m.DisableForCenter)
                                     </p>
                                     @if (User.IsInRole("Admin"))
                                     {
@@ -72,33 +72,7 @@
                                     @Ajax.ActionLink(" Volver", "AccountMangement", null, mainOptions, new { @class = "btn btn-white" })
                                 </div>
                             </div>
-                            <div class="client-detail">
-                                <div class="full-height-scroll">
-
-                                    <strong>Summary</strong>
-
-                                    @*<ul class="list-group clear-list">
-                                            @foreach (var item in Model.WorkSummary)
-                                            {
-                                                <li class="list-group-item fist-item">
-                                                    <span class="pull-right">
-                                                        <button type="button" class="@item.StatusLabelFor()">
-                                                            @item.Count
-                                                        </button>
-                                                    </span>
-                                                    @item.StatusName
-                                                </li>
-                                            }
-                                        </ul>*@
-                                    <strong>Notes</strong>
-                                    <p>
-
-                                    </p>
-                                    <hr />
-
-
-                                </div>
-                            </div>
+                           
                         </div>
 
                     </div>
@@ -110,73 +84,21 @@
 </div>
 
 <script type="text/javascript">
-    var vm = {
-        // roles: [],
-        statuses: [],
-        keywords: ko.observable(),
-        seelctedStatus: ko.observable(),
 
-        page: ko.observable("1"),
-        scrollposition: ko.observable(),
-        onSelectionChange: function () {
-            $("#searchcheckinsform").submit();
-        },
-        onSelectionStatusChange: function () {
-            $("#searchcheckinsform").submit();
-        },
-        shouldShowList: ko.observable(true),
-        shouldShowDetails: ko.observable(false),
-        showDetails: function () {
-            console.log("show details");
-            vm.shouldShowList(false);
-            vm.shouldShowDetails(true);
-        },
-        goBackToList: function () {
-            console.log("close details");
-            vm.shouldShowList(true);
-            vm.shouldShowDetails(false);
-        }
-
-    };
     // Initialize
 
 
     $(function () {
+        var userid = '@Model.Id';
+        $("#DisableForCenter").change(function () {
 
-        $.get('@Url.Action("Statuses", "Checkin")', function (status) {
+            var isChecked = $(this).is(":checked");
 
-            applybindigs(status);
+            $.post('@Url.Action("LockUserForCenter", "Account")'+"?userId="+userid+"&locked="+isChecked, function (centers) {
+                applybindigs(data,centers);
+            });
         });
 
-        $("#searchcheckinsform").submit();
     });
-    function applybindigs(status) {
 
-        console.log("Try apply bindings");
-        vm.statuses = status;
-        ko.applyBindings(vm);
-        @*$('#checkinListSection').slimscroll({
-            height: 'auto',
-            size: '15px',
-
-        }).bind('slimscroll', function (e, pos) {
-            viewmodel.scrollposition = pos;
-            //  console.log("scroll position",scrollposition);
-            if (pos == "bottom") {
-                // console.log(pos);
-                $('#checkinListSection').slimScroll({ scrollBy: '-50px' });
-                $.post('@Url.Action("CheckinList", "Checkin")' +
-                    "?keywords=" + viewmodel.keywords
-                    + "&mechanicId=" + viewmodel.selectedMechanic
-                    + "&status=" + viewmodel.seelctedStatus
-                    + "&skip=" + viewmodel.page++, function (view) {
-
-                    });
-
-            }
-        });;*@
-    };
-    function OnClickedDetails() {
-        vm.showDetails();
-    }
 </script>

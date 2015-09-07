@@ -71,8 +71,6 @@ namespace Admin.Models
         [Display(Name = "Complejo")]
         public int? CenterId { get; set; }
 
-        public bool DisableForCenter { get; set; }
-
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Data.Entity.Spatial;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.UI.WebControls;
 using Access.Extensions;
+using System.Security.Claims;
 
 namespace Access.Models
 {
@@ -16,6 +14,7 @@ namespace Access.Models
         {
             page = 1;
             Limit = 10;
+            centerid = ClaimsPrincipal.Current.CenterId();
 
         }
         public FilterOptionModel(string centerIdClaim )

@@ -46,13 +46,15 @@
             <div class="ibox-content animated fadeInUpBig">
                 <div class="row">
                     @using (Ajax.BeginForm("SearchAccounts", "Account", null, new AjaxOptions
-                        {
-                            HttpMethod = "post",
-                            InsertionMode = InsertionMode.Replace,
-                            LoadingElementId = "loaderSection",
-                            UpdateTargetId = "tablecontaier"
+                    {
+                        HttpMethod = "post",
+                        InsertionMode = InsertionMode.Replace,
+                        LoadingElementId = "loaderSection",
+                        UpdateTargetId = "tablecontaier"
 
-                        }, new {id = "searchaccountsform"}))
+                    }, new {id = "searchaccountsform"}))
+                    {
+                        if (User.IsInRole("Admin"))
                         {
                         <div class="col-sm-4 m-b-xs">
                             <select class="input-sm form-control input-s-sm inline" id="role" name="role" data-bind="
@@ -62,22 +64,21 @@
                                     optionsCaption: 'Seleccione Rol...' "></select>
                         </div>
 
-                            if(User.IsInRole("Admin"))
-                            {
-                        <div class="col-sm-5 m-b-xs">
-                            <select class="input-sm form-control input-s-sm inline" id="centerid" name="centerid" data-bind="
-                                    options: centers,
-                                    optionsText: 'Text',
-                                    optionsValue: 'Id',event:{ change: onCenterChange},
-                                    optionsCaption: 'Seleccione Centro...' "></select>
-                        </div>
-                            }
+
+                            <div class="col-sm-5 m-b-xs">
+                                <select class="input-sm form-control input-s-sm inline" id="centerid" name="centerid" data-bind="
+                                        options: centers,
+                                        optionsText: 'Text',
+                                        optionsValue: 'Id',event:{ change: onCenterChange},
+                                        optionsCaption: 'Seleccione Centro...' "></select>
+                            </div>
+                        }
                         <input type="hidden" data-bind="value:Limit" name="Limit" id="Limit" />
                         <input type="hidden" data-bind="value:page" name="page" id="page" />
                         <div class="col-sm-3">
                             <div class="input-group">
-                                <input type="text" placeholder="Search" id="keywords" name="keywords" class="input-sm form-control"> <span class="input-group-btn">
-                                    <button type="submit" class="btn btn-sm btn-primary"> Go!</button>
+                                <input type="text" placeholder="Usuario/Email" id="keywords" name="keywords" class="input-sm form-control"> <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"> Buscar!</button>
                                 </span>
                             </div>
                         </div>

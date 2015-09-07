@@ -118,9 +118,18 @@ namespace Admin.Models
 
                 if (claim != null)
                 {
-                    account.ProfilePicture = string.Format("http://graph.facebook.com/{0}/picture?type=large", claim.ClaimValue);
+                    account.ProfilePicture = string.Format("//graph.facebook.com/{0}/picture", claim.ClaimValue);
                 }
-            }
+
+                var claimName = account.Claims.FirstOrDefault(c => c.ClaimType == ClaimTypes.Name);
+                var givenName = account.Claims.FirstOrDefault(c => c.ClaimType == ClaimTypes.GivenName);
+                var phone = account.Claims.FirstOrDefault(c => c.ClaimType == ClaimTypes.MobilePhone);
+                if (claimName != null && string.IsNullOrEmpty(account.FirstName)) account.FirstName = claimName.ClaimValue;
+                if (givenName != null && string.IsNullOrEmpty(account.LastName)) account.LastName = givenName.ClaimValue;
+                if (phone != null && string.IsNullOrEmpty(account.PhoneNumber)) account.PhoneNumber = phone.ClaimValue;
+
+                await identityContex.SaveChangesAsync();
+             }
 
             return   accounts;
         }
@@ -394,6 +403,23 @@ namespace Admin.Models
         internal async Task<int> GetPageLimit(FilterOptionModel filter,AccessContext context)
         {
             return (await CommonSearch(filter,context).CountAsync()) / filter.Limit + 1;
+        }
+
+        public async Task InsertOrUpdateUserClaims(string user, List<Claim> claims)
+        {
+            var userClaims = await identityContex.UserClaims.Where(c => c.UserId == user).ToListAsync();
+
+             // update 
+             foreach(var claim in claims)
+            {
+                var localClaim = userClaims.FirstOrDefault(c => c.ClaimType == claim.Type);
+                if (localClaim == null)
+                {
+                    identityContex.UserClaims.Add(new IdentityUserClaim() { UserId = user, ClaimType = claim.Type, ClaimValue = claim.Value });
+                }
+               else localClaim.ClaimValue = claim.Value;
+            }
+            await identityContex.SaveChangesAsync();
         }
     }
 }

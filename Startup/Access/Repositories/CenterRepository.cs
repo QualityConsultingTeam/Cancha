@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Access.Models;
 using System.Data.Entity;
+using System.Security.Claims;
+using Access.Extensions;
 
 namespace Access.Repositories
 {
@@ -64,6 +66,51 @@ namespace Access.Repositories
             return query.OrderBy(o => o.Name).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
 
         }
+
+        public Task<bool> HasLockedUser(string id)
+        {
+            var centerId = ClaimsPrincipal.Current.CenterId();
+
+            if (!centerId.HasValue) return Task.FromResult(false);
+
+            return Context.UsersCenter.AnyAsync(u => u.UserId == new Guid(id) && u.CenterId == centerId.Value);
+             
+
+        }
+
+        public async Task<bool> LockUserForCenter(string userId,bool locked)
+        {
+            var centerId = ClaimsPrincipal.Current.CenterId();
+
+            if (!centerId.HasValue) return false;
+
+            var isLock = await Context.UsersCenter
+                .FirstOrDefaultAsync(u => u.UserId == new Guid(userId)&& u.CenterId == centerId.Value);
+
+            if (isLock == null && locked)
+            {
+                isLock = new UserCenter()
+                {
+                    UserId = new Guid(userId),
+                    CenterId = centerId.Value,
+                    Locked = locked,
+                };
+            }
+            else
+            {
+                if (locked)
+                {
+                    isLock.Locked = locked;
+                    Context.Entry(isLock).State = EntityState.Modified;
+                }
+                else Context.Entry(isLock).State = EntityState.Deleted;
+                
+            }
+             
+            await SaveAsync();
+            return true;
+        }
+
         //public async Task UpdateEmployeeCenter(string id, int centerId,Guid? loggedUser)
         //{
         //    var user = await Context.CenterAccounts.FirstOrDefaultAsync(a => a.AccountId == new Guid(id))

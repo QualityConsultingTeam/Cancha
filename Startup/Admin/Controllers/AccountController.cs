@@ -346,7 +346,7 @@ namespace Admin.Controllers
             {
                 var user = await UserManager.FindByEmailAsync(loginInfo.Email);
 
-                 await CreateExternalClaimsAsync(user, loginInfo);
+                await IdentityManagerService.InsertOrUpdateUserClaims(user.Id, loginInfo.ExternalIdentity.Claims.ToList());
             }
             switch (result)
             {
@@ -395,7 +395,7 @@ namespace Admin.Controllers
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                        await CreateExternalClaimsAsync(user, info);
+                        await IdentityManagerService.InsertOrUpdateUserClaims(user.Id, info.ExternalIdentity.Claims.ToList());
                         return RedirectToLocal(returnUrl);
                     }
                 }
@@ -406,18 +406,7 @@ namespace Admin.Controllers
             return View(model);
         }
 
-
-        private async Task CreateExternalClaimsAsync(ApplicationUser user ,ExternalLoginInfo info)
-        {
-            var existingClaims = await UserManager.GetClaimsAsync(user.Id);
-            if (existingClaims != null && !existingClaims.Any())
-            {
-                var tasks = info.ExternalIdentity
-                    .Claims.Select(c => new Task(() => UserManager.AddClaimAsync(user.Id, c))).ToList();
-
-                tasks.ForEach(t => t.RunSynchronously());
-            }
-        }
+ 
         //
         // POST: /Account/LogOff
         [HttpPost]
@@ -575,10 +564,8 @@ namespace Admin.Controllers
         //[AllowAnonymous]
         public async Task<ActionResult> AccountMangement()
         {
-            
-            var filter = new FilterOptionModel(ClaimsPrincipal.Current.CenterId()) {
-                Limit = 12,
-            };
+
+            var filter = new FilterOptionModel(ClaimsPrincipal.Current.CenterId()) { Limit= 6};
             var users = await IdentityManagerService.GetUsersAsync(filter, Context);
             ViewBag.PageLimit = await IdentityManagerService.GetPageLimit(filter, Context);
 
@@ -631,8 +618,19 @@ namespace Admin.Controllers
         //[Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult> ApplicationUserDetails(string id)
         {
-            var model = await IdentityManagerService.GetUserAsync(id) ?? new ApplicationUser();
-            return View(await model.ToIdentityUserViewModelAsync(IdentityManagerService));
+            var model = await( await IdentityManagerService.GetUserAsync(id) ?? new ApplicationUser())
+                       .ToIdentityUserViewModelAsync(IdentityManagerService);
+
+            
+            model.DisableForCenter = await CenterRepository.HasLockedUser(model.Id);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> LockUserForCenter(string userId,bool locked)
+        {
+            return Json(await CenterRepository.LockUserForCenter(userId,locked), JsonRequestBehavior.AllowGet);
         }
 
         //public async Task<JsonResult> GetApplicationUsers()

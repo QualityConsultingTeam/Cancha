@@ -30,6 +30,18 @@ namespace Access.Extensions
             return !string.IsNullOrEmpty(claim) ?( int?) Convert.ToInt32(claim) : null;
         }
 
+        public static string FacebookProfilePicture(this ClaimsPrincipal principal)
+        {
+            var claim = principal.Claim("id");//principal.Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+
+            return claim != null ? string.Format("http://graph.facebook.com/{0}/picture?type=large", claim) : string.Empty;
+        }
+        public static string FacebookProfileSmallPicture(this ClaimsPrincipal principal )
+        {
+            var claim = principal.Claim("claim");//  principal.Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+
+            return claim != null ? string.Format("http://graph.facebook.com/{0}/picture", claim) : string.Empty;
+        }
         
     }
 }
