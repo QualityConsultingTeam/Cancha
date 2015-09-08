@@ -19,7 +19,7 @@ namespace Admin.Models
 
         public string FieldSearchName { get; set; }
 
-        [DisplayName("Descripcion")]
+        [DisplayName("Comentarios")]
         public string Description { get; set; }
 
         [DisplayName("Dia Completo")]

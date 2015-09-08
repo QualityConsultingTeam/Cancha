@@ -41,6 +41,7 @@
                                   .Value(DateTime.Now)
                                   .Format("dd/MM/yyyy")
                                   .HtmlAttributes(new { id = "date" })
+                                  .Events(e=> e.Change("datechanged"))
                                   .Min(DateTime.Now)
                             )
                             @*</div>
@@ -49,6 +50,7 @@
                                   .Name("time")
                                   .Value(DateTime.Now)
                                   .Format("hh:00 tt").Min("7:00 AM").Max("11:00 PM").Interval(60)
+                                  .Events(e=> e.Change("datechanged"))
                                   .HtmlAttributes(new { id = "time" })
                             )
                         </div>
@@ -178,6 +180,9 @@
        
         $("#searchFieldsForm").submit();
         //
+    }
+    function datechanged() {
+        $("#searchFieldsForm").submit();
     }
     //function activeCarousel() {
     //    console.log("set Carousel");

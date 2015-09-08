@@ -59,10 +59,10 @@ namespace Access.Repositories
 
             return query;
         }
-        private IQueryable<Booking> CommonSearch(FilterOptionModel filter,Guid user,List<Guid> users)
+        private IQueryable<Booking> CommonSearch(FilterOptionModel filter,Guid user)
         {
-            IQueryable<Booking> query = GetSummary(user);
-
+            IQueryable<Booking> query = GetSummary(user).Include(b=> b.Field);
+            
             filter.SearchKeys.ForEach(k => query = query.Where(q => q.Field.Name.ToLower().Contains(k)));
              
 
@@ -79,14 +79,14 @@ namespace Access.Repositories
         #endregion
 
      
-        public Task<List<Booking>> GetSummaryAsync(FilterOptionModel filter,List<Guid> users)
+        public Task<List<Booking>> GetSummaryAsync(FilterOptionModel filter)
         {
-            return CommonSearch(filter, UserId,users).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
+            return CommonSearch(filter, UserId).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
         }
 
-        public async Task <int> GetPageLimit(FilterOptionModel filter,List<Guid> users)
+        public async Task <int> GetPageLimit(FilterOptionModel filter)
         {
-            return (await CommonSearch(filter, UserId,users).CountAsync() )/ filter.Limit +1;
+            return (await CommonSearch(filter, UserId).CountAsync() )/ filter.Limit +1;
         }
 
         public Task<Field> GetFieldForModel(Booking booking)
@@ -94,14 +94,7 @@ namespace Access.Repositories
             return Context.Fields.FirstOrDefaultAsync(c => c.Id == booking.Id);
         }
 
-
-        public Task<List<UserInfo>> GetLastestAccountInfo(List<Booking> data)
-        {
-
-            return null; 
-        }
-
-
+        
         public string MessageForStatus(BookingStatus status)
         {
             switch (status)

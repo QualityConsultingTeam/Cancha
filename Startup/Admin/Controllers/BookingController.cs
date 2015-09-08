@@ -56,9 +56,9 @@ namespace Admin.Controllers
         {
             filter.centerid = ClaimsPrincipal.Current.CenterId();
 
-            var usersFiltered = await IdentityManagerService.FilterUsers(filter,Context);
-            var model = await Repository.GetSummaryAsync(filter,usersFiltered);
-            ViewBag.PageLimit = await Repository.GetPageLimit(filter,usersFiltered) ;
+            //var usersFiltered = await IdentityManagerService.FilterUsers(filter,Context);
+            var model = await Repository.GetSummaryAsync(filter);
+            ViewBag.PageLimit = await Repository.GetPageLimit(filter) ;
 
             return View("Partials/ManageGrid",  await IdentityManagerService.UpdateAccountInfo(model));
         }
@@ -177,8 +177,13 @@ namespace Admin.Controllers
         [Globalization]
         public virtual async Task<JsonResult> Create([DataSourceRequest] DataSourceRequest request, BookingViewModel task)
         {
-            try { 
+            try {
+
+                var user = await IdentityManagerService.GetUserAsync(task.UserKey);
+                task.Title = user.FirstName+" - "+user.Email;
+                
                 var booking = new Booking();
+                
                 booking.CopyFrom(task);
                 booking.Price = task.ComputePrice();
                 booking.Start = task.Start.ToLocalTime();

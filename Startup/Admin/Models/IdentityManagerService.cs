@@ -98,9 +98,10 @@ namespace Admin.Models
         /// </summary>
         /// <param name="searchKeys"></param>
         /// <returns></returns>
-        public Task<List<Guid>> FilterUsers(FilterOptionModel filter, AccessContext Context)
+        public async Task<List<Guid>> FilterUsers(FilterOptionModel filter, AccessContext Context)
         {
-            return CommonSearch(filter,Context).Select(u => new Guid(u.Id)).ToListAsync();
+            var ids = await CommonSearch(filter, Context).Select(u => u.Id).ToListAsync();
+            return ids.Select(i => new Guid(i)).ToList();
         }
 
         public Task<List<ApplicationUser>> GetAllUserNames(AccessContext context)
@@ -281,6 +282,12 @@ namespace Admin.Models
                     select role.Name).FirstOrDefaultAsync();
         }
 
+
+        /// <summary>
+        /// User info Col. Schedules Admn
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public async Task<List<Booking>> UpdateAccountInfo(List<Booking> data)
         {
 
@@ -324,13 +331,23 @@ namespace Admin.Models
             return data;
         }
 
-
+        /// <summary>
+        /// User Schedules Summary
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<UserInfo> GetUserSummary(AccessContext context, Guid id)
         {
             var user = await GetUserAsync(id.ToString());
 
+            IQueryable<Booking> query = context.Bookings.Where(b => b.Userid == id);
+
+            var centerid = ClaimsPrincipal.Current.CenterId();
+
+            if (centerid.HasValue) query = query.Where(b => b.Field.CenterId == centerid.Value);
             
-            var data = await context.Bookings.Where(b => b.Userid == id).GroupBy(b => b.Status)
+            var data = await query.GroupBy(b => b.Status)
                        .Select(g => new
                        {
                            Label = g.Key.ToString(),
@@ -398,7 +415,7 @@ namespace Admin.Models
                 item.End = item.End; //DateTime.SpecifyKind(item.End, DateTimeKind.Utc);
                 if(item.UserInfo!=null && !string.IsNullOrEmpty(item.UserInfo.Name)) 
                 {
-                    item.Title += " "+ item.UserInfo.Name;
+                    item.Title += " "+ item.UserInfo.Name +" "+item.UserInfo.Email;
                 }
                 if (item.Userid == Guid.Empty) item.Userid = Guid.NewGuid();
             }
