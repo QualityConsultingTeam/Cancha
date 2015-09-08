@@ -22,11 +22,8 @@ namespace Admin.Controllers
     [Authorize]
     public class BookingController : BaseController<BookingRepository, AccessContext, Booking>
     {
-        // GET: Bookikng
-        public ActionResult Index()
-        {
-            return View();
-        }
+
+        #region Grid Administracion de Reservas 
 
         private async Task<Center> GetCenterAsync()
         {
@@ -44,6 +41,32 @@ namespace Admin.Controllers
         {
             throw new NotImplementedException();
         }
+ 
+
+        public async Task<ActionResult> SearchAync(FilterOptionModel filter)
+        {
+            filter.centerid = ClaimsPrincipal.Current.CenterId();
+            var model = await Repository.GetSummaryAsync(filter);
+            ViewBag.PageLimit = await Repository.GetPageLimit(filter) ;
+
+            return View("Partials/ManageGrid",  await IdentityManagerService.UpdateAccountInfo(model));
+        }
+         
+        public ActionResult Statuses()
+        {
+            var model = Enum.GetValues(typeof(BookingStatus)).Cast<BookingStatus>()
+             .Select(i => new
+             {
+                 Id = (int)i,
+                 Name = i.ToString(),
+             }).ToList();
+
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion   Grid Administracion de Reservas
+
+        #region Scheduler Functions
 
         [Globalization]
         public async Task<ActionResult> Calendar()
@@ -52,12 +75,11 @@ namespace Admin.Controllers
             ViewBag.fields = await repo.GetFieldsFromCenterAsync();
             return View(await GetCenterAsync());
         }
-         
 
         public async Task<ActionResult> AddOrUpdate(int? id = null, string begin = "", string finish = "")
         {
-            var model = id.HasValue ? await Repository.FindByIdAsync(id) : new Booking() ;
-            if(!string.IsNullOrEmpty( begin)&&!string.IsNullOrEmpty( finish))
+            var model = id.HasValue ? await Repository.FindByIdAsync(id) : new Booking();
+            if (!string.IsNullOrEmpty(begin) && !string.IsNullOrEmpty(finish))
             {
                 // TODO parse Strings
                 model.Start = DateTimeExtensions.ParseFromString(begin);
@@ -67,7 +89,7 @@ namespace Admin.Controllers
             var fields = (await repo.GetFieldsFromCenterAsync());
 
             ViewBag.Fields = fields.ToSelectListItems(f => f.Name, f => f.Id.ToString(), model.Idcancha.ToString());
-                            
+
             return View("Partials/AddOrUpdate", model);
         }
 
@@ -89,31 +111,6 @@ namespace Admin.Controllers
         }
 
 
-        public async Task<ActionResult> SearchAync(FilterOptionModel filter)
-        {
-            filter.centerid = ClaimsPrincipal.Current.CenterId();
-            var model = await Repository.GetSummaryAsync(filter);
-            ViewBag.PageLimit = await Repository.GetPageLimit(filter) ;
-
-            return View("Partials/ManageGrid",  await IdentityManagerService.UpdateAccountInfo(model));
-        }
-
-       
-
-        public ActionResult Statuses()
-        {
-            var model = Enum.GetValues(typeof(BookingStatus)).Cast<BookingStatus>()
-             .Select(i => new
-             {
-                 Id = (int)i,
-                 Name = i.ToString(),
-             }).ToList();
-
-            return Json(model, JsonRequestBehavior.AllowGet);
-        }
-
-
-        #region Scheduler Functions
         [Globalization]
         public virtual async Task<JsonResult> Read([DataSourceRequest] DataSourceRequest request)
         {
@@ -188,9 +185,24 @@ namespace Admin.Controllers
 
         #region Grid functions
 
+        // GET: Bookikng
+        /// <summary>
+        /// Grid Kendo Administracion de reservas
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         protected IdentityManagerService IdentityManagerService
         {
-            get { return new IdentityManagerService(Request.GetOwinContext().Get<ApplicationDbContext>()); }
+            get { return new IdentityManagerService(ApplicationDbContext); }
+        }
+
+        protected ApplicationDbContext ApplicationDbContext
+        {
+            get { return Request.GetOwinContext().Get<ApplicationDbContext>(); }
         }
 
          

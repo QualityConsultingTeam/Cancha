@@ -76,21 +76,15 @@ namespace Access.Repositories
         }
         #endregion
 
-        public Task<List<Booking>> GetSummaryAsync( int skip=0, int take=10)
+     
+        public Task<List<Booking>> GetSummaryAsync(FilterOptionModel filter)
         {
-            return GetSummary(UserId).OrderBy(c => c.CreateDate).Skip(skip).Take(take).ToListAsync();
+            return CommonSearch(filter, UserId).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
         }
 
-      
-
-        public Task<List<Booking>> GetSummaryAsync(FilterOptionModel filter,Guid? user =null)
+        public async Task <int> GetPageLimit(FilterOptionModel filter)
         {
-            return CommonSearch(filter, user ??UserId).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
-        }
-
-        public async Task <int> GetPageLimit(FilterOptionModel filter,Guid?  user=null)
-        {
-            return (await CommonSearch(filter, user ??UserId).CountAsync() )/ filter.Limit +1;
+            return (await CommonSearch(filter, UserId).CountAsync() )/ filter.Limit +1;
         }
 
         public Task<Field> GetFieldForModel(Booking booking)
