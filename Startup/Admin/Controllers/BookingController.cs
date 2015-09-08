@@ -64,6 +64,16 @@ namespace Admin.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> UserSummary(Guid id)
+        {
+            var model = await IdentityManagerService.GetUserSummary(Context, id);
+
+            return View("Partials/UserSummary", model);
+        }
+
+
+
         #endregion   Grid Administracion de Reservas
 
         #region Scheduler Functions
@@ -197,14 +207,9 @@ namespace Admin.Controllers
 
         protected IdentityManagerService IdentityManagerService
         {
-            get { return new IdentityManagerService(ApplicationDbContext); }
+            get { return new IdentityManagerService(Request.GetOwinContext().Get<ApplicationDbContext>()); }
         }
-
-        protected ApplicationDbContext ApplicationDbContext
-        {
-            get { return Request.GetOwinContext().Get<ApplicationDbContext>(); }
-        }
-
+         
          
         public async Task<ActionResult> DataRead([DataSourceRequest] DataSourceRequest request)
         {
@@ -239,19 +244,7 @@ namespace Admin.Controllers
             return Json(booking.Status.ToString().ToUpper(), JsonRequestBehavior.AllowGet);
             //return View("Partials/ConfirmBookingAction", await Repository.FindByIdAsync(booking.Id, "Field"));
 
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> UserSummary(Guid id)
-        {
-            var model =  await IdentityManagerService.GetUserSummary(Context, id);
-
-            return View("Partials/UserSummary", model);
-        }
-
-
-       
-        
+        } 
 
         #endregion
     }

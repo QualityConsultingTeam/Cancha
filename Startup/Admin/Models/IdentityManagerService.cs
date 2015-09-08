@@ -342,7 +342,11 @@ namespace Admin.Models
 
         }
 
-
+        /// <summary>
+        /// Update UserInfo model for Scheduler
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public async Task<List<BookingViewModel>> UpdateAccountInfoFoScheduler(List<BookingViewModel> data)
         {
 
@@ -400,11 +404,26 @@ namespace Admin.Models
             //}).ToList();
         }
 
+
+        /// <summary>
+        /// Pagination For Grids
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         internal async Task<int> GetPageLimit(FilterOptionModel filter,AccessContext context)
         {
             return (await CommonSearch(filter,context).CountAsync()) / filter.Limit + 1;
         }
 
+
+
+        /// <summary>
+        /// Update User Claims Stored From facebook
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="claims"></param>
+        /// <returns></returns>
         public async Task InsertOrUpdateUserClaims(string user, List<Claim> claims)
         {
             var userClaims = await identityContex.UserClaims.Where(c => c.UserId == user).ToListAsync();
