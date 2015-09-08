@@ -93,6 +93,16 @@ namespace Admin.Models
             return users;
         }
 
+        /// <summary>
+        ///  Common Filter 
+        /// </summary>
+        /// <param name="searchKeys"></param>
+        /// <returns></returns>
+        public Task<List<Guid>> FilterUsers(FilterOptionModel filter, AccessContext Context)
+        {
+            return CommonSearch(filter,Context).Select(u => new Guid(u.Id)).ToListAsync();
+        }
+
         public Task<List<ApplicationUser>> GetAllUserNames(AccessContext context)
         {
             return CommonSearch(new FilterOptionModel(),context).Select(u=> new ApplicationUser()

@@ -55,8 +55,10 @@ namespace Admin.Controllers
         public async Task<ActionResult> SearchAync(FilterOptionModel filter)
         {
             filter.centerid = ClaimsPrincipal.Current.CenterId();
-            var model = await Repository.GetSummaryAsync(filter);
-            ViewBag.PageLimit = await Repository.GetPageLimit(filter) ;
+
+            var usersFiltered = await IdentityManagerService.FilterUsers(filter,Context);
+            var model = await Repository.GetSummaryAsync(filter,usersFiltered);
+            ViewBag.PageLimit = await Repository.GetPageLimit(filter,usersFiltered) ;
 
             return View("Partials/ManageGrid",  await IdentityManagerService.UpdateAccountInfo(model));
         }

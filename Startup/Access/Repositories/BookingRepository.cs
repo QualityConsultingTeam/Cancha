@@ -28,12 +28,14 @@ namespace Access.Repositories
         }
 
         #region Common
-        public IQueryable<Booking> GetSummary(Guid ?userid =null,bool onlyAvailables=false)
+        public IQueryable<Booking> GetSummary(Guid ?userid =null,bool onlyAvailables=false, List<Guid> usersids= null)
         {
 
             // agregar nivel de acceso para visibilidad
 
             IQueryable<Booking> query = Context.Bookings.Include(b => b.Field);
+
+            if (usersids != null && usersids.Any()) query = query.Where(b => usersids.Contains(b.Userid));
 
             //// filtrar por nievel de acceso 
             var centerId = ClaimsPrincipal.Current.CenterId();
@@ -57,7 +59,7 @@ namespace Access.Repositories
 
             return query;
         }
-        private IQueryable<Booking> CommonSearch(FilterOptionModel filter,Guid user)
+        private IQueryable<Booking> CommonSearch(FilterOptionModel filter,Guid user,List<Guid> users)
         {
             IQueryable<Booking> query = GetSummary(user);
 
@@ -77,14 +79,14 @@ namespace Access.Repositories
         #endregion
 
      
-        public Task<List<Booking>> GetSummaryAsync(FilterOptionModel filter)
+        public Task<List<Booking>> GetSummaryAsync(FilterOptionModel filter,List<Guid> users)
         {
-            return CommonSearch(filter, UserId).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
+            return CommonSearch(filter, UserId,users).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
         }
 
-        public async Task <int> GetPageLimit(FilterOptionModel filter)
+        public async Task <int> GetPageLimit(FilterOptionModel filter,List<Guid> users)
         {
-            return (await CommonSearch(filter, UserId).CountAsync() )/ filter.Limit +1;
+            return (await CommonSearch(filter, UserId,users).CountAsync() )/ filter.Limit +1;
         }
 
         public Task<Field> GetFieldForModel(Booking booking)
