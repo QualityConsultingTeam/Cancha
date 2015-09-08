@@ -32,17 +32,26 @@ namespace Admin.Controllers
             return  centerId.HasValue ? (await repo.FindByIdAsync(centerId.Value)) : null;
         }
 
+        // Booking Management Grid.
         public async Task<ActionResult> Manage()
         {
             return View(await GetCenterAsync());
         }
-
+        /// <summary>
+        /// Center Header, 
+        /// </summary>
+        /// <param name="centerRepository"></param>
+        /// <returns></returns>
         private object await(CenterRepository centerRepository)
         {
             throw new NotImplementedException();
         }
  
-
+        /// <summary>
+        /// Ajax Async Search Grid.
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
         public async Task<ActionResult> SearchAync(FilterOptionModel filter)
         {
             filter.centerid = ClaimsPrincipal.Current.CenterId();
@@ -64,6 +73,11 @@ namespace Admin.Controllers
             return Json(model, JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// Summary In Modal View.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> UserSummary(Guid id)
         {
