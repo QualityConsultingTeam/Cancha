@@ -99,6 +99,7 @@
     <Compile Include="Repositories\CompanyRepository.cs" />
     <Compile Include="Repositories\CostRepository.cs" />
     <Compile Include="Repositories\FieldsRepository.cs" />
+    <Compile Include="Repositories\PaymentRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

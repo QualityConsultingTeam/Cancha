@@ -1,0 +1,46 @@
+﻿using Access.Repositories;
+using BussinesAccess;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web.Http;
+using System.Web.Http.Description;
+
+namespace WebApi.Controllers
+{
+    public class PaymentController : BaseApiController<PaymentRepository,Access.AccessContext,Access.Models.Payment>
+    {
+
+        [HttpPost]
+        [Route("api/Payment")]
+        [ResponseType(typeof(PayPal.Api.Payment))]
+        public async Task<IHttpActionResult> Payment(int bookingId)
+        {
+            var manager = new PaymentManager();
+            var payment = manager.GetPayment( await Repository.GetBookingAsync(bookingId));
+
+            if (payment == null) return NotFound();
+            return Ok(payment);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("api/Verify")]
+        [ResponseType(typeof(PayPal.Api.Payment))]
+        public  IHttpActionResult VerifyPayment(string paymentId, string token, string PayerID)
+        {
+            var manager = new PaymentManager();
+            var paymentDone = manager.ConfirmPayment(paymentId,token,PayerID);
+
+            IHttpActionResult response;
+            HttpResponseMessage responseMsg = new HttpResponseMessage(HttpStatusCode.RedirectMethod);
+            responseMsg.Headers.Location = new Uri(string.Format("{0}{1}", ConfigurationManager.AppSettings["clientApp"], "payment_done"));
+            response = ResponseMessage(responseMsg);
+            return response;
+        }
+    }
+}
