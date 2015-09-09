@@ -103,7 +103,10 @@ namespace Access.Models
         [Display(Name = "Ocupado",Prompt = "Ocupado")]
         public bool Isbusy
         {
-            get { return Id>0; }
+            get
+            {
+                return Id>0;
+            }
         }
 
         public bool IsNearTo

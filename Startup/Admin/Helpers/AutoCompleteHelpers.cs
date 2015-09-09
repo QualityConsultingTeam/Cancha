@@ -77,6 +77,12 @@ namespace Admin.Models
             }).ToList();
         }
 
+        public static List<Autocomplete> ToAutoComplete<T>(this IEnumerable<T> items, Func<T, string> name, Func<T, string> value)
+        {
+            return items.Select(item => new Autocomplete()
+            {
+            }).ToList();
+        }
          
     }
 }

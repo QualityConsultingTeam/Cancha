@@ -73,7 +73,7 @@ namespace Access.Repositories
 
             if (!centerId.HasValue) return Task.FromResult(false);
 
-            return Context.UsersCenter.AnyAsync(u => u.UserId == new Guid(id) && u.CenterId == centerId.Value);
+            return Context.AccountAccess.AnyAsync(u => u.UserId == new Guid(id) && u.CenterId == centerId.Value && u.Locked);
              
 
         }
@@ -84,12 +84,12 @@ namespace Access.Repositories
 
             if (!centerId.HasValue) return false;
 
-            var isLock = await Context.UsersCenter
+            var isLock = await Context.AccountAccess
                 .FirstOrDefaultAsync(u => u.UserId == new Guid(userId)&& u.CenterId == centerId.Value);
 
-            if (isLock == null && locked)
+            if (isLock == null )
             {
-                isLock = new UserCenter()
+                isLock = new AccountAccessLevel()
                 {
                     UserId = new Guid(userId),
                     CenterId = centerId.Value,
@@ -98,13 +98,8 @@ namespace Access.Repositories
             }
             else
             {
-                if (locked)
-                {
-                    isLock.Locked = locked;
-                    Context.Entry(isLock).State = EntityState.Modified;
-                }
-                else Context.Entry(isLock).State = EntityState.Deleted;
-                
+                isLock.Locked = locked;
+                Context.Entry(isLock).State = EntityState.Modified;
             }
              
             await SaveAsync();

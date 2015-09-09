@@ -113,15 +113,14 @@ namespace Access
             var endTimes = ranges.Select(r => r.End).ToList();
 
             // join por hora exacta de inicio
-            IQueryable<Booking> _books = Context.Bookings.Where(b => b.Start.HasValue && startTimes.Contains(b.Start.Value)
+            IQueryable<Booking> _books = Context.Bookings
+                .Where(b =>
+                b.Status != BookingStatus.Cancelado && b.Status != BookingStatus.Denegado 
+                && b.Status != BookingStatus.Falta
+                && b.Start.HasValue && startTimes.Contains(b.Start.Value)
                 //&& b.End.HasValue && endTimes.Contains(b.End.Value) 
                                                 );
-
-            //var data1 = await (from field in fields.AsNoTracking()
-            //                  select new
-            //                  {
-            //                      field = field,                                 
-            //                  }).ToListAsync();
+             
 
             var data = await (from field in fields.AsNoTracking()
                               join center in Context.Centers.AsNoTracking() on field.CenterId equals center.Id
@@ -200,10 +199,7 @@ namespace Access
                     // TODO Agregar nuevamente la busqueda. por el momento mostrarlos como no disponible
                     // El id ni modo , se usa para identificar si esta disponible con la propiedad IsBusy
                     //resultBooks.ForEach(b => b.Id = IsOnCenterWorkRange(b, centerOpenTime, centerEndTime) ? 0: 1);
-                    //item.field.Bookings = resultBooks;
-
-
-
+                    //item.field.Bookings = resultBooks;  
                 }
             }
 
@@ -212,60 +208,60 @@ namespace Access
         }
 
 
-        private  List<Booking> BuildTimes(List<Field> fields , DateTime? date ,bool forPreview )
-        {
+        //private  List<Booking> BuildTimes(List<Field> fields , DateTime? date ,bool forPreview )
+        //{
            
-                    var times = new List<Booking>();
-                    // BUILD INTERVALS
-                    foreach (var field in fields)
-                    {
-                        //si es preview solo muestra los 4 mas cercanos
-                        var expectedDate = BookingExtensions.EstimatedTime(date, field.Center.Opentime, forPreview);
+        //            var times = new List<Booking>();
+        //            // BUILD INTERVALS
+        //            foreach (var field in fields)
+        //            {
+        //                //si es preview solo muestra los 4 mas cercanos
+        //                var expectedDate = BookingExtensions.EstimatedTime(date, field.Center.Opentime, forPreview);
 
-                        var currentTime = forPreview? expectedDate
-                            :expectedDate.Date.AddHours(field.Center.Opentime);
+        //                var currentTime = forPreview? expectedDate
+        //                    :expectedDate.Date.AddHours(field.Center.Opentime);
 
-                       var finish = expectedDate.AddHours(field.Center.Closetime);
+        //               var finish = expectedDate.AddHours(field.Center.Closetime);
 
-                        var _times = new List<Booking>();
-                        while (currentTime < finish)
-                        {
-                            var startAppointment = currentTime;
-                            var finishApopointment = currentTime.AddMinutes(60);
-                               _times.Add(new Booking()
-                            {
-                                Start = startAppointment,
-                                End = finishApopointment,
-                                Idcancha = field.Id,
-                                Status = BookingStatus.Pendiente,
-                                Price = field.Cost!=null ? field.Cost.Price:0,
-                                Field = field,
-                            });
-                            currentTime = finishApopointment;
-                        }
+        //                var _times = new List<Booking>();
+        //                while (currentTime < finish)
+        //                {
+        //                    var startAppointment = currentTime;
+        //                    var finishApopointment = currentTime.AddMinutes(60);
+        //                       _times.Add(new Booking()
+        //                    {
+        //                        Start = startAppointment,
+        //                        End = finishApopointment,
+        //                        Idcancha = field.Id,
+        //                        Status = BookingStatus.Pendiente,
+        //                        Price = field.Cost!=null ? field.Cost.Price:0,
+        //                        Field = field,
+        //                    });
+        //                    currentTime = finishApopointment;
+        //                }
 
-                        times.AddRange(forPreview ? _times.Take(4) : _times);
-                    }
-                    // get unavailables times frpom database (( busy times in field confirmed or not)
+        //                times.AddRange(forPreview ? _times.Take(4) : _times);
+        //            }
+        //            // get unavailables times frpom database (( busy times in field confirmed or not)
                 
-                    var unavailableTimes = (from field in fields 
-                                            join item in times on field.Id equals item.Idcancha
-                                            join av in Context.Bookings   on new { item.Start, item.End } equals new { av.Start, av.End }
-                                            into gj from defaultBook in gj.DefaultIfEmpty()
-                                            select defaultBook
-                                            ).Where(d=> d!= null).ToList();
+        //            var unavailableTimes = (from field in fields 
+        //                                    join item in times on field.Id equals item.Idcancha
+        //                                    join av in Context.Bookings   on new { item.Start, item.End } equals new { av.Start, av.End }
+        //                                    into gj from defaultBook in gj.DefaultIfEmpty()
+        //                                    select defaultBook
+        //                                    ).Where(d=> d!= null).ToList();
 
-                    unavailableTimes.AddRange(times);
+        //            unavailableTimes.AddRange(times);
 
-                    return unavailableTimes.OrderBy(o=>o.Idcancha).GroupBy(g => g.Idcancha)
-                        .SelectMany(g =>
-                        {
-                            return g.OrderBy(o=>o.Id!=0).GroupBy(gr => new { gr.Start, gr.End })
-                                 .Select(sg => sg.FirstOrDefault()).ToList();
+        //            return unavailableTimes.OrderBy(o=>o.Idcancha).GroupBy(g => g.Idcancha)
+        //                .SelectMany(g =>
+        //                {
+        //                    return g.OrderBy(o=>o.Id!=0).GroupBy(gr => new { gr.Start, gr.End })
+        //                         .Select(sg => sg.FirstOrDefault()).ToList();
                            
-                        }).ToList();
+        //                }).ToList();
 
-                }
+        //        }
 
         private bool IsOnWorkRange(Booking book, DateTime open, DateTime close)
         {
@@ -299,11 +295,18 @@ namespace Access
 
 
 
-        public   void AddOrUpdateBooking(Booking booking)
+        public  async Task AddOrUpdateBooking(Booking booking)
         {
             booking.Userid = UserId;
             booking.OBJECTTYPE = "1";
-            //var isLocked = await Context.UsersCenter.AnyAsync(u => u.UserId == UserId && u.CenterId == booking.Field.CenterId);
+            // validate locked User Account
+            var isLocked = await (from account in Context.AccountAccess.Where(a => a.UserId == UserId)
+                                  join center in Context.Centers.Where(c => c.Fields.Any(f => f.Id == booking.Idcancha))
+                                  on account.CenterId equals center.Id
+                                  select new { locked = account.Locked }).FirstOrDefaultAsync();
+
+
+            if (isLocked != null && isLocked.locked) return ;
 
             if (booking.Id == 0) Context.Bookings.Add(booking);
 

@@ -82,6 +82,12 @@
                                             </span>
                                         </div>
                                     </div>
+                                    <div class="col-sm-2">
+                                        <button class="btn btn-sm btn-danger inline" data-bind="click:cleanFilters">
+                                            <i class="fa fa-close"></i>
+                                        </button>
+
+                                    </div>
                                 }
                             </div>
                             <div id="loader" style="display: none">
@@ -92,7 +98,7 @@
                             <div class="table-responsive" id="BookingListSection"> 
                                
                                 
-                                    @Html.Partial("LoaderCircle")
+                                    @*@Html.Partial("LoaderCircle")*@
                                 
                                  
                             </div>
@@ -122,6 +128,7 @@
             <div class="modal-header animated shake">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">Administracion Reservas</h4>
+                
             </div>
 
             <div class="modal-body" id="modalLoader">
@@ -184,7 +191,14 @@
                 pageitems.push({number:i});
             }
             return pageitems;
-        }   
+        },
+        cleanFilters: function () {
+
+            $("#page").val('0');
+            $("#keywords").val('');
+            $("#BookingStatus").val(-1);
+            doSearch();
+        }
 
     };
     // Initialize

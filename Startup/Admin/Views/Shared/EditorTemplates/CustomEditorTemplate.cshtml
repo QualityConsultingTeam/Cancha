@@ -25,11 +25,29 @@
     }
 }
 
-<div class="k-edit-label">
+@*<div class="k-edit-label">
     @(Html.LabelFor(model => model.Title))
 </div>
 <div data-container-for="title" class="k-edit-field">
     @(Html.TextBoxFor(model => model.Title, new { @class = "k-textbox", data_bind = "value:title" }))
+</div>*@
+
+<div class="k-edit-label">
+    @(Html.LabelFor(model => model.Userid))
+</div>
+
+<div data-container-for="UserId" class="k-edit-field">
+
+    @(Html.Kendo().ComboBoxFor(model => model.UserKey)
+            .HtmlAttributes(new { data_bind = "value:UserKey", style = "width: 300px" })
+            .DataTextField("Name")
+            .DataValueField("Id")
+            .Filter(FilterType.Contains)
+            .AutoBind(false)
+            .MinLength(3)
+            //.Template("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Name\\#")
+            .DataSource(source => source.Read(r => r.Action("GetUserNamesForSchedule", "Account")).ServerFiltering(true)).ToClientTemplate()
+    )
 </div>
 
 <div class="k-edit-label">
@@ -83,12 +101,12 @@
     @(Html.TextBoxFor(model => model.CustomPrice, new { @class = "k-textbox", data_bind = "value:CustomPrice" }))
 </div>
 
-<div class="k-edit-label">
+@*<div class="k-edit-label">
     @(Html.LabelFor(model => model.Off))
 </div>
 <div data-container-for="Off" class="k-edit-field">
     @(Html.TextBoxFor(model => model.Off, new { @class = "k-textbox", data_bind = "value:Off" }))
-</div>
+</div>*@
 @*<div class="endTimezoneRow">
     <div class="k-edit-label"></div>
     <div class="k-edit-field">
@@ -145,23 +163,7 @@
             .HtmlAttributes(new { data_bind = "value:recurrenceRule" }))
     </div>*@
  
-<div class="k-edit-label">
-        @(Html.LabelFor(model => model.Userid))
-    </div>
 
-    <div data-container-for="UserId" class="k-edit-field">
-     
-        @(Html.Kendo().ComboBoxFor(model => model.UserKey)
-            .HtmlAttributes(new { data_bind = "value:UserKey", style = "width: 300px" })
-            .DataTextField("Name")
-            .DataValueField("Id")
-            .Filter(FilterType.Contains)
-            .AutoBind(false)
-            .MinLength(3)
-            //.Template("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Name\\#")
-            .DataSource(source => source.Read(r => r.Action("GetUserNamesForSchedule", "Account")).ServerFiltering(true)).ToClientTemplate()
-        )
-    </div>
 
 <div class="k-edit-label">
     @(Html.LabelFor(model => model.Idcancha))

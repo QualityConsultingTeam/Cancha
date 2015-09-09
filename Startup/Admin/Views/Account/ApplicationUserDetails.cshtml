@@ -79,7 +79,24 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-6">
+            <div class="ibox animated fadeInRight">
 
+                <div class="ibox-content">
+                    <div class="tab-content">
+                        <div id="contact-1" class="tab-pane active">
+                            <div class="row m-b-lg">
+                                <div class="col-lg-4 text-center" id="userSummary">
+                               
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -99,6 +116,9 @@
             });
         });
 
+        $.post('@Url.Action("UserSummary","Booking")' + "?id=" + userid, function (view) {
+            $("#userSummary").html(view);
+        });
     });
 
 </script>

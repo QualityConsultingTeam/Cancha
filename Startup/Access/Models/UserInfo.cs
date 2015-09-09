@@ -28,6 +28,7 @@ namespace Access.Models
         [DisplayName("Reservas :")]
         public List<BookingSummary> BookingSummary { get; set; }
 
+        [DisplayName("Comentarios")]
         public string Comment { get; set; }
     }
 
