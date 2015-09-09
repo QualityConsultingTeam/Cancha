@@ -295,11 +295,18 @@ namespace Access
 
 
 
-        public   void AddOrUpdateBooking(Booking booking)
+        public  async Task AddOrUpdateBooking(Booking booking)
         {
             booking.Userid = UserId;
             booking.OBJECTTYPE = "1";
-            //var isLocked = await Context.UsersCenter.AnyAsync(u => u.UserId == UserId && u.CenterId == booking.Field.CenterId);
+            // validate locked User Account
+            var isLocked = await (from account in Context.AccountAccess.Where(a => a.UserId == UserId)
+                                  join center in Context.Centers.Where(c => c.Fields.Any(f => f.Id == booking.Idcancha))
+                                  on account.CenterId equals center.Id
+                                  select new { locked = account.Locked }).FirstOrDefaultAsync();
+
+
+            if (isLocked != null && isLocked.locked) return ;
 
             if (booking.Id == 0) Context.Bookings.Add(booking);
 

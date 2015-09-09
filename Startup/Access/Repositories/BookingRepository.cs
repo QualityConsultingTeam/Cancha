@@ -50,7 +50,7 @@ namespace Access.Repositories
             }
             else Context.Bookings.Include(b => b.Field);
 
-            if (onlyAvailables) query = query.Where(b => b.Status != BookingStatus.Denegado);
+            if (onlyAvailables) query = query.Where(b => b.Status != BookingStatus.Denegado && b.Status!= BookingStatus.Falta);
 
 
             query = query.Where(b => b.Start.HasValue &&

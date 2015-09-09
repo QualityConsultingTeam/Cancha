@@ -61,7 +61,7 @@ namespace Admin.Controllers
                 return RedirectToAction("ConfirmaReserva",
                     new { fieldId = booking.Idcancha, start = booking.Start.Value.ToShortTimeString(), end = booking.End.Value.ToShortTimeString() });
             
-            Repository.AddOrUpdateBooking(booking);
+            await Repository.AddOrUpdateBooking(booking);
 
             await Repository.SaveAsync();
 

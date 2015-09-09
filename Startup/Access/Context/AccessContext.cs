@@ -57,11 +57,7 @@ namespace Access
         public DbSet<Team> Teams { get; set; }
 
        public DbSet<AccountAccessLevel> AccountAccess { get; set; }
-
-
-       public DbSet<UserCenter> UsersCenter { get; set; }
-
-
+        
         //public DbSet<CenterAccount> CenterAccounts { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

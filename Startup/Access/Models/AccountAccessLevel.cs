@@ -18,6 +18,8 @@ namespace Access.Models
 
         public Guid UserId { get; set; }
 
+        public bool Locked { get; set; }
+
 
     }
 }
