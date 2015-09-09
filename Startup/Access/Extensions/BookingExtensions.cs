@@ -20,6 +20,13 @@ namespace Access.Extensions
                     booking.Start.Value.Date==date.Date ? "btn btn-primary btn-sm" : "btn btn-primary btn-sm");
         }
 
+        /// <summary>
+        ///  Round up Stimated time
+        /// </summary>
+        /// <param name="date"></param>
+        /// <param name="hour"></param>
+        /// <param name="forPreview"></param>
+        /// <returns></returns>
         public static DateTime EstimatedTime(DateTime? date,int hour, bool forPreview)
         {
             TimeSpan diff = DateTime.Now - DateTime.Now.Date.AddHours(hour+1);
@@ -36,11 +43,23 @@ namespace Access.Extensions
                        (forPreview ? approxhour : DateTime.Now.Date);
         }
 
+        /// <summary>
+        /// Round Up Stimated Time
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="d"></param>
+        /// <returns></returns>
         public static  DateTime RoundUp(DateTime dt, TimeSpan d)
         {
             return new DateTime(((dt.Ticks + d.Ticks - 1) / d.Ticks) * d.Ticks);
         }
 
+        /// <summary>
+        /// Create Times Ranges for Bookings Logic
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
         public static  List<Booking> BuildTimes(FilterOptionModel filter, int limit = 4)
         {
             // TODO take user Hour

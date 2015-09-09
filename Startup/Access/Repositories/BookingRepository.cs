@@ -74,7 +74,7 @@ namespace Access.Repositories
 
            //  if (filter.centerid.HasValue) query = query.Where(c => c.Field.CenterId == filter.centerid);
 
-            return filter.HasOrderByProperty ? query.CustomOrderby(filter) : query.OrderBy(o => o.Start);
+            return filter.HasOrderByProperty ? query.CustomOrderby(filter) : query.OrderByDescending(o => o.Start);
         }
         #endregion
 
@@ -117,7 +117,7 @@ namespace Access.Repositories
                 var center = await Context.Centers.Where(c => c.Fields.Any(f => f.Id == booking.Idcancha))
                                                 .FirstOrDefaultAsync();
 
-                if (!await Context.AccountAccess.AnyAsync(c => c.CenterId == center.Id))
+                if (!await Context.AccountAccess.AnyAsync(c => c.UserId == booking.Userid))
                 {
                     Context.AccountAccess.Add(new AccountAccessLevel()
                     {
