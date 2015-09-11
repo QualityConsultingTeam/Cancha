@@ -39,7 +39,7 @@ namespace BussinesAccess
 
             var item = new Item()
             {
-                name = string.Format("Reserva de Cancha {0} " + booking.Field.Name),
+                name = string.Format("Reserva de Cancha {0} " , booking.Field.Name),
                 currency ="USD",
                 quantity ="1",
                 price = booking.Price.ToString(),
