@@ -16,7 +16,7 @@ namespace Access.Repositories
 
         public Task<Booking> GetBookingAsync(int bookingId)
         {
-            throw new NotImplementedException();
+            return Context.Bookings.FindAsync(bookingId);
         }
     }
 }

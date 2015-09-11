@@ -147,6 +147,10 @@
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PayPal, Version=1.5.0.0, Culture=neutral, PublicKeyToken=5b4afc1ccaef40fb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PayPal.1.5.0\lib\net45\PayPal.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -226,6 +230,7 @@
     <Compile Include="Controllers\BookingController.cs" />
     <Compile Include="Controllers\CanchasController.cs" />
     <Compile Include="Controllers\CenterController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\RootAdminController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\StartController.cs" />
@@ -1577,6 +1582,7 @@
     <Content Include="Views\Shared\_Layout_4.cshtml" />
     <Content Include="Views\Shared\_NavigationOffCanvas.cshtml" />
     <Content Include="Views\Shared\_RightSidebar.cshtml" />
+    <Content Include="Views\Canchas\PayPalCanceled.cshtml" />
     <None Include="Web.Azure_Website.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -1584,6 +1590,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Payment\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -1596,6 +1603,10 @@
     <ProjectReference Include="..\Access\Access.csproj">
       <Project>{8315FCCC-A646-4B7B-8414-1BD7801DBB13}</Project>
       <Name>Access</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BussinesAccess\BussinesAccess.csproj">
+      <Project>{213a3d8c-a134-4744-a822-de7428c7a2dd}</Project>
+      <Name>BussinesAccess</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

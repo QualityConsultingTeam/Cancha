@@ -114,6 +114,12 @@ namespace Admin.Controllers
 
             return Json(model.ToAutocomplete(), JsonRequestBehavior.AllowGet);
         }
+
+        [Authorize]
+        public ActionResult PayPalCanceled()
+        {
+            return View();
+        }
         #endregion  
     }
 }
