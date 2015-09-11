@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Access.Models;
+using System.Data.Entity;
 
 namespace Access.Repositories
 {
@@ -16,7 +17,9 @@ namespace Access.Repositories
 
         public Task<Booking> GetBookingAsync(int bookingId)
         {
-            return Context.Bookings.FindAsync(bookingId);
+            return Context.Bookings
+               .Include(b=>b.Field)
+                .FirstOrDefaultAsync(b=>b.Id== bookingId);
         }
     }
 }

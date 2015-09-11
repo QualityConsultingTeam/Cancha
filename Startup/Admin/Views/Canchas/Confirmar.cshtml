@@ -3,7 +3,7 @@
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout_2.cshtml";
     ViewBag.Title = "Canchas";
 }
-
+@model Booking
  
 
 @Html.Partial("KendoRef")
@@ -40,7 +40,12 @@
             <div class="modal-body">
                  
                 <div id="bookingModal">
-
+                    Realizar pago a travez De PayPal 
+                    
+                        <a href="@Url.Action("Pay","Payment",new { id = Model.Id })" class="btn btn-success btn-large btn-outline"  >
+                            <i class="fa fa-cc-paypal"></i>
+                    </a>
+                    < 
                 </div>
             </div>
 
@@ -55,6 +60,7 @@
         
         RunSearch();
         Notify();
+        $('#CreateAppointment').modal('show');
     });
 
     function sendToModal(formid) {
