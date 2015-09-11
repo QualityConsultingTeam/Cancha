@@ -112,21 +112,7 @@ namespace Access.Repositories
 
         public async Task UpdateAccountLevel(Booking booking, bool ignoreStatus = false)
         {
-            if (booking.Status == BookingStatus.Reservada || ignoreStatus)
-            {
-                var center = await Context.Centers.Where(c => c.Fields.Any(f => f.Id == booking.Idcancha))
-                                                .FirstOrDefaultAsync();
-
-                if (!await Context.AccountAccess.AnyAsync(c => c.UserId == booking.Userid))
-                {
-                    Context.AccountAccess.Add(new AccountAccessLevel()
-                    {
-                        UserId = booking.Userid,
-                        Center = center,
-                    });
-                    await SaveAsync();
-                }
-            }
+            await booking.UpdateUserAccountLevel(Context);
         }
     }
 }

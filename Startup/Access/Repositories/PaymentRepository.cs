@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Access.Models;
 using System.Data.Entity;
+using Access.Extensions;
 
 namespace Access.Repositories
 {
@@ -29,6 +30,8 @@ namespace Access.Repositories
 
             booking.PaypalPaymentCompleted = true;
             booking.Status = BookingStatus.Finalizado;
+
+            await booking.UpdateUserAccountLevel(Context, ignoreStatus: true);
 
             await SaveAsync();
 

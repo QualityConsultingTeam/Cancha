@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Access.Models;
+using System.Data.Entity;
 
 namespace Access.Extensions
 {
@@ -84,6 +85,27 @@ namespace Access.Extensions
             }
 
             return ranges;
+        }
+
+        public static async Task<bool> UpdateUserAccountLevel(this Booking booking, AccessContext Context, bool ignoreStatus = false)
+        {
+            if ( (booking.Status == BookingStatus.Reservada|| booking.Status == BookingStatus.Pendiente) || ignoreStatus)
+            {
+                var center = await Context.Centers.Where(c => c.Fields.Any(f => f.Id == booking.Idcancha))
+                                                .FirstOrDefaultAsync();
+
+                if (!await Context.AccountAccess.AnyAsync(c => c.UserId == booking.Userid))
+                {
+                    Context.AccountAccess.Add(new AccountAccessLevel()
+                    {
+                        UserId = booking.Userid,
+                        Center = center,
+                    });
+                    await Context.SaveChangesAsync();
+                }
+                return true;
+            }
+            return false;
         }
     }
 }
