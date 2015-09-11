@@ -48,7 +48,7 @@ namespace WebApi.Controllers
 
             IHttpActionResult response;
             HttpResponseMessage responseMsg = new HttpResponseMessage(HttpStatusCode.RedirectMethod);
-            responseMsg.Headers.Location = new Uri(string.Format("{0}{1}", ConfigurationManager.AppSettings["clientApp"]));
+            responseMsg.Headers.Location = new Uri(string.Format("{0}", ConfigurationManager.AppSettings["clientApp"]));
             response = ResponseMessage(responseMsg);
             return response;
         }
