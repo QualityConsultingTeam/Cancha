@@ -17,6 +17,9 @@ namespace Access.Models
         {
             CreateDate = DateTime.Now;
             CreateTime = DateTime.Now.Hour;
+            Docdate = DateTime.Now;
+            Doctime = DateTime.Now.Hour;
+            OBJECTTYPE = "1";
         }
 
         [DisplayName("Fecha Doc")]

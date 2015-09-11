@@ -22,9 +22,25 @@ namespace Admin.Controllers
 
             var payment = manager.GetPayment(booking);
 
-            var url = payment.links.FirstOrDefault(p => p.rel == "");
+            if (payment == null)
+            {
+                ViewBag.Message = "Error Al Intentar Procesar el pago";
+                return View("Pay");
+            }
+
+            booking.PaypalPaymentId = payment.id;
+
+            await Repository.SaveAsync();
+
+            var url = payment.links.FirstOrDefault(p => p.rel == "approval_url");
 
             return Redirect(url.href);
+        }
+        public ActionResult PaymentCompleted()
+        {
+            ViewBag.Message = "Pago Completado Exitosamente";
+
+            return View();
         }
     }
 }

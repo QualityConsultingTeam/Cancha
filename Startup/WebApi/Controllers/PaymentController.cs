@@ -21,9 +21,16 @@ namespace WebApi.Controllers
         public async Task<IHttpActionResult> Payment(int bookingId)
         {
             var manager = new PaymentManager();
-            var payment = manager.GetPayment( await Repository.GetBookingAsync(bookingId));
+            var booking = await Repository.GetBookingAsync(bookingId);
+
+            var payment = manager.GetPayment( booking);
 
             if (payment == null) return NotFound();
+
+            booking.PaypalPaymentId = payment.id;
+
+            await Repository.SaveAsync();
+
             return Ok(payment);
         }
 
@@ -31,14 +38,17 @@ namespace WebApi.Controllers
         [AllowAnonymous]
         [Route("api/Verify")]
         [ResponseType(typeof(PayPal.Api.Payment))]
-        public  IHttpActionResult VerifyPayment(string paymentId, string token, string PayerID)
+        public async Task<IHttpActionResult> VerifyPayment(string paymentId, string token, string PayerID)
         {
             var manager = new PaymentManager();
-            var paymentDone = manager.ConfirmPayment(paymentId,token,PayerID);
+            var paymentDone = manager.ConfirmPayment(paymentId, token, PayerID);
+
+            if (paymentDone)await Repository.ConfirmPaypalPayment(paymentId);
+            
 
             IHttpActionResult response;
             HttpResponseMessage responseMsg = new HttpResponseMessage(HttpStatusCode.RedirectMethod);
-            responseMsg.Headers.Location = new Uri(string.Format("{0}{1}", ConfigurationManager.AppSettings["clientApp"], "payment_done"));
+            responseMsg.Headers.Location = new Uri(string.Format("{0}{1}", ConfigurationManager.AppSettings["clientApp"]));
             response = ResponseMessage(responseMsg);
             return response;
         }

@@ -56,7 +56,7 @@ namespace BussinesAccess
 
 
             Amount amnt = new Amount();
-            amnt.currency = "EUR";
+            amnt.currency = "USD";
             amnt.total = booking.Price.ToString();
 
             List<Transaction> transactionList = new List<Transaction>();
@@ -119,13 +119,12 @@ namespace BussinesAccess
                 if (executedPayment != null && executedPayment.state == "approved")
                 {
                     ///crear la factura
-                    //var total = payment.transactions.Sum(t => Convert.ToDecimal(t.amount.total));
-                    //var achat = new Achat() { Panier = panier, UtilisateurId = UserId, Prix = total };
-                    //Context.Achats.Add(achat);
-                    //panier.Status = PanierStatus.Confirmed;
+                    var total = payment.transactions.Sum(t => Convert.ToDecimal(t.amount.total));
+                    
+                    //.Status = PanierStatus.Confirmed;
                     //panier.PayerID = PayerID;
                     //await SaveAsync();
-
+                    return true;
                 }
 
             }

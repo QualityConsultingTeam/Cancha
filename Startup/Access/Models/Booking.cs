@@ -94,6 +94,10 @@ namespace Access.Models
         public Field Field { get; set; }
 
         
+        public string PaypalPaymentId { get; set; }
+
+        public bool PaypalPaymentCompleted { get; set; }
+
 
         // no mapeada aun. 
         [NotMapped]

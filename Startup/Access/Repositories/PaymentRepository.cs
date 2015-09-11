@@ -21,5 +21,28 @@ namespace Access.Repositories
                .Include(b=>b.Field)
                 .FirstOrDefaultAsync(b=>b.Id== bookingId);
         }
+
+        public async Task ConfirmPaypalPayment(string paymentId)
+        {
+            var booking = await Context.Bookings
+               .FirstOrDefaultAsync(b => b.PaypalPaymentId == paymentId);
+
+            booking.PaypalPaymentCompleted = true;
+            booking.Status = BookingStatus.Finalizado;
+
+            await SaveAsync();
+
+            var payment = new Access.Models.Payment()
+            {
+                 Amount = booking.Price,
+                 Userid = booking.Userid,
+                 Description ="Pago A travez de Paypal",
+
+            };
+
+            Context.Payments.Add(payment);
+
+            await SaveAsync();
+        }
     }
 }
