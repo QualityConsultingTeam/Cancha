@@ -40,7 +40,7 @@ namespace Admin.Controllers
         {
             ViewBag.Message = "Pago Completado Exitosamente";
 
-            return View();
+            return View("Pay");
         }
     }
 }
