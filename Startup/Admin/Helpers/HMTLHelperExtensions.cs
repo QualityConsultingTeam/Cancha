@@ -1,4 +1,5 @@
 ﻿using Access.Extensions;
+using Microsoft.Owin.Security;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -183,6 +184,7 @@ namespace Admin
 
         public static string FacebookProfileSmallPicture(this HtmlHelper helper)
         {
+            
             var claim =  ClaimsPrincipal.Current.FacebookProfileSmallPicture() ;
 
             return !string.IsNullOrEmpty(claim) ? claim : "~/Images/profile.jpg";

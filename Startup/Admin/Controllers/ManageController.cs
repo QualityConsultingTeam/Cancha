@@ -7,11 +7,14 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Admin.Models;
+using Access;
+using Access.Models;
+using Access.Repositories;
 
 namespace Admin.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : BaseController<BookingRepository,AccessContext,Booking>
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -50,6 +53,19 @@ namespace Admin.Controllers
             }
         }
 
+
+        public IdentityManagerService IdentityManagerService
+        {
+            get
+            {
+                return new IdentityManagerService(HttpContext.GetOwinContext().Get<ApplicationDbContext>())
+                {
+
+                };
+            }
+        }
+
+        public AccessContext Context { get { return HttpContext.GetOwinContext().Get<AccessContext>(); } }
         //
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
@@ -72,9 +88,19 @@ namespace Admin.Controllers
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
+
+            ViewBag.UserAccount = await IdentityManagerService.GetUserSummaryAsync(Context, new Guid(userId));
+
             return View(model);
         }
 
+
+        public async Task<ActionResult> UserBookings()
+        {
+            var model = await Repository.GetUserBookings(new FilterOptionModel());
+
+            return View(model);
+        }
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]

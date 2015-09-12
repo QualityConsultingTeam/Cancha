@@ -30,17 +30,22 @@ namespace Access.Extensions
             return !string.IsNullOrEmpty(claim) ?( int?) Convert.ToInt32(claim) : null;
         }
 
+
+       
         public static string FacebookProfilePicture(this ClaimsPrincipal principal)
         {
-            var claim = principal.Claim("id");//principal.Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+            var claim = principal.Claim("facebookUserPicture");//principal.Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
 
             return claim != null ? string.Format("http://graph.facebook.com/{0}/picture?type=large", claim) : string.Empty;
         }
         public static string FacebookProfileSmallPicture(this ClaimsPrincipal principal )
         {
-            var claim = principal.Claim("claim");//  principal.Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+            return  principal.Claim("facebookUserPicture");//  principal.Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+        }
 
-            return claim != null ? string.Format("http://graph.facebook.com/{0}/picture", claim) : string.Empty;
+        public static string FaceBookProfilePictureFormat(string facebookUserId)
+        {
+            return string.Format("//graph.facebook.com/{0}/picture", facebookUserId);
         }
         
     }

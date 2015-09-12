@@ -83,12 +83,12 @@ namespace Admin.Controllers
         [HttpPost]
         public async Task<ActionResult> UserSummary(Guid id)
         {
-            var model = await IdentityManagerService.GetUserSummary(Context, id);
+            var model = await IdentityManagerService.GetUserSummaryAsync(Context, id);
 
             return View("Partials/UserSummary", model);
         }
 
-
+        
 
         #endregion   Grid Administracion de Reservas
 

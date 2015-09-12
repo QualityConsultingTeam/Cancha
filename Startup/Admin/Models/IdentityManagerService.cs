@@ -129,7 +129,7 @@ namespace Admin.Models
 
                 if (claim != null)
                 {
-                    account.ProfilePicture = string.Format("//graph.facebook.com/{0}/picture", claim.ClaimValue);
+                    account.ProfilePicture = TokenExtensions.FaceBookProfilePictureFormat(claim.ClaimValue);
                 }
 
                 var claimName = account.Claims.FirstOrDefault(c => c.ClaimType == ClaimTypes.Name);
@@ -337,7 +337,7 @@ namespace Admin.Models
         /// <param name="context"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<UserInfo> GetUserSummary(AccessContext context, Guid id)
+        public async Task<UserInfo> GetUserSummaryAsync(AccessContext context, Guid id)
         {
             var user = await GetUserAsync(id.ToString());
 

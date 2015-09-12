@@ -1,84 +1,182 @@
 ﻿@model Admin.Models.IndexViewModel
 @{
-    ViewBag.Title = "Manage";
+    ViewBag.Title = "Mi Perfil";
+
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout_2.cshtml";
+    
+    var  userInfo =  (UserInfo)ViewBag.UserAccount;
+}
+@Html.Partial("KendoRef")
+
+<style>
+    body {
+    color: lightsteelblue !important;
+}
+</style>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        
+        <ol class="breadcrumb">
+            <li>
+                
+            </li>
+            <li>
+                
+            </li>
+            <li class="active">
+                
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+
+    <div class="row m-b-lg m-t-lg">
+        <div class="col-md-6">
+
+            <div class="profile-image">
+                <img src="@Html.FacebookProfileSmallPicture()" class="img-circle circle-border m-b-md" alt="profile">
+            </div>
+            <div class="profile-info">
+                <div class="">
+                    <div>
+                        <h2 class="no-margins">
+                            @User.Identity.Name
+                        </h2>
+                        <h4>
+                            @userInfo.Name
+                        </h4>
+                        <h4>
+                            @userInfo.Phone
+                        </h4>
+                        <small>
+                           @ViewBag.StatusMessage
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <table class="table small m-b-xs">
+                <tbody>
+                    @foreach (var item in userInfo.BookingSummary)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@item.Count</strong> @item.Label
+                            </td>
+                        </tr>
+                    }
+                   
+
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-3">
+            <small>TOTAL SOLICITUDES</small>
+            <h2 class="no-margins">
+                @{
+                    var total = userInfo.BookingSummary.FirstOrDefault(b => b.Label.ToLower() == "total");
+                }
+                @total.Count
+                   
+            </h2>
+            <div id="sparkline1"></div>
+        </div>
+
+
+    </div>
+    <div class="row">
+
+        <div class="col-lg-3">
+
+            <div class="ibox">
+                <div class="ibox-content">
+                    <h3>Cambiar la Configuracion de Mi Cuenta</h3>
+                    <dt>Contraseña:</dt>
+                    <dd>
+                        [
+                        @if (Model.HasPassword)
+                        {
+                            @Html.ActionLink("Cambiar Contraseña", "ChangePassword")
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Crear Contraseña", "SetPassword")
+                        }
+                        ]
+
+                        <p class="small">
+                           
+                        </p>
+
+                        <p class="small font-bold">
+                            <span><i class="fa fa-circle text-navy"></i> Online status</span>
+                        </p>
+
+</div>
+            </div>
+             
+
+        </div>
+        <div class="col-lg-9">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <span class="text-muted small pull-right">Ultima Actualizacion: <i class="fa fa-clock-o"></i> 2:10 pm - 12.06.2014</span>
+                    <h2>Mis Reservas</h2>
+                    <p>
+                        Se muestran las reservas desde la mas reciente y el estado actual para cada una
+                    </p>
+                    <div class="input-group">
+                        <input type="text" placeholder="Buscar Reserva" class="input form-control">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn btn-primary"> <i class="fa fa-search"></i> Buscar</button>
+                        </span>
+                    </div>
+                    <div class="clients-list">
+                        <ul class="nav nav-tabs">
+                            <span class="pull-right small text-muted">@total.Count Total Reservas</span> 
+                        </ul>
+                        <div class="full-height-scroll">
+                            <div class="table-responsive"  id="userBookings">
+                               @Html.Partial("Loader")
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+         
+      
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/plugins/sparkLine")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#sparkline1").sparkline([34, 43, 43, 35, 44, 32, 44, 48], {
+                type: 'line',
+                width: '100%',
+                height: '50',
+                lineColor: '#1ab394',
+                fillColor: "transparent"
+            });
+            $.get('@Url.Action("UserBookings","Manage")', function (view) {
+                $("#userBookings").html(view);
+            });
+        });
+    </script>
 }
 
-<h2>@ViewBag.Title.</h2>
 
-<p class="text-success">@ViewBag.StatusMessage</p>
-<div>
-    <h4>Change your account settings</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>Password:</dt>
-        <dd>
-            [
-            @if (Model.HasPassword)
-            {
-                @Html.ActionLink("Change your password", "ChangePassword")
-            }
-            else
-            {
-                @Html.ActionLink("Create", "SetPassword")
-            }
-            ]
-        </dd>
-        <dt>External Logins:</dt>
-        <dd>
-            @Model.Logins.Count [
-            @Html.ActionLink("Manage", "ManageLogins") ]
-        </dd>
-        @*
-            Phone Numbers can used as a second factor of verification in a two-factor authentication system.
-             
-             See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                for details on setting up this ASP.NET application to support two-factor authentication using SMS.
-             
-             Uncomment the following block after you have set up two-factor authentication
-        *@
-        @*  
-            <dt>Phone Number:</dt>
-            <dd>
-                @(Model.PhoneNumber ?? "None") [
-                @if (Model.PhoneNumber != null)
-                {
-                    @Html.ActionLink("Change", "AddPhoneNumber")
-                    @: &nbsp;|&nbsp;
-                    @Html.ActionLink("Remove", "RemovePhoneNumber")
-                }
-                else
-                {
-                    @Html.ActionLink("Add", "AddPhoneNumber")
-                }
-                ]
-            </dd>
-        *@
-        <dt>Two-Factor Authentication:</dt>
-        <dd>
-            <p>
-                There are no two-factor authentication providers configured. See <a href="http://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                for details on setting up this ASP.NET application to support two-factor authentication.
-            </p>
-            @*@if (Model.TwoFactor)
-                {
-                    using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Enabled
-                        <input type="submit" value="Disable" class="btn btn-link" />
-                        </text>
-                    }
-                }
-                else
-                {
-                    using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Disabled
-                        <input type="submit" value="Enable" class="btn btn-link" />
-                        </text>
-                    }
-                }*@
-        </dd>
-    </dl>
-</div>

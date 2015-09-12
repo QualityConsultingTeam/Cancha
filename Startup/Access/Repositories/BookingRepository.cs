@@ -110,9 +110,17 @@ namespace Access.Repositories
             
         }
 
+        public Task<List<Booking>> GetUserBookings(FilterOptionModel filter)
+        {
+            return Context.Bookings.Where(b => b.Userid == UserId).Include(b=>b.Field)
+                .OrderByDescending(b => b.CreateDate).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
+        }
+
         public async Task UpdateAccountLevel(Booking booking, bool ignoreStatus = false)
         {
             await booking.UpdateUserAccountLevel(Context);
         }
+
+        
     }
 }

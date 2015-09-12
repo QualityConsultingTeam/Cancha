@@ -347,6 +347,15 @@ namespace Admin.Controllers
                 var user = await UserManager.FindByEmailAsync(loginInfo.Email);
 
                 await IdentityManagerService.InsertOrUpdateUserClaims(user.Id, loginInfo.ExternalIdentity.Claims.ToList());
+
+                var fClaim = loginInfo.ExternalIdentity.Claims.FirstOrDefault(f => f.Type == "id");
+
+                if (!user.Claims.Any(c => c.ClaimType == "facebookUserPicture")) 
+                    {
+
+                    await UserManager.AddClaimAsync(user.Id,
+                    new Claim("facebookUserPicture", TokenExtensions.FaceBookProfilePictureFormat(fClaim.Value.ToString())));
+                    }
             }
             switch (result)
             {
