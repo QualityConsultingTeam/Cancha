@@ -13,7 +13,7 @@ using Admin.Models;
 
 namespace Admin.Controllers
 {
-    [Globalization]
+    
     [RequireHttps]
     public class CanchasController : BaseController<FieldsRepository,AccessContext,Field>
     {
@@ -25,7 +25,7 @@ namespace Admin.Controllers
         }
 
         [HttpPost]
-        [Globalization]
+    
         public async Task<ActionResult> SearchFields(FilterOptionModel filter)
         {
             var model = await Repository.FullSearchAsync(filter);
