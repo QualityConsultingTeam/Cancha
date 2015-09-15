@@ -3,98 +3,57 @@
     Layout = null;
 }
 
-<li class="dropdown">
-    <a href="@Url.Action("Index","Manage")" class="dropdown-toggle" data-toggle="dropdown">
-         Cuenta de Usuario
-        <b class="caret"></b>
-    </a>
-    <ul class="dropdown-menu">
-        <li>
-            <div class="navbar-content">
-                <div class="row">
-                    <div class="col-md-5">
-                        <img src="@Html.FacebookProfileSmallPicture()"
-                             alt="Alternate Text" class="img-responsive" />
+ <li class="dropdown">
+                    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-2x"></i>  
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                        <li>
+                            <div class="dropdown-messages-box">
+                                <a href="#" class="pull-left">
+                                    <img alt="image" class="img-circle" src="@Html.FacebookProfileSmallPicture()">
+                                </a>
+                                <div class="media-body">
+                                    <small class="pull-right">--</small>
+                                    <strong>@User.Identity.Name</strong> <br>
+                                     
+                                    <small class="text-muted">
 
-                    </div>
-                    <div class="col-md-7">
-                        <span>@User.Identity.Name</span>
-                        <p class="text-muted small">
-                            @*@User.Identity.Name*@
+                                    </small>
+                                </div>
+                            </div>
+                        </li>
 
-                        </p>
-                        <div class="divider">
-                        </div>
-                        <a href="@Url.Action("Index","Manage")" class="btn btn-primary btn-sm active">Mi Perfil</a>
 
-                        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
-                        {
-                        <a href="@Url.Action("menu", "rootadmin")" class="btn btn-primary btn-sm active">Administracion</a>
-                        }
-                    </div>
-                </div>
-            </div>
-            <div class="navbar-footer">
-                <div class="navbar-footer-content">
-                    <div class="row">
 
-                        
-                        <div class="col-md-6">
-                            <a href="@Url.Action("LogOut", "Account")" class="btn btn-default btn-sm">
-                                Cerrar sesión
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-    </ul>
+                        <li class="divider"></li>
+                        <li>
+                            <div class="text-center link-block">
+                                <a href="@Url.Action("Index","Manage")">
+                                    <i class="fa fa-tasks fa-2x"></i> <strong>MI PERFIL</strong>
+                                </a>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                            {
+                                <div class="text-center link-block">
+                                    <a href="@Url.Action("menu", "rootadmin")">
+                                        <i class="fa fa-dashboard fa-2x"></i> <strong>ADMINISTRAR</strong>
+                                    </a>
+                                </div>
+                            }
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            
+                            <div class="text-center link-block">
+                                <a href="@Url.Action("LogOut", "Account")">
+                                    <i class="fa fa-sign-out         fa-2x"></i> <strong>SALIR</strong>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
 
-</li>
-
-<style>
-    /* Special class on .container surrounding .navbar, used for positioning it into place. */
-.navbar-wrapper {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  z-index: 20 !important;
-  margin-top: 20px !important;
-}
-
-/* Flip around the padding for proper display in narrow viewports */
-.navbar-wrapper .container {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-}
-.navbar-wrapper .navbar {
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-.navbar-content
-{
-    width:320px;
-    padding: 15px;
-    padding-bottom:0px;
-}
-.navbar-content:before, .navbar-content:after
-{
-    display: table;
-    content: "";
-    line-height: 0;
-}
-.navbar-nav.navbar-right:last-child {
-margin-right: 15px !important;
-}
-.navbar-footer 
-{
-    background-color:#DDD;
-}
-.navbar-footer-content { padding:15px 15px 15px 15px; }
-.dropdown-menu {
-padding: 0px;
-overflow: hidden;
-}
-</style>

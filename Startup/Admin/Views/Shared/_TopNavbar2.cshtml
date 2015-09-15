@@ -23,85 +23,49 @@
                     }, new { @class = "navbar-form", role = "search", id = "searchFieldsForm" }))
                     {
 
-                        @*<div class="input-group">
-                            <button class="btn btn-info btn-circle btn-outline" type="button"
-                                    data-toggle="button" data-placement="left" title="Tooltip on left">
-
-
-                                <i class="fa fa-map-marker"></i>
-                                
-                            </button>
-                        </div>*@
                         <input type="hidden" id="lat" name="lat" />
                         <input type="hidden" id="lon" name="lon" />
 
                         <div class="input-group">
-                            @(Html.Kendo().DatePicker()
-                                  .Name("date")
-                                  .Value(DateTime.Now)
-                                  .Format("dd/MM/yyyy")
-                                  .HtmlAttributes(new { id = "date" })
-                                  .Events(e=> e.Change("datechanged"))
-                                  .Min(DateTime.Now)
-                            )
-                            @*</div>
-                                <div class="input-group" style="width: 15px">*@
-                            @(Html.Kendo().TimePicker()
-                                  .Name("time")
-                                  .Value(DateTime.Now)
-                                  .Format("hh:00 tt").Min("7:00 AM").Max("11:00 PM").Interval(60)
-                                  .Events(e=> e.Change("datechanged"))
-                                  .HtmlAttributes(new { id = "time" })
-                            )
+                            <div class="form-group">
+                                <div class='input-group date' >
+                                    <input type='text' class="form-control" id="date" name="date" style="width:100px"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                                <div class="input-group clockpicker">
+                                    <input type="text" class="form-control" id="time" name="time" style="width:100px">
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                                </div>
+                            </div>
+                             
                         </div>
 
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="buscar" name="keywords" id="keywords">
-                            <div class="input-group-btn">
-                                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="buscar" name="keywords" id="keywords">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" id="lupabutton" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
 
-                        @*<form class="navbar-form" role="search"></form>*@
+                      
                     }
                 </li>
 
-                @* <li  >
-                        <div class="navbar-form">
-                            @(Html.Kendo().TimePicker()
-                              .Name("timepicker")
-                              .Value("10:00 AM").HtmlAttributes(new{style="width:40%"})
-                            )
-                          </div>
-                    </li>*@
-                @*<li class="dropdown">
-                        <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"> Menu item <span class="caret"></span></a>
-                        <ul role="menu" class="dropdown-menu">
-                            <li><a href="">Menu item</a></li>
-                            <li><a href="">Menu item</a></li>
-                            <li><a href="">Menu item</a></li>
-                            <li><a href="">Menu item</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"> Menu item <span class="caret"></span></a>
-                        <ul role="menu" class="dropdown-menu">
-                            <li><a href="">Menu item</a></li>
-                            <li><a href="">Menu item</a></li>
-                            <li><a href="">Menu item</a></li>
-                            <li><a href="">Menu item</a></li>
-                        </ul>
-                    </li>*@
 
             </ul>
             <ul class="nav navbar-top-links navbar-right">
+
                 @if (User.Identity.IsAuthenticated)
                 {
-                    @*<li>
-                        <a href="@Url.Action("LogOut", "Account")">
-                            <i class="fa fa-sign-out"></i> @User.Identity.Name - cerrar sesión
-                        </a>
-                    </li>*@
                     @Html.Partial("UserProfileNav")
                 }
                 else
@@ -121,6 +85,38 @@
 
     var Mylatitude;
     var Mylongitude;
+
+    $(function () {
+        
+        var date = new Date();
+        console.log(date);
+
+        $('#date').datepicker({
+            todayBtn: true  ,
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true,
+            format: 'dd/mm/yyyy',
+            startDate: '0d',
+            todayHighlight: true,
+          
+            
+        });
+       
+        $('#time').timepicker({
+            'step': function (i) {
+                //return (i % 2) ? 15 : 45;
+                return 60;
+            },
+            'minTime': '6:00am',
+            'maxTime': '10:00pm',
+             
+        });
+
+        $('#time').timepicker('setTime', new Date());
+    });
+
     function showLocation(position) {
         console.log(position);
         Mylatitude = position.coords.latitude;

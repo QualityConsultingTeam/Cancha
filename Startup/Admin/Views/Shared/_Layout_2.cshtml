@@ -18,7 +18,9 @@
     @Styles.Render("~/Content/css")
     
     @Styles.Render("~/Content/customcss")
-    <script src="~/Scripts/kendo/jquery.min.js"></script>
+  
+    @*<script src="~/Scripts/kendo/jquery.min.js"></script>*@
+    @Scripts.Render("~/bundles/jquery")
      
 </head>
 <body class="top-navigation bg-grass new-style">
@@ -53,20 +55,24 @@
     </div>
     <!-- End wrapper-->
     <!-- Section for main scripts render -->
-    @*@Scripts.Render("~/bundles/jquery")*@
-
+  
     @Scripts.Render("~/bundles/jqueryval")
-
-    @*<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>*@
     @Scripts.Render("~/bundles/bootstrap")
+    @*<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>*@
+ 
     @Scripts.Render("~/plugins/slimScroll")
     @Scripts.Render("~/bundles/inspinia")
     @Scripts.Render("~/bundles/typeahead")
     <!-- Skin config script - only for demo purpose-->
-    @Scripts.Render("~/bundles/skinConfig")
+    @*@Scripts.Render("~/bundles/skinConfig")*@
     @Styles.Render("~/plugins/sweetAlertStyles")
     @Scripts.Render("~/plugins/sweetAlert")
     <!-- Handler for local scripts -->
-    @RenderSection("scripts", required: false)
+    @RenderSection("scripts", required: false) 
+   
+    @Styles.Render("~/plugins/dataPickerStyles") 
+    @Scripts.Render("~/plugins/dataPicker")
+   
+
 </body>
 </html>

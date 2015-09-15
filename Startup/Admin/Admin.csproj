@@ -341,6 +341,7 @@
     <Content Include="Content\plugins\colorpicker\bootstrap-colorpicker.min.css" />
     <Content Include="Content\plugins\cropper\cropper.min.css" />
     <Content Include="Content\plugins\datapicker\datepicker3.css" />
+    <Content Include="Content\plugins\datapicker\jquery.timepicker.css" />
     <Content Include="Content\plugins\dataTables\dataTables.bootstrap.css" />
     <Content Include="Content\plugins\dataTables\dataTables.responsive.css" />
     <Content Include="Content\plugins\dataTables\dataTables.tableTools.min.css" />
@@ -1239,6 +1240,7 @@
     <Content Include="Scripts\plugins\colorpicker\bootstrap-colorpicker.min.js" />
     <Content Include="Scripts\plugins\cropper\cropper.min.js" />
     <Content Include="Scripts\plugins\datapicker\bootstrap-datepicker.js" />
+    <Content Include="Scripts\plugins\datapicker\jquery.timepicker.min.js" />
     <Content Include="Scripts\plugins\dataTables\dataTables.bootstrap.js" />
     <Content Include="Scripts\plugins\dataTables\dataTables.responsive.js" />
     <Content Include="Scripts\plugins\dataTables\dataTables.tableTools.min.js" />

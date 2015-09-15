@@ -55,6 +55,12 @@
                 La mejor forma de reservar y encontrar cancha
             </p>
             <p>inicia sesión para verlo en accion</p>
+            <div class="form-group">
+
+                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+
+
+            </div>
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "m-t", role = "form" }))
             {
                 @Html.AntiForgeryToken()
@@ -91,12 +97,7 @@
 
             }
 
-            <div class="form-group">
-
-                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-
-
-            </div>
+          
             <p class="m-t"> <small>En La Cancha Derechos Reservados   &copy; 2015</small> </p>
             <p class="m-t">
 

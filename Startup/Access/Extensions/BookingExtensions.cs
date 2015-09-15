@@ -70,6 +70,7 @@ namespace Access.Extensions
             if (DateTime.TryParse(filter.time, out time))
             {
                 firstHour = new DateTime(firstHour.Year,firstHour.Month,firstHour.Day,time.Hour,time.Minute,time.Second);
+                firstHour = RoundUp(firstHour, TimeSpan.FromMinutes(60));
             };
 
             var ranges = new List<Booking>();

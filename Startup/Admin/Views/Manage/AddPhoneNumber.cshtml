@@ -1,6 +1,7 @@
 ﻿@model Admin.Models.AddPhoneNumberViewModel
 @{
-    ViewBag.Title = "Phone Number";
+    ViewBag.Title = "Numero de Telefono";
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout_2.cshtml";
 }
 
 <h2>@ViewBag.Title.</h2>

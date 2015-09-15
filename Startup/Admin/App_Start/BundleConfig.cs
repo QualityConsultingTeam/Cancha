@@ -218,11 +218,13 @@ namespace Admin
 
             // dataPicker styles
             bundles.Add(new StyleBundle("~/plugins/dataPickerStyles").Include(
-                      "~/Content/plugins/datapicker/datepicker3.css"));
+                      "~/Content/plugins/datapicker/datepicker3.css",
+                      "~/Content/plugins/datapicker/jquery.timepicker.css"));
 
             // dataPicker 
             bundles.Add(new ScriptBundle("~/plugins/dataPicker").Include(
-                      "~/Scripts/plugins/datapicker/bootstrap-datepicker.js"));
+                      "~/Scripts/plugins/datapicker/bootstrap-datepicker.js",
+                       "~/Scripts/plugins/datapicker/jquery.timepicker.min.js"));
 
             // nouiSlider styles
             bundles.Add(new StyleBundle("~/plugins/nouiSliderStyles").Include(

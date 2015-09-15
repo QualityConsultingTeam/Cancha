@@ -1,7 +1,8 @@
 ﻿@model Admin.Models.ManageLoginsViewModel
 @using Microsoft.Owin.Security
 @{
-    ViewBag.Title = "Manage your external logins";
+    ViewBag.Title = "Admnistra tus Logins Externos";
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout_2.cshtml";
 }
 
 <h2>@ViewBag.Title.</h2>
