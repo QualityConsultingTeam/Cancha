@@ -1,6 +1,7 @@
 ﻿@model Access.Models.Booking
 @{
     Layout = null;
+    var culture = new System.Globalization.CultureInfo("es-SV");
 }
 
 
@@ -13,7 +14,7 @@
     </div>
     <div class="ibox-content">
         <h5>FECHA</h5>
-        <h2><strong>@Model.Start.Value.ToString("dd MMMM yyyy")</strong></h2>
+        <h2><strong>@Model.Start.Value.ToString("dd MMMM yyyy",culture)</strong></h2>
         <h5>HORA</h5>
         <h2><strong> @string.Format("{0:HH:mm}", Model.Start.Value)</strong></h2>
     </div>
