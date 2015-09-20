@@ -18,6 +18,7 @@ namespace Admin.Controllers
     public class CanchasController : BaseController<FieldsRepository,AccessContext,Field>
     {
         // GET: Canchas
+        [Globalization]
         public  ActionResult Index()
         {
             ViewBag.lstFields = "hola";
@@ -25,7 +26,7 @@ namespace Admin.Controllers
         }
 
         [HttpPost]
-    
+        [Globalization]
         public async Task<ActionResult> SearchFields(FilterOptionModel filter)
         {
             var model = await Repository.FullSearchAsync(filter);
