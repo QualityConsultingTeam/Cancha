@@ -113,10 +113,10 @@ namespace Access
             var endTimes = ranges.Select(r => r.End).ToList();
 
             // join por hora exacta de inicio
+            // en esta seccion vamos a incluir los estados que consideramos como validos para bloquear el boton reservar
             IQueryable<Booking> _books = Context.Bookings
                 .Where(b =>
-                b.Status != BookingStatus.Cancelado && b.Status != BookingStatus.Denegado 
-                && b.Status != BookingStatus.Falta
+                 (b.Status == BookingStatus.Reservada || b.Status == BookingStatus.Finalizado)
                 && b.Start.HasValue && startTimes.Contains(b.Start.Value)
                 //&& b.End.HasValue && endTimes.Contains(b.End.Value) 
                                                 );
