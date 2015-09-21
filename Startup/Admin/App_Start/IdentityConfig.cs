@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Admin.Models;
+using System.Net.Mail;
 
 namespace Admin
 {
@@ -20,7 +21,47 @@ namespace Admin
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            // Plug in your email service here to send an email.
+            // Credentials:
+            var credentialUserName = "activation@easyinvoice.io";
+            var sentFrom = "activation@easyinvoice.io";
+            var pwd = "ThePassword3#";
+
+            try
+            {
+                // Configure the client:
+                System.Net.Mail.SmtpClient client =
+                    new System.Net.Mail.SmtpClient("smtp.gmail.com");
+
+                client.Port = 587;
+                client.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+
+                // Create the credentials:
+                System.Net.NetworkCredential credentials =
+                    new System.Net.NetworkCredential(credentialUserName, pwd);
+
+                client.EnableSsl = true;
+                client.Credentials = credentials;
+
+                var view = AlternateView.CreateAlternateViewFromString(message.Body, null, "text/html");
+
+
+                // Create the message:
+                var mail =
+                    new System.Net.Mail.MailMessage(sentFrom, message.Destination);
+
+                mail.Subject = message.Subject;
+                mail.AlternateViews.Add(view);
+                mail.IsBodyHtml = true;
+
+                // Send:
+                return client.SendMailAsync(mail);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 
@@ -74,8 +115,8 @@ namespace Admin
             });
             manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<ApplicationUser>
             {
-                Subject = "Security Code",
-                BodyFormat = "Your security code is {0}"
+                Subject = "Codigo De Seguridad",
+                BodyFormat = "Tu Codigo de Seguridad es {0}"
             });
             manager.EmailService = new EmailService();
             manager.SmsService = new SmsService();
