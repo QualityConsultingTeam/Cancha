@@ -29,13 +29,13 @@
                         <div class="input-group">
                             <div class="form-group">
                                 <div class='input-group date'   >
-                                    <input type='text' class="form-control" id="date"  style="width:100px"/>
+                                    <input type='date' class="form-control" id="date"  style="width:100px"/>
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"  ></span>
                                     </span>
                                 </div>
                                 <div class="input-group clockpicker" >
-                                    <input type="text" class="form-control" id="time" name="time" disabled style="width:100px">
+                                    <input type="time" class="form-control" id="time" name="time"  style="width:100px">
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-time" id="timeIcon"></span>
                                     </span>
@@ -91,6 +91,7 @@
         var date = new Date();
         console.log(date);
 
+        // Custom Culture
         $.fn.datepicker.dates['en'] = {
             days: ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"],
             daysShort: ["Dom", "Lun", "Mar", "Mier", "Jue", "Vier", "Sab"],
@@ -117,6 +118,12 @@
             //showOnFocus : false,
         });
        
+        //para que funcione bien en picker nativo de mobile despues de seleccionar fecha
+        $("#date").on('changeDate', function(ev){
+            $(this).datepicker('hide');
+        });
+
+        // Rango laboral para el datePicker
         $('#time').timepicker({
             'step': function (i) {
                 //return (i % 2) ? 15 : 45;
@@ -126,7 +133,7 @@
             'maxTime': '10:00pm',
              
         });
-
+        // Recuperar fecha del navegador
         $('#time').timepicker('setTime', new Date());
         
         $('#timeIcon').on('click', function () {
