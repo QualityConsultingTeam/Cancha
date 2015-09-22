@@ -18,7 +18,7 @@ namespace Admin.Controllers
     public class CanchasController : BaseController<FieldsRepository,AccessContext,Field>
     {
         // GET: Canchas
-        [Globalization]
+        
         public  ActionResult Index()
         {
             ViewBag.lstFields = "hola";
