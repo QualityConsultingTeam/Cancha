@@ -23,17 +23,17 @@ namespace Admin
             // Plug in your email service here to send an email.
             // Plug in your email service here to send an email.
             // Credentials:
-            var credentialUserName = "activation@easyinvoice.io";
-            var sentFrom = "activation@easyinvoice.io";
-            var pwd = "ThePassword3#";
+            var credentialUserName = "enlacancha@enlacancha.net";
+            var sentFrom = "enlacancha@enlacancha.net";
+            var pwd = "12345678";
 
             try
             {
                 // Configure the client:
                 System.Net.Mail.SmtpClient client =
-                    new System.Net.Mail.SmtpClient("smtp.gmail.com");
+                    new System.Net.Mail.SmtpClient("smtpout.secureserver.net");
 
-                client.Port = 587;
+                client.Port = 80;
                 client.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
                 client.UseDefaultCredentials = false;
 
@@ -41,7 +41,7 @@ namespace Admin
                 System.Net.NetworkCredential credentials =
                     new System.Net.NetworkCredential(credentialUserName, pwd);
 
-                client.EnableSsl = true;
+                client.EnableSsl = false;
                 client.Credentials = credentials;
 
                 var view = AlternateView.CreateAlternateViewFromString(message.Body, null, "text/html");
@@ -60,7 +60,8 @@ namespace Admin
             }
             catch (Exception ex)
             {
-                throw ex;
+                //throw ex;
+                return Task.FromResult(0);
             }
         }
     }

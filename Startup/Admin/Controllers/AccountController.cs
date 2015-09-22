@@ -160,7 +160,7 @@ namespace Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email ,PhoneNumber= model.Phone};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -170,7 +170,7 @@ namespace Admin.Controllers
                     // Send an email with this link
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Confirme Su cuenta", "Por favor confirme Su cuenta Haciendo Click en el Link <a href=\"" + callbackUrl + "\">here</a>");
+                    await UserManager.SendEmailAsync(user.Id, "Confirme Su cuenta", "Por favor confirme Su cuenta Haciendo Click en el Link <a href=\"" + callbackUrl + "\">Aqui</a>");
 
                     return RedirectToAction("Index", "Canchas");
                 }
@@ -191,7 +191,9 @@ namespace Admin.Controllers
                 return View("Error");
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+
+            return RedirectToAction("Index", "Canchas");
+            //return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
         //
