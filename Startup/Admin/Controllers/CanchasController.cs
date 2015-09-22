@@ -26,7 +26,7 @@ namespace Admin.Controllers
         }
 
         [HttpPost]
-        [Globalization]
+        //[Globalization]
         public async Task<ActionResult> SearchFields(FilterOptionModel filter)
         {
             var model = await Repository.FullSearchAsync(filter);
