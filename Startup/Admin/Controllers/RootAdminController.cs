@@ -17,7 +17,7 @@ using Admin.Models;
 namespace Admin.Controllers
 {
     
-    //[Authorize]
+    [Authorize]
     public class RootAdminController : BaseController<FieldsRepository,AccessContext, Field>
     {
         // GET: FieldsAdmin

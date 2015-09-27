@@ -7,53 +7,58 @@
                     <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                         <i class="fa fa-user fa-2x"></i>  
                     </a>
-                    <ul class="dropdown-menu dropdown-messages">
-                        <li>
-                            <div class="dropdown-messages-box">
-                                <a href="#" class="pull-left">
-                                    <img alt="image" class="img-circle" src="@Html.FacebookProfileSmallPicture()">
-                                </a>
-                                <div class="media-body">
-                                    <small class="pull-right">--</small>
-                                    <strong>@User.Identity.Name</strong> <br>
-                                     
-                                    <small class="text-muted">
+     <ul class="dropdown-menu dropdown-messages">
+         <li>
+             <div class="dropdown-messages-box">
+                 <a href="#" class="pull-left">
+                     <img alt="image" class="img-circle" src="@Html.FacebookProfileSmallPicture()">
+                 </a>
+                 <div class="media-body">
+                     <small class="pull-right">--</small>
+                     <strong>@User.Identity.Name</strong> <br>
 
-                                    </small>
-                                </div>
-                            </div>
-                        </li>
+                     <small class="text-muted">
+
+                     </small>
+                 </div>
+             </div>
+         </li>
 
 
 
-                        <li class="divider"></li>
-                        <li>
-                            <div class="text-center link-block">
-                                <a href="@Url.Action("Index","Manage")">
-                                    <i class="fa fa-tasks fa-2x"></i> <strong>MI PERFIL</strong>
-                                </a>
-                            </div>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
-                            {
-                                <div class="text-center link-block">
-                                    <a href="@Url.Action("menu", "rootadmin")">
-                                        <i class="fa fa-dashboard fa-2x"></i> <strong>ADMINISTRAR</strong>
-                                    </a>
-                                </div>
-                            }
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            
-                            <div class="text-center link-block">
-                                <a href="@Url.Action("LogOut", "Account")">
-                                    <i class="fa fa-sign-out         fa-2x"></i> <strong>SALIR</strong>
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
+         <li class="divider"></li>
+         <li>
+             <div class="text-center link-block">
+                 <a href="@Url.Action("Index","Manage")">
+                     <i class="fa fa-tasks fa-2x"></i> <strong>MI PERFIL</strong>
+                 </a>
+             </div>
+         </li>
+         <li class="divider"></li>
+         <li>
+             @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+             {
+                 <div class="text-center link-block">
+                     <a href="@Url.Action("menu", "rootadmin")">
+                         <i class="fa fa-dashboard fa-2x"></i> <strong>ADMINISTRAR</strong>
+                     </a>
+                 </div>
+             }
+         </li>
+         <li class="divider"></li>
+         <li>
+             @using (Html.BeginForm("LogOff", "Account"))
+             {
+                 @Html.AntiForgeryToken()
+                 <div class="text-center link-block">
+                     <button type="submit" class="btn btn-white btn-outline" >
+                         <i class="fa fa-sign-out         fa-2x"></i> <strong>SALIR</strong>
+                     </button>
+                     
+                 </div>
+             }
+         </li>
+     </ul>
+
                 </li>
 
