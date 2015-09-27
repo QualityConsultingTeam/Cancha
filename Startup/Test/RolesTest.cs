@@ -8,6 +8,10 @@ using Admin;
 using System.Linq;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Access.Extensions;
+using Identity.Models;
+using Identity.Context;
+using Identity;
+using Identity.Config;
 
 namespace Test
 {

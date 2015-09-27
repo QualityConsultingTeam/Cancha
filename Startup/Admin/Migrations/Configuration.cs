@@ -4,6 +4,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Admin.Migrations
 {
+    using Identity.Config;
+    using Identity.Models;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity;
@@ -11,14 +13,14 @@ namespace Admin.Migrations
     using System.Linq;
     using System.Security.Claims;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Admin.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Identity.Context.ApplicationDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(Admin.Models.ApplicationDbContext context)
+        protected override void Seed(Identity.Context.ApplicationDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

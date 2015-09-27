@@ -85,6 +85,10 @@
       <Project>{2E826B45-A782-49B2-A16B-EA28592F6945}</Project>
       <Name>Admin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Identity\Identity.csproj">
+      <Project>{5830c3cb-6b17-4833-b021-41ce97d86e56}</Project>
+      <Name>Identity</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

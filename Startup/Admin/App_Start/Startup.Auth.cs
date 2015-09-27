@@ -13,6 +13,9 @@ using Microsoft.Owin.Security.Google;
 using Newtonsoft.Json.Linq;
 using Owin;
 using Admin.Models;
+using Identity.Models;
+using Identity.Context;
+using Identity.Config;
 
 namespace Admin
 {

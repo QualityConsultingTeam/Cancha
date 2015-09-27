@@ -17,6 +17,10 @@ using Access.Repositories;
 using Access.Models;
 using System.Data.Entity;
 using Access.Extensions;
+using Identity.Models;
+using Identity;
+using Identity.Context;
+using Identity.Config;
 
 namespace Admin.Controllers
 {
@@ -88,8 +92,9 @@ namespace Admin.Controllers
             {
                 if (!await UserManager.IsEmailConfirmedAsync(user.Id))
                 {
-                    ViewBag.errorMessage = "Debe confirmar Su cuenta de Correo para poder Iniciar Sesion.";
-                    return View("Error");
+                  var error =  ViewBag.errorMessage = "Debe confirmar Su cuenta de Correo para poder Iniciar Sesion,  favor verifique en su bandeja de entrada.";
+                    ModelState.AddModelError("", error);
+                    return View(model);
                 }
             }
 

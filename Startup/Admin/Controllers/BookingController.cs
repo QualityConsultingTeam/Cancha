@@ -15,6 +15,8 @@ using Microsoft.AspNet.Identity.Owin;
 using System.Globalization;
 using System.Security.Claims;
 using Access.Extensions;
+using Identity;
+using Identity.Context;
 
 namespace Admin.Controllers
 {
@@ -155,8 +157,9 @@ namespace Admin.Controllers
            
             var model = query.ToDataSourceResult(request);
 
-            
-            model.Data = await IdentityManagerService.UpdateAccountInfoFoScheduler(model.Data as List<BookingViewModel>);
+            var identityContext = Request.GetOwinContext().Get<ApplicationDbContext>();
+
+            model.Data = await (model.Data as List<BookingViewModel>).UpdateAccountInfoFoScheduler(identityContext);
 
             return Json(model); 
 
