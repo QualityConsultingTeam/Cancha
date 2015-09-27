@@ -12,6 +12,10 @@ using Identity.Models;
 using Identity.Context;
 using Identity;
 using Identity.Config;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace Test
 {
@@ -97,14 +101,75 @@ namespace Test
             Assert.IsNotNull(users);
             
         }
+        private HttpClient GetHttpClient(string token = null)
+        {
+            var client = new HttpClient();
+
+            client.BaseAddress = new Uri("https://enlacancha-api.azurewebsites.net");
+
+            if (!string.IsNullOrEmpty(token))
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            return client;
+        }
+
+
+        private async Task<LoginTokenResult> GetLoginToken(string username, string password)
+        {
+
+
+            var pairs = new List<KeyValuePair<string, string>>
+            {
+             new KeyValuePair<string, string>( "grant_type", "password" ),
+             new KeyValuePair<string, string>( "username", username ),
+             new KeyValuePair<string, string> ( "Password", password )
+            };
+
+            var content = new FormUrlEncodedContent(pairs);
+
+            using (var client = GetHttpClient())
+            {
+                var response = await client.PostAsync( "Token", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var token = await response.Content.ReadAsStringAsync();
+                    return    JsonConvert.DeserializeObject<LoginTokenResult>(token);
+                }
+                else
+                {
+                    return  new LoginTokenResult { ErrorDescription = "Usuario invalido."};
+                }
+            }
+            return null;
+        }
 
         [TestMethod]
-        public void TestUserClaims()
+        public void LoginTest   ()
         {
-            var service = new IdentityManagerService(ApplicationDbContext.Create());
+
+            var token = GetLoginToken("admin@yopmail.com", "1234567").Result;
+
 
             
         }
             
+    }
+    public class LoginTokenResult
+    {
+        public override string ToString()
+        {
+            return AccessToken;
+        }
+
+        [JsonProperty(PropertyName = "access_token")]
+        public string AccessToken { get; set; }
+
+        [JsonProperty(PropertyName = "error")]
+        public string Error { get; set; }
+
+        [JsonProperty(PropertyName = "error_description")]
+        public string ErrorDescription { get; set; }
+
     }
 }

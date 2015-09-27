@@ -1,16 +1,14 @@
-using Admin.Models;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-
-namespace Admin.Migrations
+namespace Identity.Migrations
 {
-    using Identity.Config;
-    using Identity.Models;
+    using Models;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using System;
-    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using Config;
+    using System.Collections.Generic;
     using System.Security.Claims;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Identity.Context.ApplicationDbContext>
@@ -35,7 +33,7 @@ namespace Admin.Migrations
             //    );
             //
 
-            if(!context.Roles.Any(a=> a.Name == "Manager"))
+            if (!context.Roles.Any(a => a.Name == "Manager"))
             {
                 var roleStore = new RoleStore<IdentityRole>(context);
                 var roleManager = new RoleManager<IdentityRole>(roleStore);
@@ -45,9 +43,9 @@ namespace Admin.Migrations
                 };
                 roleManager.Create(role);
             }
-           
 
-            if (!context.Roles.Any(a=> a.Name=="Admin"))
+
+            if (!context.Roles.Any(a => a.Name == "Admin"))
             {
                 var roleStore = new RoleStore<IdentityRole>(context);
                 var roleManager = new RoleManager<IdentityRole>(roleStore);
@@ -57,29 +55,29 @@ namespace Admin.Migrations
                 };
                 roleManager.Create(role);
             }
-             var userStore = new UserStore<ApplicationUser>(context);
-                var manager = new ApplicationUserManager(userStore);
+            var userStore = new UserStore<ApplicationUser>(context);
+            var manager = new ApplicationUserManager(userStore);
 
 
 
-                if (!context.Users.Any(u => u.UserName == "Admin" && u.Email == "admin@yopmail.com"))
+            if (!context.Users.Any(u => u.UserName == "Admin" && u.Email == "admin@yopmail.com"))
+            {
+                var user = new ApplicationUser
                 {
-                    var user = new ApplicationUser
-                    {
-                        Email = "admin@yopmail.com",
-                        UserName = "admin@yopmail.com",
+                    Email = "admin@yopmail.com",
+                    UserName = "admin@yopmail.com",
 
-                    };
-                    var result =  manager.Create(user, "1234567");
+                };
+                var result = manager.Create(user, "1234567");
 
-                    if(result.Succeeded) manager.AddToRole(user.Id, "Admin");
+                if (result.Succeeded) manager.AddToRole(user.Id, "Admin");
 
-                }
+            }
             else
             {
                 var user = userStore.FindByEmailAsync("admin@yopmail.com").Result;
-                
-                  userStore.AddClaimAsync(user, claim: new Claim(ClaimTypes.Role.ToString(), "Admin")).Start();
+
+                userStore.AddClaimAsync(user, claim: new Claim(ClaimTypes.Role.ToString(), "Admin")).Start();
             }
 
             if (context.Users.Count() < 10)
@@ -90,13 +88,12 @@ namespace Admin.Migrations
                 }
             }
 
-            var toUpdateProfiles = context.Users.Where(u => string.IsNullOrEmpty(u.ProfilePicture)).ToList();
-
-
-
-            
+           // var toUpdateProfiles = context.Users.Where(u => string.IsNullOrEmpty(u.ProfilePicture)).ToList();
+  
+            context.SaveChanges();
 
         }
+
 
         private List<ApplicationUser> TestUsers()
         {

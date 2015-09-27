@@ -87,8 +87,9 @@ namespace Admin.Controllers
 
 
             // Require the user to have a confirmed email before they can log on.
+            
             var user = await UserManager.FindByNameAsync(model.Email);
-            if (user != null)
+            if (user != null )
             {
                 if (!await UserManager.IsEmailConfirmedAsync(user.Id))
                 {

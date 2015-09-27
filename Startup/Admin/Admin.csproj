@@ -242,7 +242,6 @@
     <Compile Include="Helpers\GlobalizationAttribute.cs" />
     <Compile Include="Helpers\HMTLHelperExtensions.cs" />
     <Compile Include="Helpers\IdentityHelpers.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Autocomplete.cs" />
     <Compile Include="Models\BookingViewModel.cs" />

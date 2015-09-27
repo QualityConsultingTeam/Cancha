@@ -86,12 +86,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config.cs" />
-    <Compile Include="Context.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="IdentityManagerService.cs" />
-    <Compile Include="IdentityModels.cs" />
-    <Compile Include="IdentityUserViewModel.cs" />
+    <Compile Include="Config\Config.cs" />
+    <Compile Include="Context\Context.cs" />
+    <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="Services\IdentityManagerService.cs" />
+    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\IdentityUserViewModel.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -11,6 +11,8 @@ using Owin;
 using WebApi.Providers;
 using WebApi.Models;
 using Access;
+using Identity.Context;
+using Identity.Config;
 
 namespace WebApi
 {

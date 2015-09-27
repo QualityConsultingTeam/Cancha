@@ -11,6 +11,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using WebApi.Models;
 using Identity.Models;
+using Identity.Config;
 
 namespace WebApi.Providers
 {
