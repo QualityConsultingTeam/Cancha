@@ -190,6 +190,6 @@ namespace Admin
             return !string.IsNullOrEmpty(claim) ? claim : "~/Images/profile.jpg";
         }
 
-
+        
     }
 }

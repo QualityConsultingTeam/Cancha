@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Access;
-using Access.Models;
-using Admin.Helpers;
-using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
-using Access.Extensions;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Security.Claims;
+using Identity.Models;
+using Identity.Context;
+using Access.Models;
+using Access;
+using Access.Extensions;
+using Identity.Config;
 
-namespace Admin.Models
+namespace Identity
 {
     public class IdentityManagerService
     {
@@ -38,11 +38,11 @@ namespace Admin.Models
                     .ToListAsync();
         }
 
-        private IQueryable<ApplicationUser> CommonSearch(FilterOptionModel filter,AccessContext Context,bool onlyUsers=false)
+        private IQueryable<ApplicationUser> CommonSearch(FilterOptionModel filter, AccessContext Context, bool onlyUsers = false)
         {
-            IQueryable<ApplicationUser> users = identityContex.Users.Include(i => i.Roles).Include(u=>u.Claims);
+            IQueryable<ApplicationUser> users = identityContex.Users.Include(i => i.Roles).Include(u => u.Claims);
 
-           
+
             if (!string.IsNullOrEmpty(filter.role))
             {
 
@@ -53,7 +53,7 @@ namespace Admin.Models
             }
             //To Exclude any types of admin
             // los usuarios que no tienen rol asignado es para el cliente final que hace reservas.
-            if(string.IsNullOrEmpty(filter.role) && onlyUsers)
+            if (string.IsNullOrEmpty(filter.role) && onlyUsers)
             {
                 users = (from user in users
                          join userRole in identityContex.UserRoles on user.Id equals userRole.UserId
@@ -63,17 +63,17 @@ namespace Admin.Models
                          select user);
             }
 
-            if (filter.centerid.HasValue && filter.centerid!= 0)
+            if (filter.centerid.HasValue && filter.centerid != 0)
             {
-                var idsToFilter =  
-                // TODO verificar si el rendimiento es impactado al hacer QUerys separadaas.
+                var idsToFilter =
+                  // TODO verificar si el rendimiento es impactado al hacer QUerys separadaas.
                   (Context.AccountAccess.Where(al => al.CenterId == filter.centerid)
                                  .Select(c => c.UserId.ToString()).ToList());
                 if (onlyUsers)
                 {
                     if (idsToFilter.Any()) users = users.Where(u => idsToFilter.Contains(u.Id));
                 }
-             
+
                 else
                 {
                     users = users.Where(u =>
@@ -82,13 +82,13 @@ namespace Admin.Models
                 }
 
             }
-           filter.SearchKeys.ForEach(key =>
-                        users = users.Where(u => u.UserName.ToLower().Contains(key)
-                                            || u.ADDRESS.ToLower().Contains(key)
-                                            || u.FirstName.ToLower().Contains(key)
-                                            || u.LastName.ToLower().Contains(key)
-                                            || u.DUI.ToLower().Contains(key)
-                                            || u.Email.ToLower().Contains(key)));
+            filter.SearchKeys.ForEach(key =>
+                         users = users.Where(u => u.UserName.ToLower().Contains(key)
+                                             || u.ADDRESS.ToLower().Contains(key)
+                                             || u.FirstName.ToLower().Contains(key)
+                                             || u.LastName.ToLower().Contains(key)
+                                             || u.DUI.ToLower().Contains(key)
+                                             || u.Email.ToLower().Contains(key)));
 
             return users;
         }
@@ -106,26 +106,26 @@ namespace Admin.Models
 
         public Task<List<ApplicationUser>> GetAllUserNames(AccessContext context)
         {
-            return CommonSearch(new FilterOptionModel(),context).Select(u=> new ApplicationUser()
+            return CommonSearch(new FilterOptionModel(), context).Select(u => new ApplicationUser()
             {
                 UserName = u.UserName,
                 Id = u.Id
             }).ToListAsync();
         }
 
-        public async Task<List<ApplicationUser>> GetUsersAsync(FilterOptionModel filter ,AccessContext Context,bool onlyUsers=false)
+        public async Task<List<ApplicationUser>> GetUsersAsync(FilterOptionModel filter, AccessContext Context, bool onlyUsers = false)
         {
 
-            IQueryable<ApplicationUser> users = CommonSearch(filter,Context,onlyUsers);
-           
+            IQueryable<ApplicationUser> users = CommonSearch(filter, Context, onlyUsers);
 
-            var accounts = await  users.Include(u=> u.Claims).OrderBy(u => u.UserName).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
+
+            var accounts = await users.Include(u => u.Claims).OrderBy(u => u.UserName).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
 
             //refresh profile pictures from extenal login
 
-            foreach(var account in  accounts.Where(a=> a.Claims.Any()))
-           {
-                var claim =  account.Claims.FirstOrDefault(c => c.ClaimType == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+            foreach (var account in accounts.Where(a => a.Claims.Any()))
+            {
+                var claim = account.Claims.FirstOrDefault(c => c.ClaimType == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
 
                 if (claim != null)
                 {
@@ -140,9 +140,9 @@ namespace Admin.Models
                 if (phone != null && string.IsNullOrEmpty(account.PhoneNumber)) account.PhoneNumber = phone.ClaimValue;
 
                 await identityContex.SaveChangesAsync();
-             }
+            }
 
-            return   accounts;
+            return accounts;
         }
 
         public Task<ApplicationUser> GetUserAsync(string userid)
@@ -179,7 +179,7 @@ namespace Admin.Models
             {
                 user = new ApplicationUser();
                 user.Assign(model);
-                
+
 
                 var result = await userManager.CreateAsync(user, "1234567");
                 if (!result.Succeeded) return false;
@@ -221,19 +221,19 @@ namespace Admin.Models
                 var res = await userManager.AddToRoleAsync(model.Id, model.Role);
             }
 
-            if (roles.All(r => r != model.Role) &&roles.Any())
+            if (roles.All(r => r != model.Role) && roles.Any())
             {
                 var result = await userManager.AddToRoleAsync(model.Id, model.Role);
             }
             roles.Where(r => r != model.Role).ToList().ForEach(role => userManager.RemoveFromRole(model.Id, role));
 
-            if(model.CenterId!=0 )
+            if (model.CenterId != 0)
             {
 
                 var claim = await identityContex.UserClaims.FirstOrDefaultAsync(c => c.UserId == user.Id && c.ClaimType == "CenterId");
 
                 var claims = await userManager.GetClaimsAsync(user.Id);
-                if (claim!=null)
+                if (claim != null)
                 {
                     claim.ClaimValue = model.CenterId.Value.ToString();
                     await identityContex.SaveChangesAsync();
@@ -266,7 +266,7 @@ namespace Admin.Models
                 {
                     Id = u.Id,
                     UserName = u.UserName,
-                    Email =  u.Email,
+                    Email = u.Email,
                     DUI = u.DUI,
                     //LastName = u.LastName,
                     //FirstName = u.FirstName,
@@ -289,92 +289,6 @@ namespace Admin.Models
         /// <param name="data"></param>
         /// <returns></returns>
         public async Task<List<Booking>> UpdateAccountInfo(List<Booking> data)
-        {
-
-            var usersIds = data.Select(u => u.Userid).Distinct()
-                .Select(u=> u.ToString()).ToList();
-
-            // userinfo
-            var dat = await (from user in identityContex.Users.Where(u => usersIds.Contains(u.Id))
-                join claim in identityContex.UserClaims on user.Id equals claim.UserId
-                    into df
-                from defaultClaim in df.DefaultIfEmpty()
-                
-                select new
-                {
-                    user = user,
-                    claim = defaultClaim
-                } ).ToListAsync();
-            
-            // user summary
-            
-
-               var users = dat.GroupBy(u=> u.user.Id)
-                .Select(g=> new UserInfo()
-                {
-                    Id =new Guid(  g.FirstOrDefault().user.Id),
-                    Name =  g.Select(c=> c.claim).HasName()?
-                            g.Select(c=> c.claim).FinUserName(): g.FirstOrDefault().user.UserName,
-                   Phone = g.FirstOrDefault().user.PhoneNumber,
-                   Email = g.FirstOrDefault().user.Email,
-
-                    
-                }).ToList();
-
-
-            foreach (var item in data)
-            {
-                item.UserInfo = users.FirstOrDefault(u => u.Id == item.Userid) ?? new UserInfo();
-               
-            }
-
-            return data;
-        }
-
-        /// <summary>
-        /// User Schedules Summary
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<UserInfo> GetUserSummaryAsync(AccessContext context, Guid id)
-        {
-            var user = await GetUserAsync(id.ToString());
-
-            IQueryable<Booking> query = context.Bookings.Where(b => b.Userid == id);
-
-            var centerid = ClaimsPrincipal.Current.CenterId();
-
-            if (centerid.HasValue) query = query.Where(b => b.Field.CenterId == centerid.Value);
-            
-            var data = await query.GroupBy(b => b.Status)
-                       .Select(g => new
-                       {
-                           Label = g.Key.ToString(),
-                           Count =g.Count(),
-                       }).ToListAsync();
-
-
-            var inf= new UserInfo()
-            {
-                Email = user.Email,
-                Id = new Guid(user.Id),
-                Name = user.Claims.FinUserName(),
-                BookingSummary = data.Select(d => new BookingSummary() { Label = d.Label, Count = d.Count }).ToList()
-            };
-
-            inf.BookingSummary.Add(new BookingSummary() { Label = "Total", Count = data.Sum(s=>s.Count) });
-
-            return inf;
-
-        }
-
-        /// <summary>
-        /// Update UserInfo model for Scheduler
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public async Task<List<BookingViewModel>> UpdateAccountInfoFoScheduler(List<BookingViewModel> data)
         {
 
             var usersIds = data.Select(u => u.Userid).Distinct()
@@ -411,25 +325,51 @@ namespace Admin.Models
             foreach (var item in data)
             {
                 item.UserInfo = users.FirstOrDefault(u => u.Id == item.Userid) ?? new UserInfo();
-                item.Start = item.Start;// DateTime.SpecifyKind(item.Start, DateTimeKind.Utc);
-                item.End = item.End; //DateTime.SpecifyKind(item.End, DateTimeKind.Utc);
-                if(item.UserInfo!=null && !string.IsNullOrEmpty(item.UserInfo.Name)) 
-                {
-                    item.Title += " "+ item.UserInfo.Name +" "+item.UserInfo.Email;
-                }
-                if (item.Userid == Guid.Empty) item.Userid = Guid.NewGuid();
-            }
-            return data.ToList();
-            //return data.Select(d=>
-            //{
-            //    var book = new BookingViewModel();
-            //    book.CopyFrom(d);
-            //    book.Title = d.UserInfo.Name +"_ " ;
-            //    book.Description = "Reserva de Cancha";
 
-            //    return book;
-            //}).ToList();
+            }
+
+            return data;
         }
+
+        /// <summary>
+        /// User Schedules Summary
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<UserInfo> GetUserSummaryAsync(AccessContext context, Guid id)
+        {
+            var user = await GetUserAsync(id.ToString());
+
+            IQueryable<Booking> query = context.Bookings.Where(b => b.Userid == id);
+
+            var centerid = ClaimsPrincipal.Current.CenterId();
+
+            if (centerid.HasValue) query = query.Where(b => b.Field.CenterId == centerid.Value);
+
+            var data = await query.GroupBy(b => b.Status)
+                       .Select(g => new
+                       {
+                           Label = g.Key.ToString(),
+                           Count = g.Count(),
+                       }).ToListAsync();
+
+
+            var inf = new UserInfo()
+            {
+                Email = user.Email,
+                Id = new Guid(user.Id),
+                Name = user.Claims.FinUserName(),
+                BookingSummary = data.Select(d => new BookingSummary() { Label = d.Label, Count = d.Count }).ToList()
+            };
+
+            inf.BookingSummary.Add(new BookingSummary() { Label = "Total", Count = data.Sum(s => s.Count) });
+
+            return inf;
+
+        }
+
+
 
 
         /// <summary>
@@ -438,9 +378,9 @@ namespace Admin.Models
         /// <param name="filter"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        internal async Task<int> GetPageLimit(FilterOptionModel filter,AccessContext context)
+        public  async Task<int> GetPageLimit(FilterOptionModel filter, AccessContext context)
         {
-            return (await CommonSearch(filter,context).CountAsync()) / filter.Limit + 1;
+            return (await CommonSearch(filter, context).CountAsync()) / filter.Limit + 1;
         }
 
 
@@ -455,15 +395,15 @@ namespace Admin.Models
         {
             var userClaims = await identityContex.UserClaims.Where(c => c.UserId == user).ToListAsync();
 
-             // update 
-             foreach(var claim in claims)
+            // update 
+            foreach (var claim in claims)
             {
                 var localClaim = userClaims.FirstOrDefault(c => c.ClaimType == claim.Type);
                 if (localClaim == null)
                 {
                     identityContex.UserClaims.Add(new IdentityUserClaim() { UserId = user, ClaimType = claim.Type, ClaimValue = claim.Value });
                 }
-               else localClaim.ClaimValue = claim.Value;
+                else localClaim.ClaimValue = claim.Value;
             }
             await identityContex.SaveChangesAsync();
         }

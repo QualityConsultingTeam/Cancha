@@ -9,7 +9,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.ComponentModel;
 using System.Data.Entity.ModelConfiguration;
 
-namespace Admin.Models
+namespace Identity.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
@@ -22,14 +22,22 @@ namespace Admin.Models
             return userIdentity;
         }
 
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
+        {
+            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
+            var userIdentity = await manager.CreateIdentityAsync(this, authenticationType);
+            // Add custom user claims here
+            return userIdentity;
+        }
+
         public ApplicationUser()
         {
             CreatedDate = DateTime.Now;
         }
 
-        public ApplicationUser(string email,string name, string lastname ,string doc = "")
+        public ApplicationUser(string email, string name, string lastname, string doc = "")
         {
-            this.Email = this.UserName= email;
+            this.Email = this.UserName = email;
             this.FirstName = name;
             this.LastName = lastname;
             DUI = doc;
@@ -60,7 +68,7 @@ namespace Admin.Models
         public DateTime CreatedDate { get; set; }
 
         [Display(Name = "Calificacion:", Prompt = "Categoria")]
-        [Range(1,5, ErrorMessage = "Debe especificar un maximo 5")] 
+        [Range(1, 5, ErrorMessage = "Debe especificar un maximo 5")]
         public decimal? Category { get; set; }
 
         //[Timestamp]
@@ -72,43 +80,6 @@ namespace Admin.Models
         public int? CenterId { get; set; }
 
     }
+     
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
-    {
-        public ApplicationDbContext()
-            : base("IdentityData", throwIfV1Schema: false)
-        {
-            this.Configuration.LazyLoadingEnabled = false;
-        }
-
-        public DbSet<IdentityUserRole> UserRoles { get; set; }
-
-        public DbSet<IdentityUserClaim> UserClaims { get; set; }
-
-        public static ApplicationDbContext Create()
-        {
-            return new ApplicationDbContext();
-        }
-        protected override void OnModelCreating(System.Data.Entity.DbModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            //// to avoid the "has no keys" errors when running Update-Database on PM
-            //modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id).ToTable("AspNetRoles");
-
-            //EntityTypeConfiguration<IdentityUser> table =  modelBuilder.Entity<IdentityUser>().ToTable("AspNetUsers");
-
-            //table.HasMany(c => c.Claims).WithOptional().HasForeignKey(c => c.UserId);
-            //table.HasMany(c => c.Logins).WithOptional().HasForeignKey(c => c.UserId);
-            //table.HasMany(c => c.Roles).WithOptional().HasForeignKey(c => c.UserId);
-
-            //modelBuilder.Entity<IdentityUserLogin>().HasKey(l => new { l.UserId, l.LoginProvider, l.ProviderKey }).ToTable("AspNetUserLogins");
-            //modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId }).ToTable("AspNetUserRoles");
-            //modelBuilder.Entity<IdentityUserClaim>().HasKey(k=>k.Id).ToTable("AspNetUserClaims");
-
-
-           
-            //    modelBuilder.Entity<IdentityUserClaim>().ToTable("AspNetUserClaims");
-
-        }
-    }
 }

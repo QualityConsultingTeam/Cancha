@@ -28,16 +28,16 @@
 
                         <div class="input-group">
                             <div class="form-group">
-                                <div class='input-group date' >
+                                <div class='input-group date'   >
                                     <input type='text' class="form-control" id="date" name="date" style="width:100px"/>
                                     <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
+                                        <span class="glyphicon glyphicon-calendar"  ></span>
                                     </span>
                                 </div>
-                                <div class="input-group clockpicker">
-                                    <input type="text" class="form-control" id="time" name="time" style="width:100px">
+                                <div class="input-group clockpicker" >
+                                    <input type="text" class="form-control" id="time" name="time"  style="width:100px">
                                     <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-time"></span>
+                                        <span class="glyphicon glyphicon-time" id="timeIcon"></span>
                                     </span>
                                 </div>
                             </div>
@@ -91,7 +91,22 @@
         var date = new Date();
         console.log(date);
 
-        $('#date').datepicker({
+        // Custom Culture
+        $.fn.datepicker.dates['en'] = {
+            days: ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"],
+            daysShort: ["Dom", "Lun", "Mar", "Mier", "Jue", "Vier", "Sab"],
+            daysMin: ["Do", "Lu", "Mar", "Mi", "Ju", "Vi", "Sa"],
+            months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+            monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            today: "Today",
+            clear: "Clear",
+            format: "dd/mm/yyyy",
+            titleFormat: "MM yyyy", /* Leverages same syntax as 'format' */
+            weekStart: 0
+        };
+
+
+        $('.date').datepicker({
             todayBtn: true  ,
             keyboardNavigation: false,
             forceParse: false,
@@ -100,10 +115,15 @@
             format: 'mm/dd/yyyy',
             startDate: '0d',
             todayHighlight: true,
-          
-            
+            //showOnFocus : false,
         });
        
+        //para que funcione bien en picker nativo de mobile despues de seleccionar fecha
+        $("#date").on('changeDate', function(ev){
+            $(this).datepicker('hide');
+        });
+
+        // Rango laboral para el datePicker
         $('#time').timepicker({
             'step': function (i) {
                 //return (i % 2) ? 15 : 45;
@@ -113,8 +133,15 @@
             'maxTime': '10:00pm',
              
         });
-
+        // Recuperar fecha del navegador
         $('#time').timepicker('setTime', new Date());
+        
+        $('#timeIcon').on('click', function () {
+            $('#time').timepicker('show');
+        });
+
+        $("#date").change(RunSearch);
+        $("#time").change(RunSearch);
     });
 
     function showLocation(position) {
@@ -125,23 +152,6 @@
         $("#lat").val(Mylatitude);
         $("#lon").val(Mylongitude);
 
-        var d = new Date();
-        var datevalue = d.getDate();
-        console.log(datevalue);
-
-        var hour = d.getHours();
-
-        //$("#date").val(datevalue);
-        //$("#time").val(hour);
-
-        var filter = {
-            keywords: '',
-            lat: Mylatitude,
-            lon: Mylongitude,
-            date: d.getDate(),
-            hour: d.getHours(),
-    };
-        // doSearch(filter);
         $("#searchFieldsForm").submit();
     }
 
@@ -177,9 +187,7 @@
         $("#searchFieldsForm").submit();
         //
     }
-    function datechanged() {
-        $("#searchFieldsForm").submit();
-    }
+    
     //function activeCarousel() {
     //    console.log("set Carousel");
     //    $(".owl-carousel").owlCarousel();

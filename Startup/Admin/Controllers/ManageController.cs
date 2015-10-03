@@ -10,6 +10,9 @@ using Admin.Models;
 using Access;
 using Access.Models;
 using Access.Repositories;
+using Identity.Config;
+using Identity;
+using Identity.Context;
 
 namespace Admin.Controllers
 {

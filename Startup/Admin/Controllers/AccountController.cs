@@ -17,6 +17,10 @@ using Access.Repositories;
 using Access.Models;
 using System.Data.Entity;
 using Access.Extensions;
+using Identity.Models;
+using Identity;
+using Identity.Context;
+using Identity.Config;
 
 namespace Admin.Controllers
 {
@@ -81,9 +85,23 @@ namespace Admin.Controllers
                 return View(model);
             }
 
+
+            // Require the user to have a confirmed email before they can log on.
+            
+            var user = await UserManager.FindByNameAsync(model.Email);
+            if (user != null )
+            {
+                if (!await UserManager.IsEmailConfirmedAsync(user.Id))
+                {
+                  var error =  ViewBag.errorMessage = "Debe confirmar Su cuenta de Correo para poder Iniciar Sesion,  favor verifique en su bandeja de entrada.";
+                    ModelState.AddModelError("", error);
+                    return View(model);
+                }
+            }
+
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: true);
 
             switch (result)
             {
@@ -160,17 +178,17 @@ namespace Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email ,PhoneNumber= model.Phone};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    await UserManager.SendEmailAsync(user.Id, "Confirme Su cuenta", "Por favor confirme Su cuenta Haciendo Click en el Link <a href=\"" + callbackUrl + "\">Aqui</a>");
 
                     return RedirectToAction("Index", "Canchas");
                 }
@@ -191,7 +209,9 @@ namespace Admin.Controllers
                 return View("Error");
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+
+            return RedirectToAction("Index", "Canchas");
+            //return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
         //
@@ -220,10 +240,10 @@ namespace Admin.Controllers
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Por Favor reinicie Su password haciendo Click en el Link <a href=\"" + callbackUrl + "\">here</a>");
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form
@@ -419,7 +439,7 @@ namespace Admin.Controllers
         //
         // POST: /Account/LogOff
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
@@ -574,7 +594,7 @@ namespace Admin.Controllers
         public async Task<ActionResult> AccountMangement()
         {
 
-            var filter = new FilterOptionModel(ClaimsPrincipal.Current.CenterId()) { Limit= 6};
+            var filter = new FilterOptionModel(ClaimsPrincipal.Current.CenterId()) { Limit= 8};
             var users = await IdentityManagerService.GetUsersAsync(filter, Context);
             ViewBag.PageLimit = await IdentityManagerService.GetPageLimit(filter, Context);
 
