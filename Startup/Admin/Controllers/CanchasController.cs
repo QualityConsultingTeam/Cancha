@@ -49,10 +49,7 @@ namespace Admin.Controllers
         [HttpPost]
         public async Task <ActionResult> CreateBook(Booking book)
         {
-
-            book.Field = await Repository.FindByIdAsync(book.Idcancha.Value, "Center", "Cost");
-            
-            return View("Partials/CreateBook", book);
+            return View("Partials/CreateBook", await Repository.FindWithPrice(book));
         }
 
         
@@ -90,13 +87,15 @@ namespace Admin.Controllers
 
             var model = new Booking
             {
-                Field = await Repository.FindByIdAsync(fieldId, "Center", "Cost"),
                 Idcancha = fieldId,
                 Start = startDate,
                 End = endDate,
                 UserSign = new Guid( User.Identity.GetUserId ()),
             };
-            model.Price = model.Field.Cost.Price;
+
+            model  = await Repository.FindWithPrice(model);
+            
+           // model.Price = model.Field.BestPrice.Price;
 
             return View(model );
         }

@@ -42,7 +42,29 @@ namespace Access
             return await states.Select(s => new {id = s.Id, text = s.State}).ToListAsync();
         }
 
-       
+        public async Task<Booking> FindWithPrice(Booking booking)
+        {
+            var field = await Context.Fields.Include(c => c.Center)
+                        .FirstOrDefaultAsync(c => c.Id == booking.Idcancha.Value);
+            
+            var Starthour = booking.Start.Value.Hour;
+
+            var cost = await Context.Costs
+                .Where(c => c.IdCancha== booking.Idcancha.Value &&
+                Starthour >= c.Opentime  && Starthour <= c.Closetime)
+                .OrderByDescending(c => c.Price)
+                .Select(c => c.Price).FirstOrDefaultAsync();
+
+            booking.Price = cost;
+            //Context.Entry(field)
+            //    .Collection(f => f.Costs)
+            //    .Query()
+            //    .Where(c => c.Opentime >= Starthour && Starthour <= c.Closetime).Load();
+            booking.Field = field;
+            return booking;
+
+        }
+
         public async Task<IEnumerable<object>> GetCitiesAsync(int? stateId, string keywords)
         {
             IQueryable<City> cities = stateId.HasValue ?
@@ -77,8 +99,7 @@ namespace Access
         {
             var today = DateTime.Now.Date;
             IQueryable<Field> query = Context.Fields
-                .Include(f => f.Center)
-                .Include(f => f.Cost);
+                .Include(f => f.Center);
                 //.Include(f=>f.Shedules.Where(sch=> sch.Date >= today))
                 //.Include(f=> f.Bookings.Where(b=> b.Start >= today));
             if (string.IsNullOrEmpty(keywords)) keywords = "";
@@ -127,8 +148,6 @@ namespace Access
                               join booking in _books on field.Id equals booking.Idcancha
                               into dfb
                               from defaultBooks in dfb.DefaultIfEmpty()
-                              join cost in Context.Costs on field.Id equals cost.IdCancha
-
                               orderby center.Coordinates.Distance(filter.Point)
 
                               select new
@@ -136,7 +155,6 @@ namespace Access
                                   field = field,
                                   center = center,
                                   Default = defaultBooks,
-                                  cost  = cost,
                               }).ToListAsync();
 
             var result = data.GroupBy(k => k.field.Id)
@@ -145,7 +163,6 @@ namespace Access
                     field = d.FirstOrDefault().field,
                     center = d.FirstOrDefault().center,
                     Books = d.Select(b => b.Default).ToList(),
-                    cost  = d.FirstOrDefault().cost,
                 }).ToList();
 
 
@@ -168,7 +185,6 @@ namespace Access
                                 Start = t.Start,
                                 End = t.End,
                                 Idcancha = item.field.Id,
-                                Price = item.cost.Price,
                                 Field = item.field,
 
                             }).Take(4).ToList();
@@ -177,8 +193,6 @@ namespace Access
                 // asegurar 4 Botones (por temas de estilo)
                 item.field.Bookings = item.field.Bookings.OrderBy(o => o.Start.Value).Take(4).ToList();
               
-                item.field.Cost = item.cost;
-
                 //filtrar nuevamente los bookings tomando en cuenta los horarios de inicio del centro.
                 var date = item.field.Bookings.Where(b => b.Start.HasValue).Select(b => b.Start.Value.Date).FirstOrDefault();
                 //var date = DateTime.Now.Date;

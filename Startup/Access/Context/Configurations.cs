@@ -96,7 +96,7 @@ namespace Access.Models
         public CostConfig()
         {
             //HasRequired(p => p.Field)
-            //    .WithRequiredPrincipal(p => p.Cost).WillCascadeOnDelete(true);
+             HasRequired(p => p.Field).WithMany(p => p.Costs).HasForeignKey(c => c.IdCancha).WillCascadeOnDelete(false);
         }
     }
 

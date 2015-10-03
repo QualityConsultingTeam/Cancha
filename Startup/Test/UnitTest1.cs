@@ -81,31 +81,31 @@ namespace Test
         public void InsertTestprices()
         {
 
-            var Context = AccessContext.Create();
+            //var Context = AccessContext.Create();
 
-            var canchas = Context.Fields.ToList();
+            //var canchas = Context.Fields.ToList();
 
-            foreach (var cancha in canchas)
-            {
-                cancha.Cost = new Cost()
-                {
-                    Price = RandomPrice(),
-                    UserSign = cancha.UserSign,
-                    IdCancha = cancha.Id,
-                };
-            }
+            //foreach (var cancha in canchas)
+            //{
+            //    cancha.Cost = new Cost()
+            //    {
+            //        Price = RandomPrice(),
+            //        UserSign = cancha.UserSign,
+            //        IdCancha = cancha.Id,
+            //    };
+            //}
 
             
               
-            try
-            {
+            //try
+            //{
 
-                    Context.SaveChanges();
-            }
-            catch (DbEntityValidationException ex)
-            {
+            //        Context.SaveChanges();
+            //}
+            //catch (DbEntityValidationException ex)
+            //{
                 
-            }
+            //}
 
         }
 

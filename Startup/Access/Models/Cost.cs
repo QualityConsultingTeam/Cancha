@@ -58,9 +58,7 @@ namespace Access.Models
         [StringLength(15)]
         public string OBJECTTYPE { get; set; }
 
-       // public Field Field { get; set; }
-
-        //[ForeignKey("Field")]
-        //public int FieldId { get; set; }
+        public Field Field { get; set; }
+         
     }
 }

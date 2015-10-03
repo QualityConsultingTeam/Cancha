@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Spatial;
+using System.Linq;
 using System.Web.Script.Serialization;
 
 namespace Access.Models
@@ -13,7 +14,7 @@ namespace Access.Models
 
         public Field()
         {
-            
+
             CreateDate = DateTime.Now;
             CreateTime = DateTime.Now.Hour;
         }
@@ -27,7 +28,7 @@ namespace Access.Models
 
         [DisplayName("Tipo de Cancha")]
         public FieldType Type { get; set; }
-        
+
         [NotMapped]
         [DisplayName("Distancia")]
         public string Distance { get; set; }
@@ -39,7 +40,7 @@ namespace Access.Models
         [DisplayName("Comentarios")]
         [StringLength(250)]
         public string Comments { get; set; }
-        
+
         [DisplayName("Longitud")]
         [Column(TypeName = "numeric")]
         public decimal? Length { get; set; }
@@ -68,9 +69,9 @@ namespace Access.Models
         public DateTime CreateDate { get; set; }
 
         [DisplayName("Hora Creacion")]
-        
+
         public int? CreateTime { get; set; }
-         
+
         [Timestamp]
         public byte[] RowVersion { get; set; }
 
@@ -84,15 +85,11 @@ namespace Access.Models
         [ScriptIgnore]
         public List<Booking> Bookings { get; set; }
 
-        
-        public Cost Cost { get; set; }
-
-        [ForeignKey("Cost")]
-        public int? CostId { get; set; }
-
         public Center Center { get; set; }
 
-         
-       
+        public List<Cost> Costs { get; set; }
+
+        
+
     }
 }
