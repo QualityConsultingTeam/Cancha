@@ -35,6 +35,7 @@ namespace Admin.Controllers
         }
 
         // Booking Management Grid.
+        [Authorize(Roles ="Admin,Manager")]
         public async Task<ActionResult> Manage()
         {
             return View(await GetCenterAsync());
@@ -97,6 +98,7 @@ namespace Admin.Controllers
         #region Scheduler Functions
 
         [Globalization]
+        [Authorize(Roles ="Admin,Manager")]
         public async Task<ActionResult> Calendar()
         {
             var repo = new FieldsRepository() { Context = Context };

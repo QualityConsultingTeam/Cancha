@@ -17,7 +17,7 @@ using Admin.Models;
 namespace Admin.Controllers
 {
     
-    [Authorize]
+    [Authorize(Roles ="Admin,Manager")]
     public class RootAdminController : BaseController<FieldsRepository,AccessContext, Field>
     {
         // GET: FieldsAdmin
@@ -26,7 +26,7 @@ namespace Admin.Controllers
             return View();
         }
 
-        [Authorize]
+        
         public ActionResult Menu()
         {
             return View();
