@@ -55,7 +55,7 @@ namespace Access
                 .OrderByDescending(c => c.Price)
                 .Select(c => c.Price).FirstOrDefaultAsync();
 
-            booking.Price = cost;
+            booking.Price = cost ?? 18;
             //Context.Entry(field)
             //    .Collection(f => f.Costs)
             //    .Query()
@@ -64,6 +64,8 @@ namespace Access
             return booking;
 
         }
+
+        
 
         public async Task<IEnumerable<object>> GetCitiesAsync(int? stateId, string keywords)
         {
