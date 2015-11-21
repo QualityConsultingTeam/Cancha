@@ -6,10 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Access.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Identity.Models;
 
 namespace Access
 {
-    public class AccessContext :DbContext
+    public class AccessContext : IdentityDbContext<ApplicationUser>
     {
         public AccessContext()
             : base("DefaultConnection")
@@ -21,6 +23,10 @@ namespace Access
         {
             return new AccessContext();
         }
+
+        public DbSet<IdentityUserRole> UserRoles { get; set; }
+
+        public DbSet<IdentityUserClaim> UserClaims { get; set; }
 
         public DbSet<Agreement> Agreements { get; set; }
 

@@ -14,7 +14,7 @@ using Newtonsoft.Json.Linq;
 using Owin;
 using Admin.Models;
 using Identity.Models;
-using Identity.Context;
+
 using Identity.Config;
 
 namespace Admin
@@ -24,12 +24,12 @@ namespace Admin
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app)
         {
-            
+                app.CreatePerOwinContext<AccessContext>(AccessContext.Create);
             // Configure the db context, user manager and signin manager to use a single instance per request
-            app.CreatePerOwinContext(ApplicationDbContext.Create);
+            //app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
-            app.CreatePerOwinContext<AccessContext>(AccessContext.Create);
+          
 
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider

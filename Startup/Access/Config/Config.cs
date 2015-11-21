@@ -1,4 +1,5 @@
-﻿using Identity.Context;
+﻿
+using Access;
 using Identity.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -87,7 +88,7 @@ namespace Identity.Config
 
             public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
             {
-                var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<AccessViolationException.>()));
+                var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<AccessContext>()));
                 // Configure validation logic for usernames
                 manager.UserValidator = new UserValidator<ApplicationUser>(manager)
                 {
@@ -135,7 +136,7 @@ namespace Identity.Config
             public static async Task<bool> SeedRoles()
             {
 
-                var appContext = ApplicationDbContext.Create();
+                var appContext = AccessContext.Create();
                 var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(appContext));
 
 

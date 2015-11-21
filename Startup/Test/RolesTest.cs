@@ -9,7 +9,7 @@ using System.Linq;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Access.Extensions;
 using Identity.Models;
-using Identity.Context;
+
 using Identity;
 using Identity.Config;
 using Newtonsoft.Json;
@@ -79,7 +79,7 @@ namespace Test
             // TODO: Add test logic here
             //
             var context = AccessContext.Create();
-            var identityContext = ApplicationDbContext.Create();
+            var identityContext = AccessContext.Create();
             var service = new IdentityManagerService(identityContext);
 
             var users = service.GetUsersAsync(new Access.Models.FilterOptionModel(), context).Result;

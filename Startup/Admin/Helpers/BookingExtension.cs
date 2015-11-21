@@ -4,7 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using Access.Models;
-using Identity.Context;
+
 using Identity;
 using Admin.Models;
 
@@ -17,7 +17,7 @@ namespace Admin.Helpers
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static async Task<List<BookingViewModel>> UpdateAccountInfoFoScheduler(this List<BookingViewModel> data, ApplicationDbContext identityContext)
+        public static async Task<List<BookingViewModel>> UpdateAccountInfoFoScheduler(this List<BookingViewModel> data, Access.AccessContext identityContext)
         {
 
             var usersIds = data.Select(u => u.Userid).Distinct()

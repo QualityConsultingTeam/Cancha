@@ -95,33 +95,33 @@ namespace Identity.Migrations
         }
 
 
-        private List<ApplicationUser> TestUsers()
-        {
-            return new List<ApplicationUser>()
-            {
-                new ApplicationUser("Luke@yopmail.com","Luke","Doe"),
-                new ApplicationUser("Diego@yopmail.com","Adolfo","Calles"),
-                new ApplicationUser("John@yopmail.com","John","Doe"),
-                new ApplicationUser("Bruce.wayne@yopmail.com","Bruce","Wayne"),
-                new ApplicationUser("steven.strange@yopmail.com","Steven","Strange"),
-                new ApplicationUser("peter.parker@yopmail.com","Peter","Parker"),
-                new ApplicationUser("james.buck@yopmail.com","James","Buck"),
-                new ApplicationUser("Steve.Rogers@yopmail.com","Steve","Rogers"),
-                new ApplicationUser("Luke00@yopmail.com","Mario","Doe"),
-                new ApplicationUser("Diego00@yopmail.com","Ramon","Calles"),
-                new ApplicationUser("John00@yopmail.com","Erick","Doe"),
-                new ApplicationUser("Bruce.wayne00@yopmail.com","Carlos","Wayne"),
-                new ApplicationUser("steven.strange00@yopmail.com","Kinchiro","Strange"),
-                new ApplicationUser("peter.parker00@yopmail.com","Alexr","Parker"),
-                new ApplicationUser("james.buck00@yopmail.com","Julian","Buck"),
-                new ApplicationUser("r.parras@yopmail.com","Roberto","Parras"),
-                new ApplicationUser("veronica.garcia@yopmail.com","veronica","garcia"),
-                new ApplicationUser("paola.martinez@yopmail.com","paola","martinez"),
-                new ApplicationUser("jeanet.molina@yopmail.com","jeanet","molina"),
-                new ApplicationUser("sonia.gonzalez@yopmail.com","sonia","gonzales"),
+        //private List<ApplicationUser> TestUsers()
+        //{
+        //    return new List<ApplicationUser>()
+        //    {
+        //        new ApplicationUser("Luke@yopmail.com","Luke","Doe"),
+        //        new ApplicationUser("Diego@yopmail.com","Adolfo","Calles"),
+        //        new ApplicationUser("John@yopmail.com","John","Doe"),
+        //        new ApplicationUser("Bruce.wayne@yopmail.com","Bruce","Wayne"),
+        //        new ApplicationUser("steven.strange@yopmail.com","Steven","Strange"),
+        //        new ApplicationUser("peter.parker@yopmail.com","Peter","Parker"),
+        //        new ApplicationUser("james.buck@yopmail.com","James","Buck"),
+        //        new ApplicationUser("Steve.Rogers@yopmail.com","Steve","Rogers"),
+        //        new ApplicationUser("Luke00@yopmail.com","Mario","Doe"),
+        //        new ApplicationUser("Diego00@yopmail.com","Ramon","Calles"),
+        //        new ApplicationUser("John00@yopmail.com","Erick","Doe"),
+        //        new ApplicationUser("Bruce.wayne00@yopmail.com","Carlos","Wayne"),
+        //        new ApplicationUser("steven.strange00@yopmail.com","Kinchiro","Strange"),
+        //        new ApplicationUser("peter.parker00@yopmail.com","Alexr","Parker"),
+        //        new ApplicationUser("james.buck00@yopmail.com","Julian","Buck"),
+        //        new ApplicationUser("r.parras@yopmail.com","Roberto","Parras"),
+        //        new ApplicationUser("veronica.garcia@yopmail.com","veronica","garcia"),
+        //        new ApplicationUser("paola.martinez@yopmail.com","paola","martinez"),
+        //        new ApplicationUser("jeanet.molina@yopmail.com","jeanet","molina"),
+        //        new ApplicationUser("sonia.gonzalez@yopmail.com","sonia","gonzales"),
 
-                // Test Yakiris Makiris
-            };
-        }
+        //        // Test Yakiris Makiris
+        //    };
+        //}
     }
 }

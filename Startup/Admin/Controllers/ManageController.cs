@@ -12,7 +12,7 @@ using Access.Models;
 using Access.Repositories;
 using Identity.Config;
 using Identity;
-using Identity.Context;
+
 
 namespace Admin.Controllers
 {
@@ -61,7 +61,7 @@ namespace Admin.Controllers
         {
             get
             {
-                return new IdentityManagerService(HttpContext.GetOwinContext().Get<ApplicationDbContext>())
+                return new IdentityManagerService(HttpContext.GetOwinContext().Get<AccessContext>())
                 {
 
                 };

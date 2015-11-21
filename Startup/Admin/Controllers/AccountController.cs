@@ -19,7 +19,7 @@ using System.Data.Entity;
 using Access.Extensions;
 using Identity.Models;
 using Identity;
-using Identity.Context;
+
 using Identity.Config;
 
 namespace Admin.Controllers
@@ -493,7 +493,7 @@ namespace Admin.Controllers
         {
             get
             {
-                return new IdentityManagerService(HttpContext.GetOwinContext().Get<ApplicationDbContext>())
+                return new IdentityManagerService(HttpContext.GetOwinContext().Get<AccessContext>())
                 {
 
                 };

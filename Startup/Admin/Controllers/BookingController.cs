@@ -16,7 +16,7 @@ using System.Globalization;
 using System.Security.Claims;
 using Access.Extensions;
 using Identity;
-using Identity.Context;
+
 
 namespace Admin.Controllers
 {
@@ -160,7 +160,7 @@ namespace Admin.Controllers
            
             var model = query.ToDataSourceResult(request);
 
-            var identityContext = Request.GetOwinContext().Get<ApplicationDbContext>();
+            var identityContext = Request.GetOwinContext().Get<AccessContext>();
 
             model.Data = await (model.Data as List<BookingViewModel>).UpdateAccountInfoFoScheduler(identityContext);
 
@@ -242,7 +242,7 @@ namespace Admin.Controllers
 
         protected IdentityManagerService IdentityManagerService
         {
-            get { return new IdentityManagerService(Request.GetOwinContext().Get<ApplicationDbContext>()); }
+            get { return new IdentityManagerService(Request.GetOwinContext().Get<AccessContext>()); }
         }
          
          
