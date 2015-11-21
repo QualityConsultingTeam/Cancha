@@ -7,6 +7,10 @@
     {
         return Model.ImageField.FirstOrDefault()== item ?"Active":"";
     };
+
+    var first = Model.ImageField.FirstOrDefault();
+
+    var index = 1;
 }
  
 <!DOCTYPE html>
@@ -66,38 +70,66 @@
             </div>
         </nav>
     </div>
-    <div id="inSlider" class="carousel slide carousel-fade" data-ride="carousel">
+    
+
+    <div id="inSlider" class="carousel carousel-fade" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#inSlider" data-slide-to="0" class="active"></li>
-            <li data-target="#inSlider" data-slide-to="1"></li>
+            @foreach (var item in Model.ImageField.Where(i => i != first))
+            {
+                <li data-target="#inSlider" data-slide-to="@index"></li>
+                {
+                    index++;
+                }
+                @*<li data-target="#inSlider" data-slide-to="2"></li>*@
+            }
         </ol>
         <div class="carousel-inner" role="listbox">
-
-            @foreach (var item in Model.ImageField)
-            {
-
-                <div class="item @IsActiveItem(item)">
-                    <div class="container">
-                        <div class="carousel-caption">
-                            <h1>@item.header1</h1>
-                            <p>@item.header2</p>
-                            <p>
-                                <a class="btn btn-lg btn-primary" href="#" role="button">READ MORE</a>
-                                <a class="caption-link" href="#" role="button">Inspinia Theme</a>
-                            </p>
-                        </div>
-                        <div class="carousel-image  zoomIn">
-                            <img src="~/Images/logo_elc.png" alt="laptop" style="max-height:310px;max-width:310px" />
-                        </div>
+            <div class="item active">
+                <div class="container">
+                    <div class="carousel-caption">
+                        <h1>@first.header1</h1>
+                        <p>@first.header2</p>
+                        @*<p>Lorem Ipsum is simply dummy text of the printing.</p>*@
+                        <p>
+                            <a class="btn btn-lg btn-primary" href="#" role="button">READ MORE</a>
+                            <a class="caption-link" href="#" role="button">Inspinia Theme</a>
+                        </p>
                     </div>
-                    <!-- Set background for slide in css -->
-                    <div class="header-back">
-                        <img src="@item.imgUrl" />
+                    <div class="carousel-image wow zoomIn">
+                        <img src="~/Images/logo_elc.png" alt="laptop" style="max-height:310px;max-width:310px" />
                     </div>
-
+                </div>
+                <!-- Set background for slide in css -->
+                <div class="header-back">
+                    <img src="@first.imgUrl" />
                 </div>
 
+            </div>
+
+            @foreach(var item in Model.ImageField.Where(i=> i!=first) )
+            {
+
+            <div class="item">
+                <div class="container">
+                    <div class="carousel-caption blank">
+                        <h1>@item.header1</h1>
+                        <p>@item.header2</p>
+                         
+                        <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
+                    </div>
+                    <div class="carousel-image  zoomIn">
+                        <img src="~/Images/logo_elc.png" alt="laptop" style="max-height:310px;max-width:310px" />
+                    </div>
+                </div>
+                <!-- Set background for slide in css -->
+                <div class="header-back ">
+                    <img src="@item.imgUrl" />
+                </div>
+            </div>
+            
             }
+           
         </div>
         <a class="left carousel-control" href="#inSlider" role="button" data-slide="prev">
             <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -108,7 +140,6 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
-
 
     <section id="features" class="container services">
         <div class="row">
