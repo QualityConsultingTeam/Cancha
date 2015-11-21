@@ -145,10 +145,11 @@ namespace Admin.Controllers
         public virtual async Task<JsonResult> Read([DataSourceRequest] DataSourceRequest request)
         {
 
-            IQueryable<BookingViewModel> query = Repository.GetSummary(onlyAvailables:true)
+            IQueryable<BookingViewModel> query = Repository.GetSummary(onlyAvailables: true)
                 .Select(b => new BookingViewModel()
                 {
                     Id = b.Id,
+                    BookingId = b.Id,
                     Title = b.Field.Name,
                     Start =  b.Start.Value ,
                     End =  b.End.Value,
@@ -169,12 +170,17 @@ namespace Admin.Controllers
 
         public virtual async Task<JsonResult> Destroy([DataSourceRequest] DataSourceRequest request, BookingViewModel task)
         {
+
             if (ModelState.IsValid)
             {
-                var booking = new Booking();
-                booking.CopyFrom(task);
-                Repository.Delete(booking);
-                await Repository.SaveAsync();
+                var booking = await Repository.FindByIdAsync(task.BookingId);
+
+                if (booking.Status == BookingStatus.Pendiente)
+                {
+                    Repository.Delete(booking);
+
+                    await Repository.SaveAsync();
+                }
             }
 
             return Json(new[] { task }.ToDataSourceResult(request, ModelState));
