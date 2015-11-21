@@ -378,6 +378,23 @@ namespace Admin
             // Footable alert
             bundles.Add(new ScriptBundle("~/plugins/footable").Include(
                       "~/Scripts/plugins/footable/footable.all.min.js"));
+
+
+            bundles.Add(new StyleBundle("~/bundles/landingcss")
+                .Include("~/Content/bootstrap.min.css",
+                      "~/Content/animate.css",
+                      "~/Content/landing/style.css",
+                      "~/fonts/font-awesome/css/font-awesome.min.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/landingscripts")
+                .Include("~/Scripts/landing/jquery-2.1.1.js",
+                         "~/Scripts/landing/pace.min.js",
+                         "~/Scripts/landing/bootstrap.min.js",
+                           "~/Scripts/landing/classie.js",
+                           "~/Scripts/landing/cbpAnimatedHeader.js",
+                           "~/Scripts/landing/wow.min.js",
+                           "~/Scripts/landing/inspinia.js"));
+
         }
     }
 }

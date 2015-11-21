@@ -22,13 +22,14 @@
     
     <title>En La Cancha</title>
 
+    @Styles.Render("~/bundles/landingcss")
     <!-- Bootstrap core CSS -->
-    <link href="https://djrm1arjukiyk.cloudfront.net/css/bootstrap.min.css" rel="stylesheet">
+    @*<link href="https://djrm1arjukiyk.cloudfront.net/css/bootstrap.min.css" rel="stylesheet">*@
 
     <!-- Animation CSS -->
-    <link href="https://djrm1arjukiyk.cloudfront.net/css/animate.min.css" rel="stylesheet">
+    @*<link href="https://djrm1arjukiyk.cloudfront.net/css/animate.min.css" rel="stylesheet">*@
 
-    <link href="https://djrm1arjukiyk.cloudfront.net/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    @*<link href="https://djrm1arjukiyk.cloudfront.net/font-awesome/css/font-awesome.min.css" rel="stylesheet">*@
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -36,7 +37,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <!-- Custom styles for this template -->
-    <link href="https://djrm1arjukiyk.cloudfront.net/css/style.css" rel="stylesheet">
+    @*<link href="https://djrm1arjukiyk.cloudfront.net/css/style.css" rel="stylesheet">*@
 </head>
 <body id="page-top">
     <div class="navbar-wrapper">
@@ -523,13 +524,8 @@
         </div>
     </section>
 
-    <script src="https://djrm1arjukiyk.cloudfront.net/js/jquery-2.1.1.js"></script>
-    <script src="https://djrm1arjukiyk.cloudfront.net/js/pace.min.js"></script>
-    <script src="https://djrm1arjukiyk.cloudfront.net/js/bootstrap.min.js"></script>
-    <script src="https://djrm1arjukiyk.cloudfront.net/js/classie.js"></script>
-    <script src="https://djrm1arjukiyk.cloudfront.net/js/cbpAnimatedHeader.js"></script>
-    <script src="https://djrm1arjukiyk.cloudfront.net/js/wow.min.js"></script>
-    <script src="https://djrm1arjukiyk.cloudfront.net/js/inspinia.js"></script>
+    @Scripts.Render("~/bundles/landingscripts")
+
 </body>
 
 
