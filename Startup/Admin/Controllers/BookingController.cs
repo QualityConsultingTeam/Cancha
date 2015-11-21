@@ -180,10 +180,13 @@ namespace Admin.Controllers
                     Repository.Delete(booking);
 
                     await Repository.SaveAsync();
-                }
-            }
 
-            return Json(new[] { task }.ToDataSourceResult(request, ModelState));
+                    return Json(new[] { task }.ToDataSourceResult(request, ModelState));
+                }
+                return Json(null);
+            }
+            return Json(null);
+            
         }
         [Globalization]
         public virtual async Task<JsonResult> Create([DataSourceRequest] DataSourceRequest request, BookingViewModel task)
