@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\BookingExtensions.cs" />
+    <Compile Include="Extensions\DataAnottations.cs" />
     <Compile Include="Extensions\DataExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\FieldExtensions.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Extensions\TokenExtensions.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Context\AccessContext.cs" />
+    <Compile Include="ModelConstants.cs" />
     <Compile Include="Models\AccountAccessLevel.cs" />
     <Compile Include="Models\Agreement.cs" />
     <Compile Include="Models\BaseModel.cs" />

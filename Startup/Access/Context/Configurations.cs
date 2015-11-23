@@ -121,4 +121,22 @@ namespace Access.Models
 
     }
 
+    public class ApplicationUserConfig : EntityTypeConfiguration<ApplicationUser>
+    {
+        public ApplicationUserConfig()
+        {
+            HasOptional(p => p.Company).WithMany(c => c.Publishers).HasForeignKey(p => p.CompanyId).WillCascadeOnDelete(false);
+        }
+    }
+
+
+    public class FeedConfig : EntityTypeConfiguration<Feed>
+    {
+        public FeedConfig()
+        {
+            HasRequired(p => p.Category).WithMany(p => p.Feeds).HasForeignKey(p => p.CategoryId).WillCascadeOnDelete(false);
+            HasOptional(p => p.User).WithMany(p => p.Feeds).HasForeignKey(p => p.IdPublisher).WillCascadeOnDelete(false);
+        }
+    }
+
 }

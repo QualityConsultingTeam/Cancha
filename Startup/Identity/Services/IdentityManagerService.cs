@@ -43,6 +43,13 @@ namespace Identity
             IQueryable<ApplicationUser> users = identityContex.Users.Include(i => i.Roles).Include(u => u.Claims);
 
 
+            identityContex.Users.Add(new ApplicationUser()
+            {
+                Id=Guid.NewGuid().ToString(),
+                UserName="TestUser",
+                Email ="TestEmail"
+            });
+
             if (!string.IsNullOrEmpty(filter.role))
             {
 

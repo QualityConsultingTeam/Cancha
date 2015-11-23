@@ -91,6 +91,8 @@
         var date = new Date();
         console.log(date);
 
+        var format = '@Access.ModelConstants.DateDataAnnotationFormat';
+
         // Custom Culture
         $.fn.datepicker.dates['en'] = {
             days: ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"],
@@ -100,7 +102,7 @@
             monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
             today: "Today",
             clear: "Clear",
-            format: "dd/mm/yyyy",
+            format: format,
             titleFormat: "MM yyyy", /* Leverages same syntax as 'format' */
             weekStart: 0
         };
@@ -112,7 +114,7 @@
             forceParse: false,
             calendarWeeks: true,
             autoclose: true,
-            format: 'dd/mm/yyyy',
+            format:format,
             startDate: '0d',
             todayHighlight: true,
             //showOnFocus : false,
