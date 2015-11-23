@@ -81,5 +81,9 @@ namespace Access.Models
         {
             get { return FieldExtensions.GetPointFrom(lat, lon); }
         }
+
+
+        public string CategoryName { get; set; }
+        public FeedStatus? FeedStatus { get; internal set; }
     }
 }

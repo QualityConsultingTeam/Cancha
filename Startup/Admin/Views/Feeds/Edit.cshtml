@@ -1,0 +1,271 @@
+﻿@model  Feed
+
+@{
+    ViewBag.Title = "Feed Edit";
+
+
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>FEEDS</h2>
+        <ol class="breadcrumb">
+            <li>
+                @Html.ActionLink("Admin ", "Index", "Home")
+            </li>
+            <li>
+                @Html.ActionLink("Feeds", "Index")
+            </li>
+            <li class="active">
+                <strong>Edit</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-sm-8">
+        <div class="title-action">
+            @Html.ActionLink("Back to Feeds", "Index", null, new { @class = "btn btn-primary" })
+        </div>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Feed Edit</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="ibox-content">
+                <form id="uploader" class="dropzone" action="@Url.Action("Upload", "FileUpload")" method="post"  
+                      enctype="multipart/form-data"  >
+                    <div class="dropzone-previews"></div>
+                    <button type="submit" class="btn btn-primary pull-right">Save Pictures!</button>
+                </form>
+               
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="ibox-content">
+                <img id="thumb"  class="img-thumbnail" style="max-height: 175px"/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Edit Feed</h5>
+                </div>
+                <div class="ibox-content">
+
+
+                    @using (Html.BeginForm())
+{
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+
+                        @Html.ValidationSummary(false)
+                        @Html.HiddenFor(model => model.Id)
+                        @Html.HiddenFor(model=>model.ModifiedBy)
+                        @Html.HiddenFor(model=> model.LastUpdate)
+                        @Html.HiddenFor(model=>model.Image)
+                        @Html.HiddenFor(model => model.Status)
+
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Author, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Author)
+                                @Html.ValidationMessageFor(model => model.Author)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Phone, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Phone)
+                                @Html.ValidationMessageFor(model => model.Phone)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Title)
+                                @Html.ValidationMessageFor(model => model.Title)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Content, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.Content,new { @class="form-control", rows="3"})
+                                @Html.ValidationMessageFor(model => model.Content)
+                            </div>
+                        </div>
+
+                        @*<div class="form-group">
+                            @Html.LabelFor(model => model.Image, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Image)
+                                @Html.ValidationMessageFor(model => model.Image)
+                            </div>
+                        </div>*@
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DateStart, new { @class = "control-label col-md-2 date" })
+                            <div class="col-md-10">
+
+                                @Html.EditorFor(model => model.DateStart)
+
+                                @Html.ValidationMessageFor(model => model.DateStart)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DateEnd, new { @class = "control-label col-md-2 date" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.DateEnd)
+                                @Html.ValidationMessageFor(model => model.DateEnd)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Category", new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(model => model.CategoryId,(IEnumerable<SelectListItem>)ViewBag.Categories, new {@class="form-control" })
+                                @Html.ValidationMessageFor(model => model.CategoryId)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Option1, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Option1)
+                                @Html.ValidationMessageFor(model => model.Option1)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Option2, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Option2)
+                                @Html.ValidationMessageFor(model => model.Option2)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Option3, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Option3)
+                                @Html.ValidationMessageFor(model => model.Option3)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Option4, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Option4)
+                                @Html.ValidationMessageFor(model => model.Option4)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Option5, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Option5)
+                                @Html.ValidationMessageFor(model => model.Option5)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Status, new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @*@Html.DropDownListFor(model => model.Status, (IEnumerable<SelectListItem>)ViewBag.Statuses, new { @class = "form-control" })*@
+                                @Html.EnumDropDownListFor(model => model.Status, "Select Status",new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Status)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Save" class="btn btn-primary" />
+                                @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-white"})
+                            </div>
+                        </div>
+                    </div>
+}
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Styles {
+    @Styles.Render("~/Content/plugins/dropzone/dropZoneStyles")
+}
+
+@section Scripts {
+    @Scripts.Render("~/plugins/dropZone")
+<style>
+    .dropzone {
+    
+    min-height: 180px;
+    
+}
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#thumb").attr("src", $("#Image").val());
+            Dropzone.options.uploader = {
+
+                autoProcessQueue: false,
+                parallelUploads: 1,
+                maxFiles: 1,
+                paramName: "files",
+               
+                // Dropzone settings
+                init: function () {
+                    var myDropzone = this;
+
+                    this.element.querySelector("button[type=submit]").addEventListener("click", function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        myDropzone.processQueue();
+                    });
+                    this.on("sendingmultiple", function () {
+                    });
+                    this.on("successmultiple", function (files, response) {
+                        console.log(files);
+                        console.log(response);
+                        console.log("updated");
+
+                    });
+                    this.on("success", function (data) {
+                        //var res = eval('(' + data.xhr.responseText + ')');
+                        var res = JSON.parse(data.xhr.responseText);
+                        console.log(res);
+                        console.log(res.Message)
+                        $("#Image").val(res.Message);
+                        $("#thumb").attr("src", res.Message);
+                    });
+                    this.on("errormultiple", function (files, response) {
+                    });
+                }
+
+            }
+
+        });
+
+        
+    </script>
+}

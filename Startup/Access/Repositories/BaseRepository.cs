@@ -164,6 +164,14 @@ namespace Access
 
            
         }
+        public virtual async Task DeleteByIdAsync(int id)
+        {
+            var model = await FindByIdAsync(id);
+
+            Delete(model);
+
+            await SaveAsync();
+        }
 
 
         #endregion

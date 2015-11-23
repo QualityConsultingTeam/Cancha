@@ -62,6 +62,10 @@ namespace Access
 
         public DbSet<Team> Teams { get; set; }
 
+        public DbSet<Feed> Feeds { get; set; }
+
+        public DbSet<Category> Categories { get; set; }
+
        public DbSet<AccountAccessLevel> AccountAccess { get; set; }
         
         //public DbSet<CenterAccount> CenterAccounts { get; set; }

@@ -109,8 +109,10 @@
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\Booking.cs" />
+    <Compile Include="Models\Category.cs" />
     <Compile Include="Models\CenterAccount.cs" />
     <Compile Include="Context\Configurations.cs" />
+    <Compile Include="Models\Feed.cs" />
     <Compile Include="Models\Field.cs" />
     <Compile Include="Models\Center.cs" />
     <Compile Include="Models\Challenge.cs" />
@@ -135,9 +137,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\BookingRepository.cs" />
+    <Compile Include="Repositories\CategoriesRepository.cs" />
     <Compile Include="Repositories\CenterRepository.cs" />
     <Compile Include="Repositories\CompanyRepository.cs" />
     <Compile Include="Repositories\CostRepository.cs" />
+    <Compile Include="Repositories\FeedsRepository.cs" />
     <Compile Include="Repositories\FieldsRepository.cs" />
     <Compile Include="Repositories\PaymentRepository.cs" />
     <Compile Include="Services\IdentityManagerService.cs" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Identity.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -116,6 +117,7 @@ namespace Access.Models
 
         public List<AccountAccessLevel> AccountAccess { get; set; }
         
-        
+
+        public List<ApplicationUser> Publishers { get; set; }        
     }
 }

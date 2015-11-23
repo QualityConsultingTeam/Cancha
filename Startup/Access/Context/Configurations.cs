@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Identity.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
@@ -125,7 +126,7 @@ namespace Access.Models
     {
         public ApplicationUserConfig()
         {
-            HasOptional(p => p.Company).WithMany(c => c.Publishers).HasForeignKey(p => p.CompanyId).WillCascadeOnDelete(false);
+            HasOptional(p => p.Company).WithMany(c => c.Publishers).HasForeignKey(p => p.CenterId).WillCascadeOnDelete(false);
         }
     }
 

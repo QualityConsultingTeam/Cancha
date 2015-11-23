@@ -1,0 +1,300 @@
+﻿
+@{
+    ViewBag.Title = "Feeds Admin";
+
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+    var options = new AjaxOptions()
+    {
+        HttpMethod = "post",
+        InsertionMode = InsertionMode.Replace,
+        LoadingElementId = "loader",
+        UpdateTargetId = "BookingListSection"
+    };
+
+    var name = Model != null ? Model.Name : "PLARTFORM ADMINISTRATOR";
+}
+@*@model  Context.Models.Company*@
+ 
+   
+@Scripts.Render("~/plugins/knockout")
+ @Scripts.Render("~/plugins/slick")
+@Styles.Render("~/plugins/slickStyles")
+@Styles.Render("~/plugins/slickThemeStyles")
+
+
+
+<div class="row wrapper border-bottom white-bg page-heading" >
+    <div class="col-lg-10">
+        <h2>FEEDS</h2>
+        <ol class="breadcrumb">
+            <li>
+                @Html.ActionLink("Admin ", "Index", "Home")
+            </li>
+            <li class="active">
+                <strong>Feeds </strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Feed List</h5>
+                    <div class="ibox-tools">
+                        @Html.ActionLink(" ", "Edit", "Feeds", null, new { @class = "btn btn-danger btn-circle btn-outline fa fa-plus" })
+                    </div>
+                </div>
+                <div class="ibox-content text-center">
+                    <div class="row">
+                    @using (Ajax.BeginForm("SearchAync", "Feeds", null, new AjaxOptions
+                    {
+                        HttpMethod = "post",
+                        InsertionMode = InsertionMode.Replace,
+                        LoadingElementId = "loaderSection",
+                        UpdateTargetId = "BookingListSection",
+
+                    }, new { id = "searchbookingsform" }))
+                    {                            
+                            <div class="col-sm-5 m-b-xs">
+                                <select class="input-sm form-control input-s-sm inline" id="FeedStatus" name="FeedStatus" data-bind="
+                                    options: statuses,
+                                    optionsText: 'Name',
+                                    value : seelctedStatus,
+                                    optionsValue: 'Id',event:{ change: onSelectionStatusChange},
+                                    optionsCaption: 'State...' "></select>
+                            </div>
+                            <input type="hidden" data-bind="numeric, value:page" name="page" id="page" />
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <input type="text" placeholder="Search" class="input-sm form-control" id="keywords" name="keywords" data-bind="value:keywords">
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-sm btn-primary"> Go!</button>
+                                    </span>
+                                </div>
+                            </div>
+                            @*<div class="col-sm-2">
+                                <button class="btn btn-sm btn-danger inline" data-bind="click:cleanFilters">
+                                    <i class="fa fa-close"></i>
+                                </button>
+
+                            </div>*@
+                            <div class="col-sm-2 m-b-xs">
+                                <button type="submit" id="loading-example-btn" class="btn btn-sm btn-white"><i class="fa fa-refresh"></i></button>
+
+                            </div>
+                    }
+                    </div>
+                </div>
+            </div>  
+        </div>
+       
+    </div>
+    <div class="row">
+        <div class="col-lg-12" id="BookingListSection"></div>
+    </div>
+    <div class="row">
+        <div class="btn-group">
+            <button type="button" class="btn btn-white" data-bind="click:previousPage">
+                <i class="fa fa-chevron-left"></i>
+            </button>
+
+
+            <button type="button" class="btn btn-white" data-bind="click:nextPage">
+                <i class="fa fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</div>
+ 
+ 
+<script type="text/javascript">
+
+
+    var pagelimit = 0;
+
+    var viewmodel = {
+        roles: [],
+        statuses: [],
+        keywords: ko.observable(),
+        seelctedStatus: ko.observable(),
+
+        page: ko.observable(1),
+        limit :ko.observable(1),
+        scrollposition: ko.observable(),
+        onSelectionChange: function () {
+            $("#page").val('0');
+            doSearch();
+        },
+        onSelectionStatusChange: function () {
+            $("#page").val('0');
+            doSearch();
+        },
+        previousPage: function () {
+            var pag = Number($("#page").val()) - 1;
+            if (pag > 0) {
+                $("#page").val(pag);
+                doSearch();
+                $("#page").val(pag);
+            }
+        },
+        nextPage: function () {
+            var pag = Number($("#page").val()) + 1;
+            var limit = Number(pagelimit);
+            console.log("page : "+pag+"pageLImit: "+limit)
+            if (pag > 0 && pag <= limit) {
+                $("#page").val(pag);
+                doSearch();
+            }
+        },
+        pages: function () {
+            var  pageitems=[];
+            for (i = 1; i < pagelimit; i++) {
+                pageitems.push({number:i});
+            }
+            return pageitems;
+        },
+        cleanFilters: function () {
+
+            $("#page").val('0');
+            $("#keywords").val('');
+            $("#FeedStatus").val(-1);
+            doSearch();
+        }
+
+    };
+    // Initialize
+
+    function doSearch() {
+        $("#searchbookingsform").submit();
+    }
+
+    $(function () {
+
+
+        $.get('@Url.Action("Statuses", "Feeds")', function (status) {
+            viewmodel.statuses = status;
+            applybindigs(status);
+        });
+
+        $("#searchbookingsform").submit(); 
+
+
+    });
+    function applybindigs(statuses) {
+
+        console.log("Try apply bindings");
+        viewmodel.statuses = statuses;
+        ko.applyBindings(viewmodel);
+
+    };
+
+    function showDetails() {
+        viewmodel.MainshowDetails();
+    }
+
+
+    function showmodal() {
+        $("#bookingModal").html(null);
+        
+        $('#ChangeState').modal('show');
+    }
+    function hideModal() {
+        $('#ChangeState').hide();
+    }
+
+
+    function GetBookingUpdateView(url) {
+        $.ajax({
+            type: "POST",
+            url: url,
+            //data: ,
+            datatype: "html",
+            success: function (data) {
+                $('#bookingModal').html(data);
+              
+            }
+        });
+    }
+    function UpdateStatus(id,status) {
+        console.log("FEED uid :" + id);
+         
+        swal({
+            title: "Do you want Update Status?",
+            text: "To "+ status +"! ",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#008000",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+                       function (isConfirm) {
+                           if (isConfirm) {
+                               $("#loaderSection").fadeIn();
+                               $.post('@Url.Action("updatestatus","feeds")' + "?id=" + id+"&status="+status, function (data) {
+                                   $.post('@Url.Action("Details","Feeds")' + "?id=" + id, function (view) {
+                                       $("#BookingListSection").html(view);
+                                       $("#loaderSection").fadeOut();
+                                   });
+                               });
+                               swal("Changed!", "status has been changed to "+status, "success");
+                           } else {
+
+                              swal("Cancelled", "canceled", "error");
+                           }
+                       });
+    }
+
+    function ShowUserDetails(userid) {
+        console.log("user id: " + userid);
+        showmodal();
+        GetBookingUpdateView('@Url.Action("UserSummary", "Feeds")' + "?id=" + userid);
+    }
+
+    function OnCompleteBookingUpdate(result) {
+        console.log("nuevo resultado ");
+        console.log(result);
+        $("#searchbookingsform").submit();
+        hideModal();
+    }
+
+    function sendPushNotification(id) {
+         swal({
+                    title: "Send Push Notificatons?",
+                    text: "Do you want to send for  all devices!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#008000",
+                    confirmButtonText: "Yes, send it!",
+                    cancelButtonText: "No, cancel!",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                $.post('@Url.Action("sendpush","feeds")'+"?id="+id, function (data) {
+                                    console.log("ok push");
+                                });
+                                swal("Requested!", "Notification Has been send", "success");
+                            } else {
+                                swal("Cancelled", "Notification canceled", "error");
+                            }
+                        });
+    }
+
+
+</script>
+
+
+@Styles.Render("~/plugins/sweetAlertStyles")
+@Scripts.Render("~/plugins/sweetAlert")

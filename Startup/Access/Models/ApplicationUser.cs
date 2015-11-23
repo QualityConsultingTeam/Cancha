@@ -8,6 +8,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.ComponentModel;
 using System.Data.Entity.ModelConfiguration;
+using Access.Models;
+using System.Collections.Generic;
 
 namespace Identity.Models
 {
@@ -33,6 +35,7 @@ namespace Identity.Models
         public ApplicationUser()
         {
             CreatedDate = DateTime.Now;
+            Feeds = new List<Feed>();
         }
 
         public ApplicationUser(string email, string name, string lastname, string doc = "")
@@ -78,6 +81,11 @@ namespace Identity.Models
 
         [Display(Name = "Complejo")]
         public int? CenterId { get; set; }
+
+        public Center Company { get; set; }
+
+
+        public List<Feed> Feeds { get; set; }
 
     }
 

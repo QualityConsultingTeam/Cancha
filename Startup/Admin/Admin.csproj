@@ -228,7 +228,10 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BookingController.cs" />
     <Compile Include="Controllers\CanchasController.cs" />
+    <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\CenterController.cs" />
+    <Compile Include="Controllers\FeedsController.cs" />
+    <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\RootAdminController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -237,6 +240,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\AutoCompleteHelpers.cs" />
+    <Compile Include="Helpers\CollectionExtensions.cs" />
     <Compile Include="Helpers\DataExtensions.cs" />
     <Compile Include="Helpers\EnumerableExtensions.cs" />
     <Compile Include="Helpers\GlobalizationAttribute.cs" />
@@ -1610,6 +1614,15 @@
     <Content Include="Views\Canchas\PayPalCanceled.cshtml" />
     <Content Include="Views\Payment\Pay.cshtml" />
     <Content Include="Views\Manage\UserBookings.cshtml" />
+    <Content Include="Views\Categories\Delete.cshtml" />
+    <Content Include="Views\Categories\Details.cshtml" />
+    <Content Include="Views\Categories\Edit.cshtml" />
+    <Content Include="Views\Categories\Index.cshtml" />
+    <Content Include="Views\Feeds\Delete.cshtml" />
+    <Content Include="Views\Feeds\Edit.cshtml" />
+    <Content Include="Views\Feeds\Index.cshtml" />
+    <Content Include="Views\Feeds\Partials\Details.cshtml" />
+    <Content Include="Views\Feeds\Partials\ManageGrid.cshtml" />
     <None Include="Web.Azure_Website.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -1617,6 +1630,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\FileUpload\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

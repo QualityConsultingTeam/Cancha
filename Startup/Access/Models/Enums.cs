@@ -65,4 +65,10 @@ namespace Access.Models
 
     }
 
+    public enum FeedStatus
+    {
+        Pending = 0,
+        Active = 1,
+        Inactive = 2,
+    }
 }
