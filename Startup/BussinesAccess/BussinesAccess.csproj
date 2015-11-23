@@ -96,8 +96,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <Resource Include="Certificates\AzureHub.cer" />
-    <Resource Include="Certificates\AzureHub.pfx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -105,6 +103,10 @@
       <Project>{8315fccc-a646-4b7b-8414-1bd7801dbb13}</Project>
       <Name>Access</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Certificates\AzureHub.cer" />
+    <Resource Include="Certificates\AzureHub.pfx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
