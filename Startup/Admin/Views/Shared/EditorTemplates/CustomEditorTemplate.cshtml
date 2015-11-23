@@ -36,19 +36,26 @@
     @(Html.LabelFor(model => model.Userid))
 </div>
 
+@if (Model.BookingId == 0)
+{
 <div data-container-for="UserId" class="k-edit-field">
 
     @(Html.Kendo().ComboBoxFor(model => model.UserKey)
-            .HtmlAttributes(new { data_bind = "value:UserKey", style = "width: 300px" })
-            .DataTextField("Name")
-            .DataValueField("Id")
-            .Filter(FilterType.Contains)
-            .AutoBind(false)
-            .MinLength(3)
-            //.Template("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Name\\#")
-            .DataSource(source => source.Read(r => r.Action("GetUserNamesForSchedule", "Account")).ServerFiltering(true)).ToClientTemplate()
+                .HtmlAttributes(new { data_bind = "value:UserKey", style = "width: 300px" })
+                .DataTextField("Name")
+                .DataValueField("Id")
+                .Filter(FilterType.Contains)
+                .AutoBind(false)
+                .MinLength(3)
+                //.Template("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Name\\#")
+                .DataSource(source => source.Read(r => r.Action("GetUserNamesForSchedule", "Account")).ServerFiltering(true)).ToClientTemplate()
     )
 </div>
+}
+else
+{
+ @Html.HiddenFor(m=> m.UserKey)
+}
 
 <div class="k-edit-label">
     @(Html.LabelFor(model => model.Start))

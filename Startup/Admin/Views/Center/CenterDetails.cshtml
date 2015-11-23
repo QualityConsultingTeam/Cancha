@@ -7,6 +7,10 @@
     {
         return Model.ImageField.FirstOrDefault()== item ?"Active":"";
     };
+
+    var first = Model.ImageField.FirstOrDefault();
+
+    var index = 1;
 }
  
 <!DOCTYPE html>
@@ -22,13 +26,14 @@
     
     <title>En La Cancha</title>
 
+    @Styles.Render("~/bundles/landingcss")
     <!-- Bootstrap core CSS -->
-    <link href="https://djrm1arjukiyk.cloudfront.net/css/bootstrap.min.css" rel="stylesheet">
+    @*<link href="https://djrm1arjukiyk.cloudfront.net/css/bootstrap.min.css" rel="stylesheet">*@
 
     <!-- Animation CSS -->
-    <link href="https://djrm1arjukiyk.cloudfront.net/css/animate.min.css" rel="stylesheet">
+    @*<link href="https://djrm1arjukiyk.cloudfront.net/css/animate.min.css" rel="stylesheet">*@
 
-    <link href="https://djrm1arjukiyk.cloudfront.net/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    @*<link href="https://djrm1arjukiyk.cloudfront.net/font-awesome/css/font-awesome.min.css" rel="stylesheet">*@
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -36,7 +41,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <!-- Custom styles for this template -->
-    <link href="https://djrm1arjukiyk.cloudfront.net/css/style.css" rel="stylesheet">
+    @*<link href="https://djrm1arjukiyk.cloudfront.net/css/style.css" rel="stylesheet">*@
 </head>
 <body id="page-top">
     <div class="navbar-wrapper">
@@ -65,38 +70,67 @@
             </div>
         </nav>
     </div>
-    <div id="inSlider" class="carousel slide carousel-fade" data-ride="carousel">
+    
+
+    <div id="inSlider" class="carousel carousel-fade" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#inSlider" data-slide-to="0" class="active"></li>
-            <li data-target="#inSlider" data-slide-to="1"></li>
+            @foreach (var item in Model.ImageField.Where(i => i != first))
+            {
+                <li data-target="#inSlider" data-slide-to="@index"></li>
+                {
+                    index++;
+                }
+                @*<li data-target="#inSlider" data-slide-to="2"></li>*@
+            }
         </ol>
         <div class="carousel-inner" role="listbox">
-
-            @foreach (var item in Model.ImageField)
-            {
-
-                <div class="item @IsActiveItem(item)">
-                    <div class="container">
-                        <div class="carousel-caption">
-                            <h1>@item.header1</h1>
-                            <p>@item.header2</p>
-                            <p>
-                                <a class="btn btn-lg btn-primary" href="#" role="button">READ MORE</a>
-                                <a class="caption-link" href="#" role="button">Inspinia Theme</a>
-                            </p>
-                        </div>
-                        <div class="carousel-image  zoomIn">
-                            <img src="~/Images/logo_elc.png" alt="laptop" style="max-height:310px;max-width:310px" />
-                        </div>
+            <div class="item active">
+                <div class="container">
+                    <div class="carousel-caption">
+                        <h1>@first.header1</h1>
+                        <p>@first.header2</p>
+                        @*<p>Lorem Ipsum is simply dummy text of the printing.</p>*@
+                        <p>
+                            <a class="btn btn-lg btn-primary" href="#" role="button">READ MORE</a>
+                            <a class="caption-link" href="#" role="button">Inspinia Theme</a>
+                        </p>
                     </div>
-                    <!-- Set background for slide in css -->
-                    <div class="header-back">
-                        <img src="@item.imgUrl" />
+                    <div class="carousel-image wow zoomIn">
+                        <img src="~/Images/logo_elc.png" alt="laptop" style="max-height:310px;max-width:310px" />
                     </div>
+                </div>
+                <!-- Set background for slide in css -->
 
+                <div class="header-back" style="background: url('@first.imgUrl') 50% 0 no-repeat;">
+                    
                 </div>
 
+            </div>
+
+            @foreach(var item in Model.ImageField.Where(i=> i!=first) )
+            {
+
+            <div class="item">
+                <div class="container">
+                    <div class="carousel-caption blank">
+                        <h1>@item.header1</h1>
+                        <p>@item.header2</p>
+                         
+                        <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
+                    </div>
+                    <div class="carousel-image  zoomIn">
+                        <img src="~/Images/logo_elc.png" alt="laptop" style="max-height:310px;max-width:310px" />
+                    </div>
+                </div>
+                <!-- Set background for slide in css -->
+                <div class="header-back " style="background: url('@item.imgUrl') 50% 0 no-repeat;">
+                    
+                </div>
+            </div>
+            
             }
+           
         </div>
         <a class="left carousel-control" href="#inSlider" role="button" data-slide="prev">
             <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -107,7 +141,6 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
-
 
     <section id="features" class="container services">
         <div class="row">
@@ -523,13 +556,8 @@
         </div>
     </section>
 
-    <script src="https://djrm1arjukiyk.cloudfront.net/js/jquery-2.1.1.js"></script>
-    <script src="https://djrm1arjukiyk.cloudfront.net/js/pace.min.js"></script>
-    <script src="https://djrm1arjukiyk.cloudfront.net/js/bootstrap.min.js"></script>
-    <script src="https://djrm1arjukiyk.cloudfront.net/js/classie.js"></script>
-    <script src="https://djrm1arjukiyk.cloudfront.net/js/cbpAnimatedHeader.js"></script>
-    <script src="https://djrm1arjukiyk.cloudfront.net/js/wow.min.js"></script>
-    <script src="https://djrm1arjukiyk.cloudfront.net/js/inspinia.js"></script>
+    @Scripts.Render("~/bundles/landingscripts")
+
 </body>
 
 

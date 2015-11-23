@@ -14,7 +14,10 @@ namespace Admin.Models
     public class BookingViewModel : ISchedulerEvent 
     {
 
+        public int BookingId { get; set; }
+
         [DisplayName("Titulo")]
+        
         public string Title { get; set; }
 
         public string FieldSearchName { get; set; }

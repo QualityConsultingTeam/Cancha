@@ -258,6 +258,24 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\email.css" />
+    <Content Include="Content\img\avatar1.jpg" />
+    <Content Include="Content\img\avatar2.jpg" />
+    <Content Include="Content\img\avatar3.jpg" />
+    <Content Include="Content\img\avatar4.jpg" />
+    <Content Include="Content\img\avatar5.jpg" />
+    <Content Include="Content\img\avatar6.jpg" />
+    <Content Include="Content\img\avatar7.jpg" />
+    <Content Include="Content\img\avatar8.jpg" />
+    <Content Include="Content\img\avatar9.jpg" />
+    <Content Include="Content\img\avatar_all.png" />
+    <Content Include="Content\img\dashboard.png" />
+    <Content Include="Content\img\header_one.jpg" />
+    <Content Include="Content\img\header_two.jpg" />
+    <Content Include="Content\img\iphone.jpg" />
+    <Content Include="Content\img\laptop.png" />
+    <Content Include="Content\img\perspective.png" />
+    <Content Include="Content\img\shattered.png" />
+    <Content Include="Content\img\word_map.png" />
     <Content Include="Content\kendo\kendo.common-material.core.min.css" />
     <Content Include="Content\kendo\kendo.common-material.min.css" />
     <Content Include="Content\kendo\kendo.common-office365.min.css" />
@@ -299,6 +317,7 @@
     <Content Include="Content\landing\avatar_all.png" />
     <Content Include="Content\landing\header_one.jpg" />
     <Content Include="Content\landing\header_two.jpg" />
+    <Content Include="Content\landing\style.css" />
     <Content Include="Content\landing\word_map.png" />
     <Content Include="Content\Loader.css" />
     <Content Include="Content\patterns\congruent_pentagon.png" />
@@ -583,6 +602,14 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\landing\bootstrap.js" />
+    <Content Include="Scripts\landing\bootstrap.min.js" />
+    <Content Include="Scripts\landing\cbpAnimatedHeader.js" />
+    <Content Include="Scripts\landing\classie.js" />
+    <Content Include="Scripts\landing\inspinia.js" />
+    <Content Include="Scripts\landing\jquery-2.1.1.js" />
+    <Content Include="Scripts\landing\pace.min.js" />
+    <Content Include="Scripts\landing\wow.min.js" />
     <Content Include="Scripts\kendo.modernizr.custom.js" />
     <Content Include="Scripts\kendo\cultures\kendo.culture.af-ZA.min.js" />
     <Content Include="Scripts\kendo\cultures\kendo.culture.af.min.js" />
@@ -1606,10 +1633,6 @@
     <ProjectReference Include="..\BussinesAccess\BussinesAccess.csproj">
       <Project>{213a3d8c-a134-4744-a822-de7428c7a2dd}</Project>
       <Name>BussinesAccess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Identity\Identity.csproj">
-      <Project>{5830c3cb-6b17-4833-b021-41ce97d86e56}</Project>
-      <Name>Identity</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

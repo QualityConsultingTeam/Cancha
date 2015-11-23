@@ -61,6 +61,10 @@
          editable.TemplateName("CustomEditorTemplate");
          editable.Resize(false);
          editable.Move(false);
+         editable.Create(true);
+         editable.Destroy(true);
+         editable.Update(true);
+        
          editable.Confirmation("Esta seguro que desea eliminar el registro");
      })
     .Messages(m =>
@@ -83,6 +87,7 @@
 
             m.RecurrenceId(f => f.RecurrenceId);
         })
+        .ServerOperation(true)
         .Read("Read", "Booking")
             .Create("Create", "Booking")
             .Destroy("Destroy", "Booking")

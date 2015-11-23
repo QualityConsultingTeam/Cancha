@@ -86,13 +86,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config\Config.cs" />
-    <Compile Include="Context\Context.cs" />
-    <Compile Include="Extensions\Extensions.cs" />
-    <Compile Include="Services\IdentityManagerService.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\IdentityUserViewModel.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -100,10 +93,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Access\Access.csproj">
-      <Project>{8315fccc-a646-4b7b-8414-1bd7801dbb13}</Project>
-      <Name>Access</Name>
-    </ProjectReference>
+    <Folder Include="Config\" />
+    <Folder Include="Context\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Migrations\" />
+    <Folder Include="Models\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

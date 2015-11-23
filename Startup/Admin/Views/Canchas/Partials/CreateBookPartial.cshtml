@@ -36,7 +36,10 @@
     @Html.HiddenFor(m => m.End)
     @Html.HiddenFor(m => m.Invoice)
     @Html.HiddenFor(m => m.Status)
-    @Html.HiddenFor(m => m.Price)
+    @*@Html.HiddenFor(m => m.Price)*@
+    //bug no inserta precion en html
+
+    <input type="hidden" name="Price" value="@Model.Price" />
     @Html.HiddenFor(m => m.DownPayment)
     @Html.HiddenFor(m => m.HasDownpay)
     @Html.HiddenFor(m => m.Pending)
