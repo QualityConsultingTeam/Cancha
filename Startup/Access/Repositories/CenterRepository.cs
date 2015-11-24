@@ -17,6 +17,9 @@ namespace Access.Repositories
             var Center = await Context.Centers.Include(p => p.Fields).Include(p => p.ImageField)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
+                Center = await Context.Centers.Include(p => p.Fields).Include(p => p.Services)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
             if (true)//!Center.ImageField.Any())
             {
                 Center.ImageField.Clear();
@@ -24,6 +27,19 @@ namespace Access.Repositories
                 Center.ImageField.Add(new ImageField { imgUrl = "/Images/slide1.jpg", header1 = "Las mejores canchas" });
                 Center.ImageField.Add(new ImageField { imgUrl = "/Images/slide2.jpg", header1 = "Las mejores canchas" });
             }
+
+            if (true) {
+                Center.Services.Clear();
+                Center.Services.Add(new Service {  Name = "Cafeteria" , Description = "Servico de cafeteria, snack, bebidas", IconName= "fa fa-coffee" });
+                Center.Services.Add(new Service { Name = "Gimnasio", Description = "Gimnacio con instructoria profesional", IconName = "fa fa-anchor" });
+                Center.Services.Add(new Service { Name = "Clases", Description = "Clases de futbol para diferentes edades", IconName = "fa fa-futbol-o" });
+                Center.Services.Add(new Service { Name = "Parqueo", Description = "Amplio parqueo", IconName = "fa fa-car" });
+                Center.Services.Add(new Service { Name = "WiFi", Description = "WiFi gratis", IconName = "fa fa-wifi" });
+            }
+
+           
+
+
 
             return Center;
         }

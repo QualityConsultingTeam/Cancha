@@ -81,6 +81,7 @@ namespace Admin.Models
         [Compare("Password", ErrorMessage = "La de la contraseña Confirmacion no coincide.")]
         public string ConfirmPassword { get; set; }
 
+        [Required]
         [Display(Name ="Telefono",Prompt ="Telefono Móvil")]
         [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }

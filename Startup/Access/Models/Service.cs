@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,13 @@ namespace Access.Models
         [DisplayName("Descripcion")]
         public string Description { get; set; }
 
-         
+       
+        [StringLength(250)]
+        [NotMapped]
+        [DisplayName("IconName")]
+        public string IconName { get; set; }
+
+
         [DisplayName("Estado")]
         public Status Status { get; set; } 
          
