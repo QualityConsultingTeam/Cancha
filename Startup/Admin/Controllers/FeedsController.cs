@@ -17,7 +17,7 @@ namespace Admin.Controllers
     public class FeedsController : BaseController<FeedsRepository,AccessContext, Feed>
     {
         // GET: Feeds       
-        [Authorize(Roles = "Admin,Publisher")]
+        [Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult> Index()
         {
             var model = await Repository.GetCompanyAsync();

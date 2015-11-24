@@ -1,3 +1,20 @@
-@model DateTime?
+@model System.DateTime?
+    @using Access;
+@Html.TextBox("", String.Format("{0:d}", Model.HasValue ? Model.Value.ToShortDateString() : string.Empty), new { @class = "form-control date" })
 
-@(Html.Kendo().DateTimePickerFor(m => m).HtmlAttributes(new { style = "width:100%" }))
+<script type="text/javascript">
+    $(function () {
+        var dateformat = '@ModelConstants.DateDataAnnotationFormat';
+        $('.date').datepicker({
+            todayBtn: true,
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true,
+            format: dateformat,
+            startDate: '0d',
+            todayHighlight: true,
+            //showOnFocus : false,
+        });
+    })
+</script>

@@ -1,3 +1,17 @@
 @model DateTime?
-
-@(Html.Kendo().DatePickerFor(m => m).HtmlAttributes(new {style="width:100%"}))
+    @using Access;
+    <div class='input-group date datetimepicker'>
+        @Html.TextBox("", String.Format("{0:DD/MM/YYYY HH:mm:ss}", Model.ToString()), new { @class = "form-control" })
+        <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+        </span>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            var dateformat = '@ModelConstants.DateDataAnnotationFormat';
+            $('.datetimepicker').datetimepicker({
+                format: dateformat,
+                focusOnShow: true
+            });
+        });
+    </script>

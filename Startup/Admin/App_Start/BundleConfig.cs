@@ -394,6 +394,30 @@ namespace Admin
                            "~/Scripts/landing/cbpAnimatedHeader.js",
                            "~/Scripts/landing/wow.min.js",
                            "~/Scripts/landing/inspinia.js"));
+            // Select2 Styless
+            bundles.Add(new StyleBundle("~/plugins/select2Styles").Include(
+                      "~/Content/plugins/select2/select2.min.css"));
+
+            // Select2
+            bundles.Add(new ScriptBundle("~/plugins/select2").Include(
+                      "~/Scripts/plugins/select2/select2.full.min.js"));
+
+            // Masonry
+            bundles.Add(new ScriptBundle("~/plugins/masonry").Include(
+                      "~/Scripts/plugins/masonary/masonry.pkgd.min.js"));
+
+
+            // Slick carousel Styless
+            bundles.Add(new StyleBundle("~/plugins/slickStyles").Include(
+                      "~/Content/plugins/slick/slick.css", new CssRewriteUrlTransform()));
+
+            // Slick carousel theme Styless
+            bundles.Add(new StyleBundle("~/plugins/slickThemeStyles").Include(
+                      "~/Content/plugins/slick/slick-theme.css", new CssRewriteUrlTransform()));
+
+            // Slick carousel
+            bundles.Add(new ScriptBundle("~/plugins/slick").Include(
+                      "~/Scripts/plugins/slick/slick.min.js"));
 
         }
     }
