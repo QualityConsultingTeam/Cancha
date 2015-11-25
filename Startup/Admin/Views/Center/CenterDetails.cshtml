@@ -45,6 +45,9 @@
 </head>
 
 <body id="inicio">
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4mbXflTyT-qgUjKpXrl2OQ7RE0BuMsaU">
+    </script>
 
     <!--INICIO TOOLBAR-->
     <div class="navbar-wrapper">
@@ -66,25 +69,23 @@
                         <li><a class="page-scroll" href="#info">Información</a></li>
                         <li><a class="page-scroll" href="#servicios">Servicios</a></li>
                         <li><a class="page-scroll" href="#mapa">Mapa</a></li>
-                        <li><a class="page-scroll" href="#contacto">Contacto</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
     </div>
     <!--INICIO TOOLBAR-->
-
     <!--INICIO CAROUSEL-->
     <div id="inSlider" class="carousel carousel-fade" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#inSlider" data-slide-to="0" class="active"></li>
             @foreach (var item in Model.ImageField.Where(i => i != first))
             {
-            <li data-target="#inSlider" data-slide-to="@index"></li>
+                <li data-target="#inSlider" data-slide-to="@index"></li>
                 {
                     index++;
                 }
-            @*<li data-target="#inSlider" data-slide-to="2"></li>*@
+                @*<li data-target="#inSlider" data-slide-to="2"></li>*@
             }
         </ol>
         <div class="carousel-inner" role="listbox">
@@ -114,23 +115,23 @@
             @foreach (var item in Model.ImageField.Where(i => i != first))
             {
 
-            <div class="item">
-                <div class="container">
-                    <div class="carousel-caption blank">
-                        <h1>@item.header1</h1>
-                        <p>@item.header2</p>
+                <div class="item">
+                    <div class="container">
+                        <div class="carousel-caption blank">
+                            <h1>@item.header1</h1>
+                            <p>@item.header2</p>
 
-                        <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
+                            <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
+                        </div>
+                        <div class="carousel-image  zoomIn">
+                            <img src="~/Images/logo_elc.png" alt="laptop" style="max-height:310px;max-width:310px" />
+                        </div>
                     </div>
-                    <div class="carousel-image  zoomIn">
-                        <img src="~/Images/logo_elc.png" alt="laptop" style="max-height:310px;max-width:310px" />
+                    <!-- Set background for slide in css -->
+                    <div class="header-back " style="background: url('@item.imgUrl') 50% 0 no-repeat;">
+
                     </div>
                 </div>
-                <!-- Set background for slide in css -->
-                <div class="header-back " style="background: url('@item.imgUrl') 50% 0 no-repeat;">
-
-                </div>
-            </div>
 
             }
 
@@ -145,9 +146,14 @@
         </a>
     </div>
     <!--FIN CAROUSEL-->
-
     <!--INICIO INFORMACION-->
     <section id="info" class="container services">
+        <div class="row m-b-lg">
+            <div class="col-lg-12 text-center">
+                <div class="navy-line"></div>
+                <h1>Información</h1>
+            </div>
+        </div>
         <div class="row">
             <div class="col-sm-3">
                 <h2>Descripción</h2>
@@ -174,14 +180,15 @@
                         <li><i class="fa fa-calendar-o"></i>&nbsp @TimeSpan.FromHours(@Model.Closetime).ToString("hh':'mm") </li>
                     </ul>
                 </p>
-                
+
             </div>
 
             <div class="col-sm-3">
                 <h2>Canchas</h2>
                 <p>
                     <ul class="fa-ul">
-                        @foreach (var item in Model.Fields){
+                        @foreach (var item in Model.Fields)
+                        {
                             <li><i class="fa fa-futbol-o"></i>&nbsp  @item.Name </li>
                         }
                     </ul>
@@ -189,8 +196,7 @@
             </div>
         </div>
     </section>
-    <!--INICIO INFORMACION-->
-
+    <!--CIERRE INFORMACION-->
     <!--INICIO SERVICIOS-->
     <section id="servicios" class="gray-section team">
         <div class="container">
@@ -222,135 +228,125 @@
         </div>
     </section>
     <!--CIERRE SERVICIOS-->
-
     <!--INICIO MAPA-->
     <section id="mapa" class="navy-section google-map">
-
-        
-
-                    <div class="google-map" id="fieldmap" style="height: 500px"></div>
-                    
-                    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4mbXflTyT-qgUjKpXrl2OQ7RE0BuMsaU">
-
-                        var map;
-                        var mapCenter; 
-                        var fieldMarker;
-                        var directionsDisplay = new google.maps.DirectionsRenderer();
-
-                        var directionsService = new google.maps.DirectionsService();;
-
-                        $(function () {
-                            initialize();
-                        });
-
-
-                        function initialize() {
-
-                            var lat = '@Model.Coordinates.Latitude';
-                            var lon = '@Model.Coordinates.Longitude';
-                            console.log("field Coordinates lat=" + lat + " lon: " + lon);
-                            mapCenter = new google.maps.LatLng(lat, lon);
-                            var mapOptions = {
-                                center: mapCenter,
-                                zoom: 15
-                            };
-                            map = new google.maps.Map(document.getElementById("fieldmap"),
-                                mapOptions);
-
-                            directionsDisplay.setMap(map);
-
-                            displayPotision();
-                        }
-
-                        function displayPotision() {
-                            fieldMarker = new google.maps.Marker({
-                                position: mapCenter,
-                                title: '@Model.Name',
-                            });
-
-
-                            var marker = new google.maps.Marker({
-                                position: new google.maps.LatLng(Mylatitude, Mylongitude),
-                                title: "mi ubicacion",
-                            });
-                            marker.setMap(map);
-                            fieldMarker.setMap(map);
-                            console.log(marker);
-
-                            var request = {
-                                origin: new google.maps.LatLng(Mylatitude, Mylongitude),
-                                destination: mapCenter,
-                                travelMode: google.maps.TravelMode.DRIVING
-                            };
-                            directionsService.route(request, function (response, status) {
-                                if (status == google.maps.DirectionsStatus.OK) {
-                                    directionsDisplay.setDirections(response);
-                                }
-                            });
-                        }
-                    </script>
-             
-
+        <div class="row m-b-lg">
+            <div class="col-lg-12 alignleft">
+                <a href="http:\\waze.to\?ll=@Model.Coordinates.Latitude,@Model.Coordinates.Longitude&navigate=yes">
+                    <img src="~/Images/waze.png" style="max-height:64px;max-width:64px" />
+                </a>
+            </div>
+        </div>
+        <div class="google-map" id="fieldmap" style="height: 500px"></div>
     </section>
     <!--CIERRE MAPA-->
 
-    <!--INICIO CONTACTO-->
-    <section id="contacto" class="gray-section contact">
-        <div class="container">
-            <div class="row m-b-lg">
-                <div class="col-lg-12 text-center">
-                    <div class="navy-line"></div>
-                    <h1>Contact Us</h1>
-                    <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
-                </div>
-            </div>
-            <div class="row m-b-lg">
-                <div class="col-lg-3 col-lg-offset-3">
-                    <address>
-                        <strong><span class="navy">Company name, Inc.</span></strong><br />
-                        795 Folsom Ave, Suite 600<br />
-                        San Francisco, CA 94107<br />
-                        <abbr title="Phone">P:</abbr> (123) 456-7890
-                    </address>
-                </div>
-                <div class="col-lg-4">
-                    <p class="text-color">
-                        Consectetur adipisicing elit. Aut eaque, totam corporis laboriosam veritatis quis ad perspiciatis, totam corporis laboriosam veritatis, consectetur adipisicing elit quos non quis ad perspiciatis, totam corporis ea,
-                    </p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <a href="mailto:test@email.com" class="btn btn-primary">Send us mail</a>
-                    <p class="m-t-sm">
-                        Or follow us on social platform
-                    </p>
-                    <ul class="list-inline social-icon">
-                        <li>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-linkedin"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 text-center m-t-lg m-b-lg">
-                    <p><strong>&copy; 2015 Company Name</strong><br /> consectetur adipisicing elit. Aut eaque, laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--INICIO CONTACTO-->
-
     @Scripts.Render("~/bundles/landingscripts")
 
+    <script type="text/javascript">
+
+        var Mylatitude;
+        var Mylongitude;
+
+        //Variables mapa
+        var map;
+        var mapCenter;
+        var fieldMarker;
+        var directionsDisplay = new google.maps.DirectionsRenderer();
+        var directionsService = new google.maps.DirectionsService();;
+
+        $(function () {
+            getLocation();
+
+        });
+
+        function getLocation() {
+
+            if (navigator.geolocation) {
+                // timeout at 60000 milliseconds (60 seconds)
+                var options = { timeout: 60000 };
+                navigator.geolocation.getCurrentPosition(showLocation,
+                    errorHandler,
+                    options);
+            } else {
+                console.log("Lo sentimos, tu navegador no soporta geolocalización!");
+                SerchWithoutLocation();
+            }
+        }
+
+        function showLocation(position) {
+            console.log(position);
+            Mylatitude = position.coords.latitude;
+            Mylongitude = position.coords.longitude;
+            console.log("Latitude : " + Mylatitude + " Longitude: " + Mylongitude);
+            //$("#lat").val(Mylatitude);
+            //$("#lon").val(Mylongitude);
+
+            // $("#searchFieldsForm").submit();
+            initialize();
+        }
+
+        function errorHandler(err) {
+            if (err.code == 1) {
+                alert("Error: El acceso al GPS fue denegado,habilitalo para una mejor experiencia de usuario!");
+            } else if (err.code == 2) {
+                console.log("Error: el GPS no esta disponible!");
+            }
+            SerchWithoutLocation();
+        }
+
+        function SerchWithoutLocation() {
+
+            $("#searchFieldsForm").submit();
+            //
+        }
+
+        function initialize() {
+
+            var lat = '@Model.Coordinates.Latitude';
+            var lon = '@Model.Coordinates.Longitude';
+            console.log("field Coordinates lat=" + lat + " lon: " + lon);
+            mapCenter = new google.maps.LatLng(lat, lon);
+            var mapOptions = {
+                center: mapCenter,
+                zoom: 15
+            };
+            map = new google.maps.Map(document.getElementById("fieldmap"),
+                mapOptions);
+
+            directionsDisplay.setMap(map);
+
+            displayPotision();
+        }
+
+        function displayPotision() {
+            fieldMarker = new google.maps.Marker({
+                position: mapCenter,
+                title: '@Model.Name',
+            });
+
+
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(Mylatitude, Mylongitude),
+                title: "mi ubicacion",
+            });
+            marker.setMap(map);
+            fieldMarker.setMap(map);
+            console.log(marker);
+
+            var request = {
+                origin: new google.maps.LatLng(Mylatitude, Mylongitude),
+                destination: mapCenter,
+                travelMode: google.maps.TravelMode.DRIVING
+            };
+            directionsService.route(request, function (response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+                }
+            });
+        }
+    </script>
+
 </body>
-
-
 
 </html>
