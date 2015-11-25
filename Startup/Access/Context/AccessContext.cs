@@ -85,6 +85,9 @@ namespace Access
             modelBuilder.Configurations.Add(new CenterConfig());
             modelBuilder.Configurations.Add(new AccountAccessLevelConsfig());
             modelBuilder.Configurations.Add(new CostConfig());
+            modelBuilder.Configurations.Add(new FeedConfig());
+            modelBuilder.Configurations.Add(new ApplicationUserConfig());
+            
 
         }
     }

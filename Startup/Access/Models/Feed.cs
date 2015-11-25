@@ -45,13 +45,13 @@ namespace Access.Models
 
         [Display(Name = "Start Date")]
         [DataType(DataType.DateTime)]
-        [CustomDateTimeDisplay]
+       // [CustomDateTimeDisplay]
 
         public DateTime DateStart { get; set; }
 
         [Display(Name = "End Date")]
         [DataType(DataType.DateTime)]
-        [CustomDateTimeDisplay]
+        //[CustomDateTimeDisplay]
         public DateTime DateEnd { get; set; }
 
 
