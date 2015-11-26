@@ -24,7 +24,7 @@ namespace Admin.Controllers
             return View(model);
         }
         #region Grid admin  Feeds
-        [Globalization]
+       [Globalization]
 
         public async Task<ActionResult> Edit(int? id)
         {
@@ -41,7 +41,7 @@ namespace Admin.Controllers
 
             return View(model);
         }
-        [Globalization]
+       [Globalization]
         [HttpPost]
         public async Task<ActionResult> Edit(Feed model)
         {

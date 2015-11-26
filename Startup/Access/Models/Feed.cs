@@ -45,13 +45,14 @@ namespace Access.Models
 
         [Display(Name = "Start Date")]
         [DataType(DataType.DateTime)]
-       // [CustomDateTimeDisplay]
-
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+       
         public DateTime DateStart { get; set; }
 
         [Display(Name = "End Date")]
         [DataType(DataType.DateTime)]
-        //[CustomDateTimeDisplay]
+        //  [CustomDateTimeDisplay]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateEnd { get; set; }
 
 

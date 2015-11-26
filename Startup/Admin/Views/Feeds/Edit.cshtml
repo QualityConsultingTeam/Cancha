@@ -11,6 +11,7 @@
 }
 
  
+@Html.Partial("KendoRef")
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-4">
         <h2>FEEDS</h2>
@@ -72,9 +73,10 @@
 {
                     @Html.AntiForgeryToken()
 
+
                     <div class="form-horizontal">
 
-                        @Html.ValidationSummary(false)
+                        @Html.ValidationSummary(true)
                         @Html.HiddenFor(model => model.Id)
                      
                         @Html.HiddenFor(model=> model.LastUpdate)
@@ -127,7 +129,9 @@
                             @Html.LabelFor(model => model.DateStart, new { @class = "control-label col-md-2 date" })
                             <div class="col-md-10">
 
-                                @Html.EditorFor(model => model.DateStart)
+
+                                @*@Html.EditorFor(model => model.DateStart)*@
+                                @(Html.Kendo().DateTimePickerFor(m=> m.DateStart).Format("dd/MM/yyyy"))
 
                                 @Html.ValidationMessageFor(model => model.DateStart)
                             </div>
@@ -136,7 +140,8 @@
                         <div class="form-group">
                             @Html.LabelFor(model => model.DateEnd, new { @class = "control-label col-md-2 date" })
                             <div class="col-md-10">
-                                @Html.EditorFor(model => model.DateEnd)
+                                @*@Html.EditorFor(model => model.DateEnd)*@
+                                @(Html.Kendo().DateTimePickerFor(m => m.DateEnd).Format("dd/MM/yyyy"))
                                 @Html.ValidationMessageFor(model => model.DateEnd)
                             </div>
                         </div>
