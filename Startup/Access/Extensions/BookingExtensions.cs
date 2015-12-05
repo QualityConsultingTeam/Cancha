@@ -95,11 +95,11 @@ namespace Access.Extensions
                 var center = await Context.Centers.Where(c => c.Fields.Any(f => f.Id == booking.Idcancha))
                                                 .FirstOrDefaultAsync();
 
-                if (!await Context.AccountAccess.AnyAsync(c => c.UserId == booking.Userid))
+                if (!await Context.AccountAccess.AnyAsync(c => c.UserId == booking.Userid.ToString()))
                 {
                     Context.AccountAccess.Add(new AccountAccessLevel()
                     {
-                        UserId = booking.Userid,
+                        UserId = booking.Userid.ToString(),
                         Center = center,
                     });
                     await Context.SaveChangesAsync();

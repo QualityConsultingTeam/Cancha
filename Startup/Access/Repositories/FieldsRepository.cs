@@ -316,7 +316,7 @@ namespace Access
             booking.Userid = UserId;
             booking.OBJECTTYPE = "1";
             // validate locked User Account
-            var isLocked = await (from account in Context.AccountAccess.Where(a => a.UserId == UserId)
+            var isLocked = await (from account in Context.AccountAccess.Where(a => a.UserId == UserId.ToString())
                                   join center in Context.Centers.Where(c => c.Fields.Any(f => f.Id == booking.Idcancha))
                                   on account.CenterId equals center.Id
                                   select new { locked = account.Locked }).FirstOrDefaultAsync();

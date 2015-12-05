@@ -89,7 +89,7 @@ namespace Access.Repositories
 
             if (!centerId.HasValue) return Task.FromResult(false);
 
-            return Context.AccountAccess.AnyAsync(u => u.UserId == new Guid(id) && u.CenterId == centerId.Value && u.Locked);
+            return Context.AccountAccess.AnyAsync(u => u.UserId == id && u.CenterId == centerId.Value && u.Locked);
              
 
         }
@@ -101,13 +101,13 @@ namespace Access.Repositories
             if (!centerId.HasValue) return false;
 
             var isLock = await Context.AccountAccess
-                .FirstOrDefaultAsync(u => u.UserId == new Guid(userId)&& u.CenterId == centerId.Value);
+                .FirstOrDefaultAsync(u => u.UserId == userId&& u.CenterId == centerId.Value);
 
             if (isLock == null )
             {
                 isLock = new AccountAccessLevel()
                 {
-                    UserId = new Guid(userId),
+                    UserId = userId,
                     CenterId = centerId.Value,
                     Locked = locked,
                 };

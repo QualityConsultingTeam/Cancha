@@ -116,6 +116,7 @@ namespace Access.Models
         {
 
             HasRequired(p => p.Center).WithMany(p => p.AccountAccess).HasForeignKey(p => p.CenterId).WillCascadeOnDelete(false);
+            HasOptional(p => p.IdentityUser).WithMany(p => p.AccessLevels).HasForeignKey(p => p.UserId).WillCascadeOnDelete(false);
 
         }
 

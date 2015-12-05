@@ -82,7 +82,7 @@ namespace Test
             var identityContext = AccessContext.Create();
             var service = new IdentityManagerService(identityContext);
 
-            var users = service.GetUsersAsync(new Access.Models.FilterOptionModel(), context).Result;
+            var users = service.GetUsersAsync(new Access.Models.FilterOptionModel()).Result;
 
             var center = context.Centers.FirstOrDefault();
 

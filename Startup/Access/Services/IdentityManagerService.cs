@@ -18,14 +18,14 @@ namespace Identity
     {
         public IdentityManagerService(AccessContext context)
         {
-            identityContex = context;
+            Context = context;
         }
 
-        private AccessContext identityContex;
+        private AccessContext Context;
 
         public Task<List<IdentityUserViewModel>> GetAllUsersAsync()
         {
-            return identityContex.Users.AsNoTracking()
+            return Context.Users.AsNoTracking()
                 .Select(u => new IdentityUserViewModel
                 {
                     UserName = u.UserName,
@@ -37,17 +37,17 @@ namespace Identity
                     .ToListAsync();
         }
 
-        private IQueryable<ApplicationUser> CommonSearch(FilterOptionModel filter, AccessContext Context, bool onlyUsers = false)
+        private IQueryable<ApplicationUser> CommonSearch(FilterOptionModel filter, bool onlyUsers = false)
         {
-            IQueryable<ApplicationUser> users = identityContex.Users.Include(i => i.Roles).Include(u => u.Claims);
+            IQueryable<ApplicationUser> users = Context.Users.Include(i => i.Roles).Include(u => u.Claims);
 
 
             if (!string.IsNullOrEmpty(filter.role))
             {
 
-                var roleId = identityContex.Roles.FirstOrDefault(r => r.Name == filter.role).Id;
-                users = (from user in identityContex.Users
-                         join roles in identityContex.UserRoles.Where(r => r.RoleId == roleId) on user.Id equals roles.UserId
+                var roleId = Context.Roles.FirstOrDefault(r => r.Name == filter.role).Id;
+                users = (from user in Context.Users
+                         join roles in Context.UserRoles.Where(r => r.RoleId == roleId) on user.Id equals roles.UserId
                          select user);
             }
             //To Exclude any types of admin
@@ -55,7 +55,7 @@ namespace Identity
             if (string.IsNullOrEmpty(filter.role) && onlyUsers)
             {
                 users = (from user in users
-                         join userRole in identityContex.UserRoles on user.Id equals userRole.UserId
+                         join userRole in Context.UserRoles on user.Id equals userRole.UserId
                          into gu
                          from defaultUserRole in gu.DefaultIfEmpty()
                          where defaultUserRole == null
@@ -64,21 +64,18 @@ namespace Identity
 
             if (filter.centerid.HasValue && filter.centerid != 0)
             {
-                var idsToFilter =
-                  // TODO verificar si el rendimiento es impactado al hacer QUerys separadaas.
-                  (Context.AccountAccess.Where(al => al.CenterId == filter.centerid)
-                                 .Select(c => c.UserId.ToString()).ToList());
-                if (onlyUsers)
-                {
-                    if (idsToFilter.Any()) users = users.Where(u => idsToFilter.Contains(u.Id));
-                }
 
-                else
-                {
-                    users = users.Where(u =>
-                         idsToFilter.Contains(u.Id) ||
-                         (u.CenterId.HasValue && u.CenterId == filter.centerid.Value));
-                }
+                users = onlyUsers? (from user in users
+                         join userRole in Context.UserRoles on user.Id equals userRole.UserId
+                         into gu
+                         from defaultUserRole in gu.DefaultIfEmpty()
+                         join access in Context.AccountAccess on user.Id equals access.UserId
+                         where defaultUserRole==null// single users has no any role
+                         select user):
+                         (from user in users   
+                          join access in Context.AccountAccess on user.Id equals access.UserId   
+                          select user) ;
+              
 
             }
             filter.SearchKeys.ForEach(key =>
@@ -97,25 +94,25 @@ namespace Identity
         /// </summary>
         /// <param name="searchKeys"></param>
         /// <returns></returns>
-        public async Task<List<Guid>> FilterUsers(FilterOptionModel filter, AccessContext Context)
+        public async Task<List<Guid>> FilterUsers(FilterOptionModel filter)
         {
-            var ids = await CommonSearch(filter, Context).Select(u => u.Id).ToListAsync();
+            var ids = await CommonSearch(filter).Select(u => u.Id).ToListAsync();
             return ids.Select(i => new Guid(i)).ToList();
         }
 
         public Task<List<ApplicationUser>> GetAllUserNames(AccessContext context)
         {
-            return CommonSearch(new FilterOptionModel(), context).Select(u => new ApplicationUser()
+            return CommonSearch(new FilterOptionModel()).Select(u => new ApplicationUser()
             {
                 UserName = u.UserName,
                 Id = u.Id
             }).ToListAsync();
         }
 
-        public async Task<List<ApplicationUser>> GetUsersAsync(FilterOptionModel filter, AccessContext Context, bool onlyUsers = false)
+        public async Task<List<ApplicationUser>> GetUsersAsync(FilterOptionModel filter, bool onlyUsers = false)
         {
 
-            IQueryable<ApplicationUser> users = CommonSearch(filter, Context, onlyUsers);
+            IQueryable<ApplicationUser> users = CommonSearch(filter, onlyUsers);
 
 
             var accounts = await users.Include(u => u.Claims).OrderBy(u => u.UserName).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
@@ -138,7 +135,7 @@ namespace Identity
                 if (givenName != null && string.IsNullOrEmpty(account.LastName)) account.LastName = givenName.ClaimValue;
                 if (phone != null && string.IsNullOrEmpty(account.PhoneNumber)) account.PhoneNumber = phone.ClaimValue;
 
-                await identityContex.SaveChangesAsync();
+                await Context.SaveChangesAsync();
             }
 
             return accounts;
@@ -146,7 +143,7 @@ namespace Identity
 
         public Task<ApplicationUser> GetUserAsync(string userid)
         {
-            return identityContex.Users.FirstOrDefaultAsync(u => u.Id == userid);
+            return Context.Users.FirstOrDefaultAsync(u => u.Id == userid);
         }
 
         public Task<ApplicationUser> UpdateUserAsync(ApplicationUser user)
@@ -156,12 +153,12 @@ namespace Identity
 
         public Task<List<string>> GetRolesAsync()
         {
-            return identityContex.Roles.Select(r => r.Name).ToListAsync();
+            return Context.Roles.Select(r => r.Name).ToListAsync();
         }
 
         public Task<List<SelectListModel<string>>> GetRolesDataAsync()
         {
-            return identityContex.Roles.Select(r =>
+            return Context.Roles.Select(r =>
                 new SelectListModel<string>()
                 {
                     Id = r.Id,
@@ -229,13 +226,13 @@ namespace Identity
             if (model.CenterId != 0)
             {
 
-                var claim = await identityContex.UserClaims.FirstOrDefaultAsync(c => c.UserId == user.Id && c.ClaimType == "CenterId");
+                var claim = await Context.UserClaims.FirstOrDefaultAsync(c => c.UserId == user.Id && c.ClaimType == "CenterId");
 
                 var claims = await userManager.GetClaimsAsync(user.Id);
                 if (claim != null)
                 {
                     claim.ClaimValue = model.CenterId.Value.ToString();
-                    await identityContex.SaveChangesAsync();
+                    await Context.SaveChangesAsync();
                 }
                 else
                 {
@@ -250,7 +247,7 @@ namespace Identity
 
         public Task<List<ApplicationUser>> GetApplicationUsers(string keywords = "")
         {
-            IQueryable<ApplicationUser> users = identityContex.Users.Include(i => i.Roles);
+            IQueryable<ApplicationUser> users = Context.Users.Include(i => i.Roles);
 
 
             keywords.ToLower().Split(' ').ToList()
@@ -275,9 +272,9 @@ namespace Identity
 
         public Task<string> GetMainRoleForUserAsync(string id)
         {
-            return (from user in identityContex.Users.Where(u => u.Id == id)
-                    join userRoles in identityContex.UserRoles on user.Id equals userRoles.UserId
-                    join role in identityContex.Roles on userRoles.RoleId equals role.Id
+            return (from user in Context.Users.Where(u => u.Id == id)
+                    join userRoles in Context.UserRoles on user.Id equals userRoles.UserId
+                    join role in Context.Roles on userRoles.RoleId equals role.Id
                     select role.Name).FirstOrDefaultAsync();
         }
 
@@ -294,8 +291,8 @@ namespace Identity
                 .Select(u => u.ToString()).ToList();
 
             // userinfo
-            var dat = await (from user in identityContex.Users.Where(u => usersIds.Contains(u.Id))
-                             join claim in identityContex.UserClaims on user.Id equals claim.UserId
+            var dat = await (from user in Context.Users.Where(u => usersIds.Contains(u.Id))
+                             join claim in Context.UserClaims on user.Id equals claim.UserId
                                  into df
                              from defaultClaim in df.DefaultIfEmpty()
 
@@ -377,9 +374,9 @@ namespace Identity
         /// <param name="filter"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-        public  async Task<int> GetPageLimit(FilterOptionModel filter, AccessContext context)
+        public  async Task<int> GetPageLimit(FilterOptionModel filter)
         {
-            return (await CommonSearch(filter, context).CountAsync()) / filter.Limit + 1;
+            return (await CommonSearch(filter).CountAsync()) / filter.Limit + 1;
         }
 
 
@@ -392,7 +389,7 @@ namespace Identity
         /// <returns></returns>
         public async Task InsertOrUpdateUserClaims(string user, List<Claim> claims)
         {
-            var userClaims = await identityContex.UserClaims.Where(c => c.UserId == user).ToListAsync();
+            var userClaims = await Context.UserClaims.Where(c => c.UserId == user).ToListAsync();
 
             // update 
             foreach (var claim in claims)
@@ -400,11 +397,11 @@ namespace Identity
                 var localClaim = userClaims.FirstOrDefault(c => c.ClaimType == claim.Type);
                 if (localClaim == null)
                 {
-                    identityContex.UserClaims.Add(new IdentityUserClaim() { UserId = user, ClaimType = claim.Type, ClaimValue = claim.Value });
+                    Context.UserClaims.Add(new IdentityUserClaim() { UserId = user, ClaimType = claim.Type, ClaimValue = claim.Value });
                 }
                 else localClaim.ClaimValue = claim.Value;
             }
-            await identityContex.SaveChangesAsync();
+            await Context.SaveChangesAsync();
         }
     }
 }

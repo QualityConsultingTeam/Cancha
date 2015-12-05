@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Identity.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,9 @@ namespace Access.Models
 
         public int CenterId { get; set; }
 
-        public Guid UserId { get; set; }
+        public string  UserId { get; set; }
+
+        public ApplicationUser IdentityUser { get; set; }
 
         public bool Locked { get; set; }
 

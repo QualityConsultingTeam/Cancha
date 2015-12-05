@@ -531,7 +531,7 @@ namespace Admin.Controllers
                 {
                     keywords = text,
             
-                },Context,onlyUsers:true);
+                },onlyUsers:true);
 
             var model = users.ToIdentityUserViewModel()
                 .Select(u =>
@@ -595,8 +595,8 @@ namespace Admin.Controllers
         {
 
             var filter = new FilterOptionModel(ClaimsPrincipal.Current.CenterId()) { Limit= 8};
-            var users = await IdentityManagerService.GetUsersAsync(filter, Context);
-            ViewBag.PageLimit = await IdentityManagerService.GetPageLimit(filter, Context);
+            var users = await IdentityManagerService.GetUsersAsync(filter);
+            ViewBag.PageLimit = await IdentityManagerService.GetPageLimit(filter);
 
             var model = users.ToIdentityUserViewModel();
 
@@ -609,11 +609,11 @@ namespace Admin.Controllers
         {
             if(!filter.centerid.HasValue && User.IsInRole("Manager") ) filter.centerid = ClaimsPrincipal.Current.CenterId();
 
-            var users = await IdentityManagerService.GetUsersAsync(filter,Context);
+            var users = await IdentityManagerService.GetUsersAsync(filter);
 
             var model =  users.ToIdentityUserViewModel();
 
-            ViewBag.PageLimit = await IdentityManagerService.GetPageLimit(filter,Context);
+            ViewBag.PageLimit = await IdentityManagerService.GetPageLimit(filter);
 
             return PartialView(@"~/Views/Account/Partials/UserManagementGrid.cshtml", model);
         }
