@@ -143,7 +143,7 @@ namespace Identity
 
         public Task<ApplicationUser> GetUserAsync(string userid)
         {
-            return Context.Users.FirstOrDefaultAsync(u => u.Id == userid);
+            return Context.Users.Include(u=> u.Company).FirstOrDefaultAsync(u => u.Id == userid);
         }
 
         public Task<ApplicationUser> UpdateUserAsync(ApplicationUser user)

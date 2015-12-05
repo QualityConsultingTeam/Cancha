@@ -527,7 +527,6 @@
     <Content Include="Images\slide0.jpg" />
     <Content Include="Images\slide1.jpg" />
     <Content Include="Images\slide2.jpg" />
-    <Content Include="Images\waze.png" />
     <Content Include="Images\zender_logo.png" />
     <Content Include="Scripts\app\inspinia.js" />
     <Content Include="Scripts\app\inspinia.min.js" />
