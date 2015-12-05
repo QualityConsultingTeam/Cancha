@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Access.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -72,6 +73,9 @@ namespace Identity
         public string CenterSearchName { get; set; }
 
         public bool DisableForCenter { get; set; }
+
+
+        public Center Company { get; set; }
 
     }
 

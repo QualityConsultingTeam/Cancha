@@ -155,7 +155,25 @@
                                 }*@
                             @if (User.IsInRole("Admin"))
                             {
+                                if (Model.Company != null)
+                                {
+                                    <div class="form-group">
+
+                                        @Html.Label("Complejo Deportivo")
+
+                                        <div class="col-md-10">
+                                            @Html.DisplayFor(m => m.Company.Name)
+                                        </div>
+                                    </div>
+
+                                }
                                 <div class="form-group">
+                                    <button class="btn btn-white" onclick="showChangeCenter()">
+                                        Cambiar Centro
+                                    </button>
+                                </div>
+
+                                <div class="form-group" style="display:none">
                                     @Html.LabelFor(model => model.CenterSearchName, new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
                                         @Html.HiddenFor(m => m.CenterId)
@@ -165,7 +183,21 @@
                                     </div>
                                 </div>
                             }
+                            else
+                            {
+                                if (Model.Company != null)
+                                {
+                                    <div class="form-group">
 
+                                        @Html.Label("Complejo Deportivo")
+
+                                        <div class="col-md-10">
+                                            @Html.DisplayFor(m => m.Company.Name)
+                                        </div>
+                                    </div>
+
+                                } 
+                            }
 
                             <div class="form-group">
                                 <div class="col-md-offset-2 col-md-10">
@@ -182,6 +214,14 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+
+                function showChangeCenter() {
+
+                    $("#centerpicker").fadeIn();
+                }
+</script>
+
 <script src="~/Scripts/typeahead.bundle.min.js"></script>
 <script src="~/Scripts/typeahead.jquery.min.js"></script>
 <script src="~/Scripts/typeahead.mvc.model.js"></script>
