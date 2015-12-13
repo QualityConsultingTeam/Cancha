@@ -31,6 +31,14 @@ namespace Access.Extensions
         }
 
 
+
+        public static bool IsInRole(string role)
+        {
+
+            var roleClaim = ClaimsPrincipal.Current.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+
+            return roleClaim != null ? roleClaim.Value.Contains(role) : false;
+        }
        
         public static string FacebookProfilePicture(this ClaimsPrincipal principal)
         {
@@ -46,6 +54,16 @@ namespace Access.Extensions
         public static string FaceBookProfilePictureFormat(string facebookUserId)
         {
             return string.Format("//graph.facebook.com/{0}/picture", facebookUserId);
+        }
+
+        public static string UserId (this ClaimsPrincipal principal)    
+        {
+            var PotentialIdClaim = new List<string>() { System.Security.Claims.ClaimTypes.NameIdentifier, "sub" };
+
+            var userIdClaim = ClaimsPrincipal.Current.FindFirst(c => PotentialIdClaim.Contains(c.Type));
+
+            return userIdClaim != null ? userIdClaim.Value : string.Empty;
+            
         }
         
     }

@@ -41,6 +41,11 @@ namespace Identity
         {
             IQueryable<ApplicationUser> users = Context.Users.Include(i => i.Roles).Include(u => u.Claims);
 
+            if (TokenExtensions.IsInRole("Manager"))
+            {
+                var id = ClaimsPrincipal.Current.UserId();
+                filter.centerid = Context.Users.Where(u => u.Id == id).Select(u=> u.CenterId).FirstOrDefault();
+            }
 
             if (!string.IsNullOrEmpty(filter.role))
             {
@@ -194,6 +199,7 @@ namespace Identity
                 user.DUI = model.DUI;
                 user.PHONE_2 = model.PHONE_2;
                 user.ProfilePicture = model.ProfilePicture;
+                user.CenterId = model.CenterId;
                 //user.Address = model.Address;
                 //user.FirstName = model.FirstName;
                 //user.LastName = model.LastName;
