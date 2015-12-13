@@ -9,7 +9,7 @@
     {
         HttpMethod = "post",
         InsertionMode = InsertionMode.Replace,
-        LoadingElementId = "loader",
+        LoadingElementId = "loaderSection",
         UpdateTargetId = "BookingListSection"
     };
 
@@ -52,7 +52,7 @@
                                  {
                                         HttpMethod = "post",
                                         InsertionMode = InsertionMode.Replace,
-                                        LoadingElementId = "loader",
+                                        LoadingElementId = "loaderSection",
                                         UpdateTargetId = "BookingListSection",
                                         
                                     }, new { id = "searchbookingsform" }))
@@ -90,11 +90,11 @@
                                     </div>
                                 }
                             </div>
-                            <div id="loader" style="display: none">
+                            @*<div id="loader" style="display: none">
                                 <div style="padding-left:10%;padding-top:10%;z-index:100000">
                                     @Html.Partial("LoaderCircle")
                                 </div>
-                            </div>
+                            </div>*@
                             <div class="table-responsive" id="BookingListSection"> 
                                
                                 
@@ -131,9 +131,9 @@
                 
             </div>
 
-            <div class="modal-body" id="modalLoader">
+            @*<div class="modal-body" id="modalLoader">
                 @Html.Partial("LoaderCircle")
-            </div>
+            </div>*@
             <div class="modal-body" id="bookingModal">
 
             </div>
@@ -234,11 +234,12 @@
 
     function showmodal() {
         $("#bookingModal").html(null);
-        $("#modalLoader").fadeIn();
+        //$("#modalLoader").fadeIn();
+        $("#loaderSection").fadeIn();
         $('#ChangeState').modal('show');
     }
     function hideModal() {
-        $('#ChangeState').hide();
+        $('#ChangeState').modal('hide');
     }
 
 
@@ -250,7 +251,7 @@
             datatype: "html",
             success: function (data) {
                 $('#bookingModal').html(data);
-                $("#modalLoader").fadeOut();
+                $("#loaderSection").fadeOut();
             }
         });
     }

@@ -5,118 +5,78 @@
 
 @model IEnumerable<Booking>
 
-   
-
-<table class="footable table table-stripped toggle-arrow-tiny animate fadeInLeft"  >
-    <thead>
-        <tr>
-
-            <th>Hora</th>
-            <th>Cancha</th>
-            <th data-hide="phone">Cliente</th>
-            <th data-hide="phone">Info</th>
-            <th data-hide="phone">Estado</th>
-            
-            <th data-hide="Acciones">Accion</th>
-
-        </tr>
-    </thead>
-    <tbody id="bookingtgrid">
-
-        @foreach (var item in Model)
-        {
+  <div class="table-responsive animated fadeInLeft">
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem=> item.Start)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Field.Name)
-                </td>
-                <td>
-                    <button class="btn btn-info btn-xs" onclick="ShowUserDetails('@item.UserInfo.Id')">
-                        @item.UserInfo.Email
-                    </button>
-                </td>
-                <td>
-                    @item.Type
-                </td>
-                <td>
-                    <span class="label label-primary">  @item.Status</span>
-                </td>
-            
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            Cambiar Estado
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                            
 
-                            @if (item.Status == BookingStatus.Pendiente)
-                            {
-                                <li> <a   onclick="UpdateStatus('@item.Id','@BookingStatus.Reservada')">Confirmar</a></li>
-                                <li><a   onclick="UpdateStatus('@item.Id','@BookingStatus.Denegado')">Denegar</a></li>
-                            }
-                            else if (item.Status == BookingStatus.Reservada)
-                            {
-                                <li><a onclick="UpdateStatus('@item.Id','@BookingStatus.Finalizado')">Finalizar</a></li>
-                                <li><a onclick="UpdateStatus('@item.Id','@BookingStatus.Denegado')">Cancelar</a></li>
-                                <li> <a onclick="UpdateStatus('@item.Id','@BookingStatus.Falta')">Falta</a></li>
-                            }
-                            else if (item.Status == BookingStatus.Finalizado || item.Status == BookingStatus.Cancelado)
-                            {
-                                <li><a onclick="UpdateStatus('@item.Id','@BookingStatus.Reservada')">Confirmar</a></li>
-                            }
-                             
-                        </ul>
-                    </div>
-                </td>
-                @*<td class="text-right">
-                    <div class="btn-group">
-                        @if (item.Status == BookingStatus.Pendiente)
-                        {
-                            <button class="btn-primary btn btn-xs" onclick="UpdateStatus('@item.Id','@BookingStatus.Reservada')">Confirmar</button>
-                            <button class="btn-danger btn btn-xs" onclick="UpdateStatus('@item.Id','@BookingStatus.Denegado')">Denegar</button>
-                        }
-                        else if (item.Status == BookingStatus.Reservada)
-                        {
-                            <button class="btn-white btn btn-xs" onclick="UpdateStatus('@item.Id','@BookingStatus.Finalizado')">Finalizar</button>
-                            <button class="btn-warning btn btn-xs" onclick="UpdateStatus('@item.Id','@BookingStatus.Denegado')">Cancelar</button>
-                            <button class="btn-danger btn btn-xs" onclick="UpdateStatus('@item.Id','@BookingStatus.Falta')">Falta</button>
-                        }
-                        else if (item.Status == BookingStatus.Finalizado || item.Status == BookingStatus.Cancelado)
-                        {
-                            <button class="btn-primary btn btn-xs" onclick="UpdateStatus('@item.Id','@BookingStatus.Reservada')">Confirmar</button>
-                        }
-                        else
-                        {
-                            @Html.Label("Finalizada")
-                        }
-                        
-                    </div>
-                </td>*@
+                <th></th>
+                <th>Hora </th>
+                <th>Cancha</th>
+                <th>Cliente</th>
+                <th>Info</th>
+                <th>Estado</th>
+                <th>Accion</th>
             </tr>
-        }
-      
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                
+                <tr>
+                    <td></td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Start)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Field.Name)
+                    </td>
+                    <td>
+                        <button class="btn btn-info btn-xs" onclick="ShowUserDetails('@item.UserInfo.Id')">
+                            @item.UserInfo.Email
+                        </button>
+                    </td>
+                    <td>
+                        @item.Type
+                    </td>
+                    <td>
+                        <span class="label label-primary">  @item.Status</span>
+                    </td>
+
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                Cambiar Estado
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 
 
-    </tbody>
-    @*<tfoot>
-        <tr>
-            <td colspan="7">
-                <ul class="pagination pull-right"></ul>
-            </td>
-        </tr>
-    </tfoot>*@
-</table>
+                                @if (item.Status == BookingStatus.Pendiente)
+                                {
+                                    <li> <a   onclick="UpdateStatus('@item.Id','@BookingStatus.Reservada')">Confirmar</a></li>
+                                    <li><a onclick="UpdateStatus('@item.Id','@BookingStatus.Denegado')">Denegar</a></li>
+                                }
+                                else if (item.Status == BookingStatus.Reservada)
+                                {
+                                    <li><a onclick="UpdateStatus('@item.Id','@BookingStatus.Finalizado')">Finalizar</a></li>
+                                    <li><a onclick="UpdateStatus('@item.Id','@BookingStatus.Denegado')">Cancelar</a></li>
+                                    <li> <a onclick="UpdateStatus('@item.Id','@BookingStatus.Falta')">Falta</a></li>
+                                }
+                                else if (item.Status == BookingStatus.Finalizado || item.Status == BookingStatus.Cancelado)
+                                {
+                                    <li><a onclick="UpdateStatus('@item.Id','@BookingStatus.Reservada')">Confirmar</a></li>
+                                }
 
+                            </ul>
+                        </div>
+                    </td>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-
-        $('.footable').footable();
-        pagelimit = '@ViewBag.PageLimit'
-         
-    });
-</script>
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+</div> 
+ 
