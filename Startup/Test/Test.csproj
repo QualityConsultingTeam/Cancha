@@ -95,10 +95,6 @@
       <Project>{8315fccc-a646-4b7b-8414-1bd7801dbb13}</Project>
       <Name>Access</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Admin\Admin.csproj">
-      <Project>{2E826B45-A782-49B2-A16B-EA28592F6945}</Project>
-      <Name>Admin</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
