@@ -22,6 +22,9 @@ namespace Admin.Models
 
         public string FieldSearchName { get; set; }
 
+        [DisplayName("Cancha")]
+        public string FieldName { get; set; } 
+
         [DisplayName("Comentarios")]
         public string Description { get; set; }
 
@@ -73,7 +76,7 @@ namespace Admin.Models
             set;
         }
 
-        
+                                                                         
 
         public UserInfo UserInfo { get; set; }
 

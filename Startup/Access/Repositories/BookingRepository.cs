@@ -81,9 +81,23 @@ namespace Access.Repositories
         }
         #endregion
 
-        public Task< IQueryable<Booking>> GetSummary(FilterOptionModel filter)
+        public async Task<IQueryable<BookingManageViewModel>> GetSummary(FilterOptionModel filter)
         {
-            return CommonSearch(filter,UserId);
+            IQueryable<Booking> query = await CommonSearch(filter, UserId);
+
+            return query.Select(b => new BookingManageViewModel()
+            {
+                Id = b.Id,
+                UserEmail = b.User.Email,
+                Userid = b.Userid,
+                FieldName = b.Field.Name,
+                FieldId= b.Idcancha,
+                Start = b.Start,
+                End =b.End,
+                Type = b.Type,
+                Status = b.Status,
+                UserFullName = b.User.FirstName+" "+b.User.LastName,
+            });
         }
 
         public async Task<List<Booking>> GetSummaryAsync(FilterOptionModel filter)

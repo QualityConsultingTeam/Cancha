@@ -145,6 +145,7 @@
     <Compile Include="Repositories\FieldsRepository.cs" />
     <Compile Include="Repositories\PaymentRepository.cs" />
     <Compile Include="Services\IdentityManagerService.cs" />
+    <Compile Include="ViewModel\BookingManageViewModel.cs" />
     <Compile Include="ViewModel\IdentityUserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

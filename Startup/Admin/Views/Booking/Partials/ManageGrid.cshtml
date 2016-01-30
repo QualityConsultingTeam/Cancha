@@ -8,7 +8,7 @@
     var options = new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "BookingListSection", LoadingElementId = "loaderSection" };
 }
 @using PagedList.Mvc;
-@model PagedList.IPagedList<Booking>
+@model PagedList.IPagedList<BookingManageViewModel>
 
   <div class="table-responsive animated fadeInLeft">
     <table class="table table-striped">
@@ -19,16 +19,30 @@
                 @*<th>Hora </th>*@
                 <th>
 
-                @Ajax.ActionLink("Hora", "Sort", new { filterCounty = filter, columnName = "Start", sortOrder = sortOrder, currentColumn = currentColumnOrder },options)
+                @Ajax.ActionLink("Hora", "Sort", new { filter = filter, columnName = "Start", sortOrder = sortOrder, currentColumn = currentColumnOrder },options)
                 </th>
                 @*<th>Cancha</th>*@
                 <th>
 
-                    @Ajax.ActionLink("Cancha", "Sort", new { filterCounty = filter, columnName = "Field", sortOrder = sortOrder, currentColumn = currentColumnOrder }, options)
+                    @Ajax.ActionLink("Cancha", "Sort", new { filter = filter, columnName = "FieldName", sortOrder = sortOrder, currentColumn = currentColumnOrder }, options)
                 </th>
-                <th>Cliente</th>
-                <th>Info</th>
-                <th>Estado</th>
+                @*<th>Cliente</th>*@
+                <th>
+
+                @Ajax.ActionLink("Cliente", "Sort", new { filter = filter, columnName = "UserEmail", sortOrder = sortOrder, currentColumn = currentColumnOrder }, options)
+                </th>
+                <th>
+                    @Ajax.ActionLink("Nombre Cliente", "Sort", new { filter = filter, columnName = "UserFullName", sortOrder = sortOrder, currentColumn = currentColumnOrder }, options)
+                </th>
+                
+                @*<th>Info</th>*@
+                <th>
+                    @Ajax.ActionLink("Info", "Sort", new { filter = filter, columnName = "Type", sortOrder = sortOrder, currentColumn = currentColumnOrder }, options)
+                </th>
+                
+                <th>
+                    @Ajax.ActionLink("Estado", "Sort", new { filter = filter, columnName = "Status", sortOrder = sortOrder, currentColumn = currentColumnOrder }, options)
+                </th>
                 <th>Accion</th>
             </tr>
         </thead>
@@ -43,12 +57,15 @@
                         @Html.DisplayFor(modelItem => item.Start)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Field.Name)
+                        @Html.DisplayFor(modelItem => item.FieldName)
                     </td>
                     <td>
-                        <button class="btn btn-info btn-xs" onclick="ShowUserDetails('@item.User.Id')">
-                            @item.User.Email
+                        <button class="btn btn-info btn-xs" onclick="ShowUserDetails('@item.Userid')">
+                            @item.UserEmail
                         </button>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserFullName)
                     </td>
                     <td>
                         @item.Type

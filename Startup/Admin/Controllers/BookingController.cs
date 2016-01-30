@@ -105,7 +105,7 @@ namespace Admin.Controllers
             ViewBag.SortOrder = sortOrder;
             ViewBag.FilterModel = filter;
 
-            return View("Partials/CountyGrid", model.OrderBy(columnName, sortOrder).ToPagedList(_filter.page, _filter.Limit));
+            return View("Partials/ManageGrid", model.OrderBy(columnName, sortOrder).ToPagedList(_filter.page, _filter.Limit));
         }
 
         public ActionResult Statuses()
