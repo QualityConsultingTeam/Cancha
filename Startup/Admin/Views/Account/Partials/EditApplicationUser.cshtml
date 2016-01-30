@@ -156,7 +156,7 @@
                             @if (User.IsInRole("Admin"))
                             {
 
-                                @if (Model.Company == null)
+                                if(Model.Company == null)
                                 {
                                 <div class="form-group">
                                     <div class="col-md-10">
@@ -165,10 +165,11 @@
                                         </a>
                                     </div>
                                 </div>
+
                                 }
                                 @Html.HiddenFor(m => m.CenterId)
 
-                                if (Model.Company != null)
+                                if(Model.Company != null)
                                 {
 
                                     <div class="form-group">
@@ -186,8 +187,7 @@
 
                                 }
 
-                                else
-                                {
+                                 
                                 <div class="form-group collapse"   id="collapseChangeCenter">
                                     @Html.LabelFor(model => model.CenterSearchName, new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
@@ -197,8 +197,7 @@
                                         @Html.ValidationMessageFor(model => model.Password)
                                     </div>
                                 </div>
-                                }
-
+                                 
                             }
                             else
                             {
