@@ -44,7 +44,19 @@ namespace Access.Repositories
             return Center;
         }
 
-        
+        public Task<Center> GetCenter(string userId )
+        {                                         
+            return (from user in Context.Users.Where(u => u.Id == userId)
+                    join center in Context.Centers on user.CenterId equals center.Id
+                    select center).FirstOrDefaultAsync();
+        }
+
+        public Task<Center> GetCenter()
+        {
+            var id = UserId.ToString();
+            return GetCenter(id);
+        }
+
 
         #region Comoboxes
 
@@ -83,20 +95,18 @@ namespace Access.Repositories
 
         }
 
-        public Task<bool> HasLockedUser(string id)
+        public async Task<bool> HasLockedUser(string id)
         {
-            var centerId = ClaimsPrincipal.Current.CenterId();
+            var centerId = await Context.GetCenterIdAsync();
 
-            if (!centerId.HasValue) return Task.FromResult(false);
+            if (!centerId.HasValue) return false;
 
-            return Context.AccountAccess.AnyAsync(u => u.UserId == id && u.CenterId == centerId.Value && u.Locked);
-             
-
+            return await Context.AccountAccess.AnyAsync(u => u.UserId == id && u.CenterId == centerId.Value && u.Locked);  
         }
 
         public async Task<bool> LockUserForCenter(string userId,bool locked)
         {
-            var centerId = ClaimsPrincipal.Current.CenterId();
+            var centerId = await Context.GetCenterIdAsync();
 
             if (!centerId.HasValue) return false;
 

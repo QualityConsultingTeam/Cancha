@@ -14,21 +14,16 @@ namespace Access.Models
         {
             page = 1;
             Limit = 10;
-            centerid = ClaimsPrincipal.Current.CenterId();
+            //centerid = ClaimsPrincipal.Current.CenterId();
 
         }
         public FilterOptionModel(string centerIdClaim )
         {
             page = 1;
             Limit = 10;
-            centerid = !string.IsNullOrEmpty(centerIdClaim) ? Convert.ToInt32(centerIdClaim) : 0;
+            //centerid = !string.IsNullOrEmpty(centerIdClaim) ? Convert.ToInt32(centerIdClaim) : 0;
         }
-        public FilterOptionModel(int? centerId)
-        {
-            page = 1;
-            Limit = 10;
-            this. centerid = centerId;
-        }
+        
         public string keywords { get; set; }
 
         public DateTime? date { get; set; }
@@ -55,7 +50,7 @@ namespace Access.Models
 
         public string role { get; set; }
 
-        public int? centerid { get; set; }
+        //public int? centerid { get; set; }
 
         public int Skip
         {

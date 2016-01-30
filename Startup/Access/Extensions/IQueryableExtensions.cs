@@ -5,6 +5,8 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Access.Models;
+using System.Security.Claims;
+using System.Data.Entity;
 
 namespace Access.Extensions
 {
@@ -41,6 +43,15 @@ namespace Access.Extensions
         #endregion
 
 
-         
+        #region Center Logic extensions
+
+        public static Task<int?>GetCenterIdAsync(this AccessContext Context)
+        {
+            var userId = ClaimsPrincipal.Current.UserId();
+
+            return Context.Users.Where(u => u.Id == userId).Select(u => u.CenterId).FirstOrDefaultAsync();
+        }
+
+        #endregion
     }
 }

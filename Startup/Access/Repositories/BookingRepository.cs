@@ -28,7 +28,7 @@ namespace Access.Repositories
         }
 
         #region Common
-        public IQueryable<Booking> GetSummary(Guid ?userid =null,bool onlyAvailables=false, List<Guid> usersids= null)
+        public async Task< IQueryable<Booking> >GetSummary(Guid? userid = null, bool onlyAvailables = false, List<Guid> usersids = null)
         {
 
             // agregar nivel de acceso para visibilidad
@@ -38,7 +38,7 @@ namespace Access.Repositories
             if (usersids != null && usersids.Any()) query = query.Where(b => usersids.Contains(b.Userid));
 
             //// filtrar por nievel de acceso 
-            var centerId = ClaimsPrincipal.Current.CenterId();
+            var centerId = await Context.GetCenterIdAsync();// ClaimsPrincipal.Current.CenterId();
 
             if (centerId.HasValue)
             {
@@ -50,21 +50,22 @@ namespace Access.Repositories
             }
             else Context.Bookings.Include(b => b.Field);
 
-            if (onlyAvailables) query = query.Where(b => b.Status != BookingStatus.Denegado && b.Status!= BookingStatus.Falta);
+            if (onlyAvailables) query = query.Where(b => b.Status != BookingStatus.Denegado && b.Status != BookingStatus.Falta);
 
 
             query = query.Where(b => b.Start.HasValue &&
-                                                          b.End.HasValue && 
+                                                          b.End.HasValue &&
                                                           b.Userid != Guid.Empty);
 
             return query;
         }
-        private IQueryable<Booking> CommonSearch(FilterOptionModel filter,Guid user)
+        private async Task< IQueryable<Booking> >CommonSearch(FilterOptionModel filter, Guid user)
         {
-            IQueryable<Booking> query = GetSummary(user).Include(b=> b.Field);
-            
+            var _query = await GetSummary(user);
+            IQueryable<Booking> query = _query.Include(b => b.Field);
+
             filter.SearchKeys.ForEach(k => query = query.Where(q => q.Field.Name.ToLower().Contains(k)));
-             
+
 
             if (filter.date.HasValue) query = query.Where(q => q.Start >= filter.date.Value);
 
@@ -72,21 +73,23 @@ namespace Access.Repositories
 
             if (filter.BookingStatus.HasValue) query = query.Where(b => b.Status == filter.BookingStatus.Value);
 
-           //  if (filter.centerid.HasValue) query = query.Where(c => c.Field.CenterId == filter.centerid);
+            //  if (filter.centerid.HasValue) query = query.Where(c => c.Field.CenterId == filter.centerid);
 
             return filter.HasOrderByProperty ? query.CustomOrderby(filter) : query.OrderByDescending(o => o.Start);
         }
         #endregion
 
-     
-        public Task<List<Booking>> GetSummaryAsync(FilterOptionModel filter)
+
+        public async Task<List<Booking>> GetSummaryAsync(FilterOptionModel filter)
         {
-            return CommonSearch(filter, UserId).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
+            var query = await CommonSearch(filter, UserId);
+            return await query.Skip(filter.Skip).Take(filter.Limit).ToListAsync();
         }
 
         public async Task <int> GetPageLimit(FilterOptionModel filter)
         {
-            return (await CommonSearch(filter, UserId).CountAsync() )/ filter.Limit +1;
+            var query = await CommonSearch(filter, UserId);
+            return await( query.CountAsync() )/ filter.Limit +1;
         }
 
         public Task<Field> GetFieldForModel(Booking booking)

@@ -16,7 +16,7 @@ using System.Globalization;
 using System.Security.Claims;
 using Access.Extensions;
 using Identity;
-
+using Microsoft.AspNet.Identity;
 
 namespace Admin.Controllers
 {
@@ -29,9 +29,9 @@ namespace Admin.Controllers
 
         private async Task<Center> GetCenterAsync()
         {
-            var centerId = ClaimsPrincipal.Current.CenterId();
+             
             var repo = new CenterRepository() { Context = Context };
-            return  centerId.HasValue ? (await repo.FindByIdAsync(centerId.Value)) : null;
+            return await repo.GetCenter ();
         }
 
         // Booking Management Grid.
@@ -57,8 +57,7 @@ namespace Admin.Controllers
         /// <returns></returns>
         public async Task<ActionResult> SearchAync(FilterOptionModel filter)
         {
-            filter.centerid = ClaimsPrincipal.Current.CenterId();
-
+             
             //var usersFiltered = await IdentityManagerService.FilterUsers(filter,Context);
             var model = await Repository.GetSummaryAsync(filter);
             ViewBag.PageLimit = await Repository.GetPageLimit(filter) ;
@@ -145,8 +144,9 @@ namespace Admin.Controllers
         public virtual async Task<JsonResult> Read([DataSourceRequest] DataSourceRequest request)
         {
 
-            IQueryable<BookingViewModel> query = Repository.GetSummary(onlyAvailables: true)
-                .Select(b => new BookingViewModel()
+            var q = await Repository.GetSummary(onlyAvailables: true);
+
+            IQueryable<BookingViewModel> query =q.Select(b => new BookingViewModel()
                 {
                     Id = b.Id,
                     BookingId = b.Id,
@@ -248,7 +248,7 @@ namespace Admin.Controllers
          
         public async Task<ActionResult> DataRead([DataSourceRequest] DataSourceRequest request)
         {
-            IQueryable<Booking> result = Repository.GetSummary();
+            IQueryable<Booking> result = await Repository.GetSummary();
 
             var model = result.ToDataSourceResult(request);
 

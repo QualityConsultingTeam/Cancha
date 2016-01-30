@@ -75,8 +75,7 @@ namespace Admin.Controllers
         /// <returns></returns>
         public async Task<ActionResult> SearchAync(FilterOptionModel filter)
         {
-            filter.centerid = ClaimsPrincipal.Current.CenterId();
-
+             
             //var usersFiltered = await IdentityManagerService.FilterUsers(filter,Context);
             var model = await Repository.GetSummaryAsync(filter);
             ViewBag.PageLimit = await Repository.GetPageLimit(filter);

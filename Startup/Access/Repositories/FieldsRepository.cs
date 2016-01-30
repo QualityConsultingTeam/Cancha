@@ -297,16 +297,16 @@ namespace Access
             return Search(keywords??"").ToListAsync();
         }
 
-        
-        public Task<List<Field>> GetFieldsFromCenterAsync( int? id =null, string keywords="")
+
+        public async Task<List<Field>> GetFieldsFromCenterAsync(int? id = null, string keywords = "")
         {
-            var centerId = id ?? ClaimsPrincipal.Current.CenterId();
+            var centerId = id ?? await Context.GetCenterIdAsync();// ClaimsPrincipal.Current.CenterId();
 
             var query = centerId.HasValue
-                ?Search(keywords).Where(c=> c.CenterId == centerId.Value)
+                ? Search(keywords).Where(c => c.CenterId == centerId.Value)
                 : Search(keywords);
 
-            return query.OrderBy(f=> f.Name) .ToListAsync();
+            return await query.OrderBy(f => f.Name).ToListAsync();
         }
 
 

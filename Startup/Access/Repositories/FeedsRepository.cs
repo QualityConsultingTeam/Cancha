@@ -15,9 +15,9 @@ namespace Access.Repositories
 
 
 
-        private IQueryable<Feed> CommonSearch(FilterOptionModel filter, Guid? user)
+        private async Task< IQueryable<Feed>> CommonSearch(FilterOptionModel filter, Guid? user)
         {
-            IQueryable<Feed> query = GetSummary(user).Include(b => b.Category).Include(f => f.User);
+            IQueryable<Feed> query = (await GetSummary(user)).Include(b => b.Category).Include(f => f.User);
 
             filter.SearchKeys.ForEach(k => query =
             query.Where(q => q.Phone.ToLower().Contains(k)
@@ -43,7 +43,7 @@ namespace Access.Repositories
             return Context.Categories.ToListAsync();
         }
 
-        public IQueryable<Feed> GetSummary(Guid? userid = null)
+        public async Task< IQueryable<Feed>> GetSummary(Guid? userid = null)
         {
 
             // add access visibility  level
@@ -51,7 +51,7 @@ namespace Access.Repositories
 
 
             ////filter by access level
-            var centerId = ClaimsPrincipal.Current.CenterId();
+            var centerId = await Context.GetCenterIdAsync();// ClaimsPrincipal.Current.CenterId();
 
             if (centerId.HasValue)
             {
@@ -65,15 +65,16 @@ namespace Access.Repositories
 
         public async Task<Center> GetCompanyAsync()
         {
-            var centerId = ClaimsPrincipal.Current.CenterId();
+            var centerId = await Context.GetCenterIdAsync();//S  ClaimsPrincipal.Current.CenterId();
 
             return centerId.HasValue ? (await Context.Centers.FindAsync(centerId.Value)) : null;
         }
 
-        public Task<List<Feed>> GetSummaryAsync(FilterOptionModel filter)
+        public async Task<List<Feed>> GetSummaryAsync(FilterOptionModel filter)
         {
-            return CommonSearch(filter, UserId)
-                .OrderByDescending(o => o.LastUpdate).ThenBy(o => o.CategoryId)
+            var query = await CommonSearch(filter, UserId);
+
+            return await query.OrderByDescending(o => o.LastUpdate).ThenBy(o => o.CategoryId)
                 .Skip(filter.Skip).Take(filter.Limit).ToListAsync();
         }
 
@@ -90,7 +91,8 @@ namespace Access.Repositories
 
         public async Task<int> GetPageLimit(FilterOptionModel filter)
         {
-            return (await CommonSearch(filter, UserId).CountAsync()) / filter.Limit + 1;
+            var query = await CommonSearch(filter,UserId);
+            return await query.CountAsync() / filter.Limit + 1;
         }
 
         public Task GetUserSummaryAsync(Guid id)

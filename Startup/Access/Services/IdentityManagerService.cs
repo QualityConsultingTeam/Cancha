@@ -41,11 +41,11 @@ namespace Identity
         {
             IQueryable<ApplicationUser> users = Context.Users.Include(i => i.Roles).Include(u => u.Claims);
 
-            if (TokenExtensions.IsInRole("Manager"))
-            {
-                var id = ClaimsPrincipal.Current.UserId();
-                filter.centerid = Context.Users.Where(u => u.Id == id).Select(u=> u.CenterId).FirstOrDefault();
-            }
+            //if (TokenExtensions.IsInRole("Manager"))
+            //{
+            //    var id = ClaimsPrincipal.Current.UserId();
+            //   // if(!filter.centerid.HasValue)  filter.centerid = Context.Users.Where(u => u.Id == id).Select(u=> u.CenterId).FirstOrDefault();
+            //}
 
             if (!string.IsNullOrEmpty(filter.role))
             {
@@ -67,7 +67,7 @@ namespace Identity
                          select user);
             }
 
-            if (filter.centerid.HasValue && filter.centerid != 0)
+            if (TokenExtensions.IsInRole("Manager"))
             {
 
                 users = onlyUsers? (from user in users
@@ -148,7 +148,10 @@ namespace Identity
 
         public Task<ApplicationUser> GetUserAsync(string userid)
         {
-            return Context.Users.Include(u=> u.Company).Include(u=> u.Roles).FirstOrDefaultAsync(u => u.Id == userid);
+            return Context.Users.Include(u=> u.Company)
+                .Include(u=> u.Roles)
+                .Include(u=> u.Company)
+                .FirstOrDefaultAsync(u => u.Id == userid);
         }
 
         public Task<ApplicationUser> UpdateUserAsync(ApplicationUser user)
@@ -345,7 +348,7 @@ namespace Identity
 
             IQueryable<Booking> query = context.Bookings.Where(b => b.Userid == id);
 
-            var centerid = ClaimsPrincipal.Current.CenterId();
+            var centerid = await Context.GetCenterIdAsync();// ClaimsPrincipal.Current.CenterId();
 
             if (centerid.HasValue) query = query.Where(b => b.Field.CenterId == centerid.Value);
 

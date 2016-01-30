@@ -527,7 +527,7 @@ namespace Admin.Controllers
         {
            
             var users = await IdentityManagerService.GetUsersAsync(
-                new FilterOptionModel(ClaimsPrincipal.Current.CenterId())
+                new FilterOptionModel()
                 {
                     keywords = text,
             
@@ -593,8 +593,8 @@ namespace Admin.Controllers
         //[AllowAnonymous]
         public async Task<ActionResult> AccountMangement()
         {
-
-            var filter = new FilterOptionModel(ClaimsPrincipal.Current.CenterId()) { Limit= 8};
+            
+            var filter = new FilterOptionModel() { Limit= 8};
             var users = await IdentityManagerService.GetUsersAsync(filter);
             ViewBag.PageLimit = await IdentityManagerService.GetPageLimit(filter);
 
@@ -606,9 +606,7 @@ namespace Admin.Controllers
         [HttpPost]
         //[Authorize(Roles = "Admin,Manager")]
         public async Task<ActionResult> SearchAccounts(FilterOptionModel filter)
-        {
-            if(!filter.centerid.HasValue && User.IsInRole("Manager") ) filter.centerid = ClaimsPrincipal.Current.CenterId();
-
+        {   
             var users = await IdentityManagerService.GetUsersAsync(filter);
 
             var model =  users.ToIdentityUserViewModel();

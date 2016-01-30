@@ -155,12 +155,25 @@
                                 }*@
                             @if (User.IsInRole("Admin"))
                             {
+
+                                @if (Model.Company == null)
+                                {
+                                <div class="form-group">
+                                    <div class="col-md-10">
+                                        <a class="btn btn-white" role="button" data-toggle="collapse" href="#collapseChangeCenter" aria-expanded="false" aria-controls="collapseExample">
+                                            Asignar Centro
+                                        </a>
+                                    </div>
+                                </div>
+                                }
+                                @Html.HiddenFor(m => m.CenterId)
+
                                 if (Model.Company != null)
                                 {
-                                  
+
                                     <div class="form-group">
                                        
-                                        @Html.Label("Complejo Deportivo", new { @class="control-label col-md-2"})
+                                        @Html.Label("Complejo Deportivo", new { @class = "control-label col-md-2" })
                                         <div class="col-md-10">
                                             @Html.DisplayFor(m => m.Company.Name)
                                         </div>
@@ -172,17 +185,20 @@
                                     </div>
 
                                 }
-                                 
 
+                                else
+                                {
                                 <div class="form-group collapse"   id="collapseChangeCenter">
                                     @Html.LabelFor(model => model.CenterSearchName, new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
-                                        @Html.HiddenFor(m => m.CenterId)
+                                    
                                         @Html.AutocompleteFor(m => m.CenterSearchName, model => model.CenterId, "CenterAutoComplete", "RootAdmin", true)
                                         @*@Html.AutocompleteFor(model => model.Customer.SearchName, model => model.CustomerId, "CustomerAutoComplete", "Checkin", true)*@
                                         @Html.ValidationMessageFor(model => model.Password)
                                     </div>
                                 </div>
+                                }
+
                             }
                             else
                             {

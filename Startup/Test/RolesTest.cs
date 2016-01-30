@@ -2,9 +2,9 @@
 using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Admin.Models;
+ 
 using Access;
-using Admin;
+ 
 using System.Linq;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Access.Extensions;
