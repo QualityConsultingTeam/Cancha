@@ -64,7 +64,7 @@ namespace Access.Repositories
         private async Task< IQueryable<Booking> >CommonSearch(FilterOptionModel filter, Guid user)
         {
             var _query = await GetSummary(user);
-            IQueryable<Booking> query = _query.Include(b => b.Field);
+            IQueryable<Booking> query = _query.Include(b => b.Field).Include(b=>b.User);
 
             filter.SearchKeys.ForEach(k => query = query.Where(q => q.Field.Name.ToLower().Contains(k)));
 
