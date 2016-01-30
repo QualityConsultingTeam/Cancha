@@ -62,7 +62,7 @@ namespace Admin.Controllers
              
             //var usersFiltered = await IdentityManagerService.FilterUsers(filter,Context);
             var model = await Repository.GetSummary(filter);
-            ViewBag.PageLimit = await Repository.GetPageLimit(filter) ;
+             
             ViewBag.FilterModel = filter.Serialize();
 
             return View("Partials/ManageGrid", model.ToPagedList(filter.page==0?1:filter.page, filter.Limit));

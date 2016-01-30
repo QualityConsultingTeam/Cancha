@@ -111,7 +111,8 @@ namespace Admin.Controllers
         {
             var model = await Repository.FindByIdAsync(id, "Category");
 
-            await NotificationsManager.SendNotificationAsync($"{model.Title} {model.Category.Name}");
+            //await NotificationsManager.SendNotificationAsync($"{model.Title} {model.Category.Name}");
+            await NotificationsManager.SendNotificationAsync(model.Content, model.Author, model.Id);
             return Json(true, JsonRequestBehavior.AllowGet);
         }
         ///// <summary>

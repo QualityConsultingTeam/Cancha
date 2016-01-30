@@ -41,7 +41,19 @@ namespace BussinesAccess.Notifications
 
         }
 
+        public static async Task SendNotificationAsync(string title, string author, int id)
+        {
+            NotificationHubClient hub = NotificationHubClient
+                .CreateClientFromConnectionString(Constants.HubConnectionString, Constants.HubName);
 
+            var content = "{ \"data\" : {\"title\":\"" + title + "\", \"author\":\"" + author + "\", \"id\":\"" + id + "\" }}";
+
+            var notification = new GcmNotification(content);
+
+            var r = await hub.SendNotificationAsync(notification);
+
+
+        }
         public static async Task GetAllRegistrations()
         {
             var hub = NotificationHubClient.CreateClientFromConnectionString(Constants.HubConnectionString, Constants.HubName);
