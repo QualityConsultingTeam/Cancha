@@ -17,6 +17,8 @@ using System.Security.Claims;
 using Access.Extensions;
 using Identity;
 using Microsoft.AspNet.Identity;
+using PagedList;
+using Newtonsoft.Json;
 
 namespace Admin.Controllers
 {
@@ -59,12 +61,53 @@ namespace Admin.Controllers
         {
              
             //var usersFiltered = await IdentityManagerService.FilterUsers(filter,Context);
-            var model = await Repository.GetSummaryAsync(filter);
+            var model = await Repository.GetSummary(filter);
             ViewBag.PageLimit = await Repository.GetPageLimit(filter) ;
+            ViewBag.FilterModel = filter.Serialize();
 
-            return View("Partials/ManageGrid",  await IdentityManagerService.UpdateAccountInfo(model));
+            return View("Partials/ManageGrid", model.ToPagedList(filter.page==0?1:filter.page, filter.Limit));
         }
-         
+
+        /// ipaged list implementation.                               
+
+        public async Task<ActionResult> SearchBookings(string filterdata, int? page, string columnName, string sortOrder)
+        {
+            var filter = JsonConvert.DeserializeObject<FilterOptionModel>(filterdata);
+            var model = await Repository.GetSummary(filter);
+
+            filter.page = page != null ? (int)page : 1;
+
+            ViewBag.FilterModel = JsonConvert.SerializeObject(filter);
+            ViewBag.Filter = filter;
+
+            if (!string.IsNullOrEmpty(columnName) && !string.IsNullOrEmpty(sortOrder))
+            {
+                ViewBag.CurrentColumnSort = columnName;
+                ViewBag.SortOrder = sortOrder;
+                return View("Partials/ManageGrid", model.OrderBy(columnName, sortOrder).ToPagedList(page ?? 1, filter.Limit));
+            }
+
+            return View("Partials/ManageGrid", model.ToPagedList(page ?? 1, filter.Limit));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Sort(string filter, string columnName, string sortOrder, string currentColumn, int? page)
+        {
+            var _filter = JsonConvert.DeserializeObject<FilterOptionModel>(filter);
+            var model = await Repository.GetSummary(_filter);
+
+            sortOrder = string.IsNullOrEmpty(sortOrder) ? "ASC" : sortOrder == "ASC" ? "DESC" : "ASC";
+
+            if (currentColumn != null)
+                sortOrder = columnName != currentColumn ? "ASC" : sortOrder;
+
+            ViewBag.CurrentColumnSort = columnName;
+            ViewBag.SortOrder = sortOrder;
+            ViewBag.FilterModel = filter;
+
+            return View("Partials/CountyGrid", model.OrderBy(columnName, sortOrder).ToPagedList(_filter.page, _filter.Limit));
+        }
+
         public ActionResult Statuses()
         {
             var model = Enum.GetValues(typeof(BookingStatus)).Cast<BookingStatus>()
@@ -85,7 +128,7 @@ namespace Admin.Controllers
         [HttpPost]
         public async Task<ActionResult> UserSummary(Guid id)
         {
-            var model = await IdentityManagerService.GetUserSummaryAsync(Context, id);
+            var model = await IdentityManagerService.GetUserSummaryAsync(Context, id.ToString());
 
             return View("Partials/UserSummary", model);
         }

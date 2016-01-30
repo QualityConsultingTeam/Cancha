@@ -28,7 +28,7 @@ namespace Access.Repositories
         }
 
         #region Common
-        public async Task< IQueryable<Booking> >GetSummary(Guid? userid = null, bool onlyAvailables = false, List<Guid> usersids = null)
+        public async Task< IQueryable<Booking> >GetSummary(Guid? userid = null, bool onlyAvailables = false, List<string> usersids = null)
         {
 
             // agregar nivel de acceso para visibilidad
@@ -55,7 +55,9 @@ namespace Access.Repositories
 
             query = query.Where(b => b.Start.HasValue &&
                                                           b.End.HasValue &&
-                                                          b.Userid != Guid.Empty);
+                                                          !string.IsNullOrEmpty( b.Userid)
+                                                          //!= Guid.Empty
+                                                          );
 
             return query;
         }
@@ -79,6 +81,10 @@ namespace Access.Repositories
         }
         #endregion
 
+        public Task< IQueryable<Booking>> GetSummary(FilterOptionModel filter)
+        {
+            return CommonSearch(filter,UserId);
+        }
 
         public async Task<List<Booking>> GetSummaryAsync(FilterOptionModel filter)
         {
@@ -115,7 +121,7 @@ namespace Access.Repositories
 
         public Task<List<Booking>> GetUserBookings(FilterOptionModel filter)
         {
-            return Context.Bookings.Where(b => b.Userid == UserId).Include(b=>b.Field)
+            return Context.Bookings.Where(b => b.Userid == UserId.ToString()).Include(b=>b.Field)
                 .OrderByDescending(b => b.CreateDate).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
         }
 

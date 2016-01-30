@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -39,6 +40,11 @@ namespace Admin.Helpers
                 :DateTime.SpecifyKind(date, kind);
 
 
+        }
+
+        public static string Serialize<TModel>(this TModel model)
+        {
+            return JsonConvert.SerializeObject(model);
         }
     }
 }

@@ -313,7 +313,7 @@ namespace Access
 
         public  async Task AddOrUpdateBooking(Booking booking)
         {
-            booking.Userid = UserId;
+            booking.Userid = UserId.ToString();
             booking.OBJECTTYPE = "1";
             // validate locked User Account
             var isLocked = await (from account in Context.AccountAccess.Where(a => a.UserId == UserId.ToString())

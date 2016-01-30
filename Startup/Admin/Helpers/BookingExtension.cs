@@ -41,7 +41,7 @@ namespace Admin.Helpers
             var users = dat.GroupBy(u => u.user.Id)
              .Select(g => new UserInfo()
              {
-                 Id = new Guid(g.FirstOrDefault().user.Id),
+                 Id =  g.FirstOrDefault().user.Id,
                  Name = g.Select(c => c.claim).HasName() ?
                          g.Select(c => c.claim).FinUserName() : g.FirstOrDefault().user.UserName,
                  Phone = g.FirstOrDefault().user.PhoneNumber,
@@ -60,7 +60,7 @@ namespace Admin.Helpers
                 {
                     item.Title += " " + item.UserInfo.Name + " " + item.UserInfo.Email;
                 }
-                if (item.Userid == Guid.Empty) item.Userid = Guid.NewGuid();
+                //if (item.Userid == Guid.Empty) item.Userid = Guid.NewGuid();
             }
             return data.ToList();
             //return data.Select(d=>

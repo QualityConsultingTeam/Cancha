@@ -317,7 +317,7 @@ namespace Identity
             var users = dat.GroupBy(u => u.user.Id)
              .Select(g => new UserInfo()
              {
-                 Id = new Guid(g.FirstOrDefault().user.Id),
+                 Id = g.FirstOrDefault().user.Id,
                  Name = g.Select(c => c.claim).HasName() ?
                          g.Select(c => c.claim).FinUserName() : g.FirstOrDefault().user.UserName,
                  Phone = g.FirstOrDefault().user.PhoneNumber,
@@ -342,7 +342,7 @@ namespace Identity
         /// <param name="context"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<UserInfo> GetUserSummaryAsync(AccessContext context, Guid id)
+        public async Task<UserInfo> GetUserSummaryAsync(AccessContext context, string id)
         {
             var user = await GetUserAsync(id.ToString());
 
@@ -363,7 +363,7 @@ namespace Identity
             var inf = new UserInfo()
             {
                 Email = user.Email,
-                Id = new Guid(user.Id),
+                Id = user.Id,
                 Name = user.Claims.FinUserName(),
                 BookingSummary = data.Select(d => new BookingSummary() { Label = d.Label, Count = d.Count }).ToList()
             };

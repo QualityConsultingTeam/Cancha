@@ -92,7 +92,7 @@ namespace Admin.Controllers
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
 
-            ViewBag.UserAccount = await IdentityManagerService.GetUserSummaryAsync(Context, new Guid(userId));
+            ViewBag.UserAccount = await IdentityManagerService.GetUserSummaryAsync(Context,userId);
 
             return View(model);
         }

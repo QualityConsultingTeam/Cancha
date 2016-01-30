@@ -73,7 +73,7 @@
                                     optionsValue: 'Id',event:{ change: onSelectionStatusChange},
                                     optionsCaption: 'Estado...' "></select>
                                     </div>
-                                    <input type="hidden" data-bind="numeric, value:page" name="page" id="page"/>
+                                    
                                     <div class="col-sm-5">
                                         <div class="input-group">
                                             <input type="text" placeholder="Buscar" class="input-sm form-control" id="keywords" name="keywords" data-bind="value:keywords">
@@ -90,34 +90,12 @@
                                     </div>
                                 }
                             </div>
-                            @*<div id="loader" style="display: none">
-                                <div style="padding-left:10%;padding-top:10%;z-index:100000">
-                                    @Html.Partial("LoaderCircle")
-                                </div>
-                            </div>*@
+                            
                             <div class="table-responsive" id="BookingListSection"> 
                                
-                                
-                                    @*@Html.Partial("LoaderCircle")*@
-                                
                                  
-                            </div>
-                            <div class="row">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-white" data-bind="click:previousPage">
-                                        <i class="fa fa-chevron-left"></i>
-                                    </button>
-                                    @*<div data-bind="foreach:pages">
-                                        <button class="btn btn-white  active" data-bind="text: number"></button>
-                                    </div>*@
-                                   
-                                   
-                                    <button type="button" class="btn btn-white" data-bind="click:nextPage">
-                                        <i class="fa fa-chevron-right"></i>
-                                    </button>
-                                </div>
-                            </div>
-                          
+                                 
+                            </div> 
       
     
 </div>
@@ -131,21 +109,15 @@
                 
             </div>
 
-            @*<div class="modal-body" id="modalLoader">
-                @Html.Partial("LoaderCircle")
-            </div>*@
+            
             <div class="modal-body" id="bookingModal">
 
             </div>
-            @*<div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary">Guardar Cambios</button>
-                </div>*@
+            
         </div>
     </div>
 </div>
-@Styles.Render("~/plugins/footableStyles")
-@Scripts.Render("~/plugins/footable")
+ 
 <script type="text/javascript">
 
 
@@ -155,43 +127,12 @@
         roles: [],
         statuses: [],
         keywords: ko.observable(),
-        seelctedStatus: ko.observable(),
-
-        page: ko.observable(1),
-        limit :ko.observable(1),
-        scrollposition: ko.observable(),
-        onSelectionChange: function () {
-            $("#page").val('0');
-            doSearch();
-        },
+        seelctedStatus: ko.observable(), 
         onSelectionStatusChange: function () {
             $("#page").val('0');
             doSearch();
         },
-        previousPage: function () {
-            var pag = Number($("#page").val()) - 1;
-            if (pag > 0) {
-                $("#page").val(pag);
-                doSearch();
-                $("#page").val(pag);
-            }
-        },
-        nextPage: function () {
-            var pag = Number($("#page").val()) + 1;
-            var limit = Number(pagelimit);
-            console.log("page : "+pag+"pageLImit: "+limit)
-            if (pag > 0 && pag <= limit) {
-                $("#page").val(pag);
-                doSearch();
-            }
-        },
-        pages: function () {
-            var  pageitems=[];
-            for (i = 1; i < pagelimit; i++) {
-                pageitems.push({number:i});
-            }
-            return pageitems;
-        },
+       
         cleanFilters: function () {
 
             $("#page").val('0');

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Identity.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -24,7 +25,7 @@ namespace Access.Models
 
 
         [DisplayName("Usuario")]
-        public Guid Userid { get; set; }
+        public string Userid { get; set; }
 
         [DisplayName("Cancha")]
         public int? Idcancha { get; set; }
@@ -124,6 +125,9 @@ namespace Access.Models
                 return time.Hours == 0 && time.Minutes < 30;
             }
         }
+
+        public ApplicationUser User { get; set; }
+
 
 
         [NotMapped]

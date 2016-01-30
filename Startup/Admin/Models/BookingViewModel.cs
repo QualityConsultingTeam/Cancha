@@ -49,13 +49,14 @@ namespace Admin.Models
         public int RecurrenceId { get; set; }
         public int Id { get; internal set; }
 
+
         [DisplayName("Cliente")]
-        public Guid Userid
+        public string Userid
         {
             get
             {
-                return _userId != Guid.Empty ? _userId
-                     : (_userId = !string.IsNullOrEmpty(UserKey)? new Guid(UserKey) : Guid.Empty);
+                return _userId != string.Empty ? _userId
+                     : (_userId = !string.IsNullOrEmpty(UserKey) ? UserKey : string.Empty);
             }
             set
             {
@@ -63,7 +64,7 @@ namespace Admin.Models
             }
         }
 
-        private Guid _userId { get; set; }
+        private string _userId { get; set; }
 
         [DisplayName("LLave Cliente")]
         public string UserKey

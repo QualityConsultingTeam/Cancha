@@ -38,7 +38,7 @@ namespace Access.Repositories
             var payment = new Access.Models.Payment()
             {
                  Amount = booking.Price,
-                 Userid = booking.Userid,
+                 Userid =new Guid( booking.Userid),
                  Description ="Pago A travez de Paypal",
 
             };

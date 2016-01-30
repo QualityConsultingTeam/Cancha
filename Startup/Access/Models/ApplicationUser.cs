@@ -87,6 +87,8 @@ namespace Identity.Models
 
         public List<Feed> Feeds { get; set; }
         public List<AccountAccessLevel> AccessLevels { get; set; }
+
+        public List<Booking> MyBookigs { get; set; }
     }
 
 

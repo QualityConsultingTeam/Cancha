@@ -60,6 +60,7 @@ namespace Access.Models
     {
         public BookingConfig()
         {
+            HasRequired(p => p.User).WithMany(p => p.MyBookigs).HasForeignKey(p => p.Userid).WillCascadeOnDelete(false);
             Property(p => p.RowVersion).IsConcurrencyToken();
             HasRequired(p => p.Field).WithMany(f => f.Bookings)
                 .HasForeignKey(p => p.Idcancha);
