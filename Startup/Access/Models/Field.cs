@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -79,9 +80,11 @@ namespace Access.Models
 
         public int OBJECTTYPE { get; set; }
 
+        [JsonIgnore]
         [ScriptIgnore]
         public List<Schedule> Shedules { get; set; }
 
+        [JsonIgnore]
         [ScriptIgnore]
         public List<Booking> Bookings { get; set; }
 

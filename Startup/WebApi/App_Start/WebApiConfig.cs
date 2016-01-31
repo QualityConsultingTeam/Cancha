@@ -6,6 +6,8 @@ using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
+using WebApi.App_Start;
+using System.Web.Http.ExceptionHandling;
 
 namespace WebApi
 {
@@ -33,6 +35,8 @@ namespace WebApi
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Services.Add(typeof(IExceptionLogger), new AiExceptionLogger());
         }
     }
 }
