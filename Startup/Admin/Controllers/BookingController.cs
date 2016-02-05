@@ -309,9 +309,7 @@ namespace Admin.Controllers
             var model = await Repository.FindByIdAsync(id, "Field","User");
             model.Status = status;
 
-            if(model.Status == BookingStatus.Reservada) Task.Run(async () => await UserManager.SendEmailAsync(model.User.Id, "Confirmacion Reserva", model.GetMessageForBookingConfirmation()));
-
-
+          
             return View("Partials/ConfirmBookingAction", model);
         }
  
@@ -324,6 +322,12 @@ namespace Admin.Controllers
             await Repository.SaveAsync();
 
             await Repository.UpdateAccountLevel(booking);
+
+
+            var model = await Repository.FindByIdAsync(booking.Id, "Field", "User");
+            if (model.Status == BookingStatus.Reservada) Task.Run(async () => await UserManager.SendEmailAsync(model.User.Id, "Confirmacion Reserva", model.GetMessageForBookingConfirmation()));
+
+
 
             return Json(booking.Status.ToString().ToUpper(), JsonRequestBehavior.AllowGet);
             //return View("Partials/ConfirmBookingAction", await Repository.FindByIdAsync(booking.Id, "Field"));
