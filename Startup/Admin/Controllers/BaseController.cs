@@ -8,6 +8,8 @@ using Access;
 using Access.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Identity.Config;
+
 namespace Admin.Controllers
 {
     //[Globalization]
@@ -17,9 +19,7 @@ namespace Admin.Controllers
         where TEntity :  BaseModel 
         where TRepository : BaseRepository<TContext,TEntity>, new()
     {
-
-
-
+        private ApplicationUserManager _userManager;
 
         protected TContext Context
         {
@@ -40,7 +40,19 @@ namespace Admin.Controllers
                 };
             }
         }
-         
+
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         //public Guid? LoggedUser
         //{

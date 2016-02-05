@@ -27,6 +27,8 @@ namespace Admin.Controllers
     public class BookingController : BaseController<BookingRepository, AccessContext, Booking>
     {
 
+
+
         #region Grid Administracion de Reservas 
 
         private async Task<Center> GetCenterAsync()
@@ -304,8 +306,12 @@ namespace Admin.Controllers
         public async Task<ActionResult> UpdateBookingStatus(int id,BookingStatus status)
         {
             ViewBag.ActionMessage = Repository.MessageForStatus(status);
-            var model = await Repository.FindByIdAsync(id, "Field");
+            var model = await Repository.FindByIdAsync(id, "Field","User");
             model.Status = status;
+
+            if(model.Status == BookingStatus.Reservada) Task.Run(async () => await UserManager.SendEmailAsync(model.User.Id, "Confirmacion Reserva", model.GetMessageForBookingConfirmation()));
+
+
             return View("Partials/ConfirmBookingAction", model);
         }
  
