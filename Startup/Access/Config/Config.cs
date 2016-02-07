@@ -170,12 +170,17 @@ namespace Identity.Config
             {
             }
 
-            public override Task<ClaimsIdentity> CreateUserIdentityAsync(ApplicationUser user)
-            {
-                return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
-            }
+        public override async Task<ClaimsIdentity> CreateUserIdentityAsync(ApplicationUser user)
+        {
+            var identity = await user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
 
-            public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
+            identity.AddClaim( new Claim("facebookUserPicture", user.ProfilePicture));
+
+
+            return identity;
+        }
+
+        public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
             {
                 return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
             }

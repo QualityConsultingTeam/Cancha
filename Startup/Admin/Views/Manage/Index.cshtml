@@ -127,7 +127,7 @@
         <div class="col-lg-9">
             <div class="ibox">
                 <div class="ibox-content">
-                    <span class="text-muted small pull-right">Ultima Actualizacion: <i class="fa fa-clock-o"></i> 2:10 pm - 12.06.2014</span>
+                    @*<span class="text-muted small pull-right">Ultima Actualizacion: <i class="fa fa-clock-o"></i> 2:10 pm - 12.06.2014</span>*@
                     <h2>Mis Reservas</h2>
                     <p>
                         Se muestran las reservas desde la mas reciente y el estado actual para cada una
@@ -165,13 +165,17 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            $("#sparkline1").sparkline([34, 43, 43, 35, 44, 32, 44, 48], {
-                type: 'line',
-                width: '100%',
-                height: '50',
-                lineColor: '#1ab394',
-                fillColor: "transparent"
+            $.get('@Url.Action("GetBookingsPerMonthSummary","Manage")', function (values) {
+                console.log(values);
+                $("#sparkline1").sparkline(values, {//[34, 43, 43, 35, 44, 32, 44, 48]
+                    type: 'line',
+                    width: '100%',
+                    height: '50',
+                    lineColor: '#1ab394',
+                    fillColor: "transparent"
+                });
             });
+            
             $.get('@Url.Action("UserBookings","Manage")', function (view) {
                 $("#userBookings").html(view);
             });

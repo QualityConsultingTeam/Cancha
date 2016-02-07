@@ -10,7 +10,7 @@
         @foreach (var booking in Model)
         {
             <tr>
-                <td class="client-avatar"><img alt="image" src="@Html.FacebookProfileSmallPicture()"> </td>
+                @*<td class="client-avatar"><img alt="image" src="@Html.FacebookProfileSmallPicture()"> </td>*@
                 <td><a data-toggle="tab" href="#contact-1" class="client-link">@booking.Start</a></td>
                 <td> @booking.Field.Name</td>
                 <td class="contact-type"><i class="fa fa-plus-circle"> </i></td>

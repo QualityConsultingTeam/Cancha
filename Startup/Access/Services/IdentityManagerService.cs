@@ -412,5 +412,17 @@ namespace Identity
             }
             await Context.SaveChangesAsync();
         }
+
+
+        public  Task<List<int>> GetBookingsPerMonthSummary(string userid)
+        {
+            var referenceDate = DateTime.Now.AddMonths(-5);
+
+
+            var fromDate = new DateTime(referenceDate.Year, referenceDate.Month, 1);
+
+            return Context.Bookings.Where(b => b.Userid == userid && b.Start >= fromDate)
+                    .GroupBy(b => b.Start.Value.Month).Select(b => b.Count()).ToListAsync();
+        }
     }
 }

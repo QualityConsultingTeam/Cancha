@@ -48,7 +48,13 @@ namespace Access.Extensions
         }
         public static string FacebookProfileSmallPicture(this ClaimsPrincipal principal )
         {
-            return  principal.Claim("facebookUserPicture");//  principal.Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+            var picture = principal.Claim("facebookUserPicture");//  principal.Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+
+            if (!string.IsNullOrEmpty(picture)) return picture;
+
+            return FaceBookProfilePictureFormat( principal.UserId());
+
+
         }
 
         public static string FaceBookProfilePictureFormat(string facebookUserId)
