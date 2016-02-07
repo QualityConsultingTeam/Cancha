@@ -132,12 +132,24 @@
                     <p>
                         Se muestran las reservas desde la mas reciente y el estado actual para cada una
                     </p>
+                    @using (Ajax.BeginForm("UserBookings", "Manage", new AjaxOptions()
+                    {
+                        HttpMethod = "POST",
+                        InsertionMode = InsertionMode.Replace,
+                        UpdateTargetId = "userBookings",
+                        LoadingElementId = "loaderSection"
+                    }))
+                    {
                     <div class="input-group">
-                        <input type="text" placeholder="Buscar Reserva" class="input form-control">
+                        
+                        <input type="text" placeholder="Buscar Reserva" class="input form-control" name="keywords">
+
                         <span class="input-group-btn">
                             <button type="button" class="btn btn btn-primary"> <i class="fa fa-search"></i> Buscar</button>
                         </span>
+                       
                     </div>
+                        }
                     <div class="clients-list">
                         <ul class="nav nav-tabs">
                             <span class="pull-right small text-muted">@total.Count Total Reservas</span> 
@@ -176,7 +188,7 @@
                 });
             });
             
-            $.get('@Url.Action("UserBookings","Manage")', function (view) {
+            $.post('@Url.Action("UserBookings","Manage")', function (view) {
                 $("#userBookings").html(view);
             });
         });

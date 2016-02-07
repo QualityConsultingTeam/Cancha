@@ -97,10 +97,10 @@ namespace Admin.Controllers
             return View(model);
         }
 
-
-        public async Task<ActionResult> UserBookings()
+        [HttpPost]
+        public async Task<ActionResult> UserBookings(FilterOptionModel filter)
         {
-            var model = await Repository.GetUserBookings(new FilterOptionModel());
+            var model = await Repository.GetUserBookings(filter);
 
             return View(model);
         }
