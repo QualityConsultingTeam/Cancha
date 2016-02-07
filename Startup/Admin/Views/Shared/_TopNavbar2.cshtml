@@ -121,8 +121,9 @@
         });
        
         //para que funcione bien en picker nativo de mobile despues de seleccionar fecha
-        $("#date").on('changeDate', function(ev){
+        $(".date").on('changeDate', function(ev){
             $(this).datepicker('hide');
+            RunSearch();
         });
 
         // Rango laboral para el datePicker
@@ -137,13 +138,13 @@
         });
         // Recuperar fecha y hora del navegador
         $('#time').timepicker('setTime', new Date());
-        $('#date').datepicker('setDate', new Date());
+        $('.date').datepicker('setDate', new Date());
         
         $('#timeIcon').on('click', function () {
             $('#time').timepicker('show');
         });
 
-        $("#date").change(RunSearch);
+        //$("#date").change(RunSearch);
         $("#time").change(RunSearch);
     });
 
