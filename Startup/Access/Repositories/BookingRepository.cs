@@ -150,6 +150,14 @@ namespace Access.Repositories
             await booking.UpdateUserAccountLevel(Context);
         }
 
-        
+        public async Task<Booking> GetBookingForUpdate(int id, BookingStatus status)
+        {
+            var model = await FindByIdAsync(id, "Field", "User");
+            if (status != BookingStatus.Reservada) return model;
+
+            if (await Context.Bookings.AnyAsync(b => b.Start >= model.Start && b.End <= model.End && model.Idcancha == b.Idcancha)) return null;
+            
+            return model;
+        }
     }
 }

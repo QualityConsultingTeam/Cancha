@@ -306,10 +306,13 @@ namespace Admin.Controllers
         public async Task<ActionResult> UpdateBookingStatus(int id,BookingStatus status)
         {
             ViewBag.ActionMessage = Repository.MessageForStatus(status);
-            var model = await Repository.FindByIdAsync(id, "Field","User");
-            model.Status = status;
 
-          
+            var model = await Repository.GetBookingForUpdate(id, status);
+
+            if (model == null) return Json(false, JsonRequestBehavior.AllowGet); 
+
+            model.Status = status;
+                
             return View("Partials/ConfirmBookingAction", model);
         }
  
