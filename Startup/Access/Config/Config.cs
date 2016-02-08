@@ -174,7 +174,7 @@ namespace Identity.Config
         {
             var identity = await user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
 
-            identity.AddClaim( new Claim("facebookUserPicture", user.ProfilePicture));
+          if(!string.IsNullOrEmpty(user.ProfilePicture))     identity.AddClaim( new Claim("facebookUserPicture", user.ProfilePicture));
 
 
             return identity;
