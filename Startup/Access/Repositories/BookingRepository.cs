@@ -137,7 +137,9 @@ namespace Access.Repositories
         {
             var query = Context.Bookings.Where(b => b.Userid == UserId.ToString());
 
-            filter.SearchKeys.ForEach(k => query = query.Where(q => q.Field.Name.Contains(k) || q.Field.Center.Name.Contains(k)));
+            filter.SearchKeys.ForEach(k => query = query.Where(q => q.Field.Name.Contains(k) || 
+                                                                    q.Field.Center.Name.Contains(k) || 
+                                                                    q.PaypalPaymentId.Contains(k)));
 
             return query.Include(b=>b.Field.Center)
                 .OrderByDescending(b => b.CreateDate).Skip(filter.Skip).Take(filter.Limit).ToListAsync();
