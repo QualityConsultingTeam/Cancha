@@ -189,7 +189,7 @@
             type: "POST",
             url: url,
             //data: ,
-            datatype: "html",
+            //datatype: "html",
             success: function (data) {
                 $("#loaderSection").fadeOut();
 
@@ -206,6 +206,9 @@
                     }, function () {
                         //swal("Deleted!", "Your imaginary file has been deleted.", "success");
                     });
+
+                    hideModal();
+                    return;
                 }
 
                 $('#bookingModal').html(data);
