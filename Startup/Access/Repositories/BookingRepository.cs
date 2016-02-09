@@ -155,7 +155,7 @@ namespace Access.Repositories
             var model = await FindByIdAsync(id, "Field", "User");
             if (status != BookingStatus.Reservada) return model;
 
-            if (await Context.Bookings.AnyAsync(b => b.Start >= model.Start && b.End <= model.End && model.Idcancha == b.Idcancha)) return null;
+            if (await Context.Bookings.AnyAsync(b => model.Start >= b.Start  && model.End <= b.End && model.Idcancha == b.Idcancha && b.Status == BookingStatus.Reservada)) return null;
             
             return model;
         }
