@@ -112,7 +112,7 @@ namespace Access.Extensions
 
         public static string GetMessageForBookingConfirmation(this Booking model)
         {
-            return $"Estimado {model.User.FirstName} {model.User.LastName} Su reserva ha sido confirmada en la cancha {model.Field.Name} , hora {model.Start}  ";
+            return $"Estimado {model.User?.FirstName} {model.User?.LastName} Su reserva ha sido confirmada en la cancha {model.Field?.Name} , hora {model.Start}  ";
         }
        
     }

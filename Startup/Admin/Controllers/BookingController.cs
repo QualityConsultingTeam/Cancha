@@ -327,11 +327,10 @@ namespace Admin.Controllers
             await Repository.UpdateAccountLevel(booking);
 
 
-            var model = await Repository.FindByIdAsync(booking.Id, "Field", "User");
-            if (model.Status == BookingStatus.Reservada) Task.Run(async () => await UserManager.SendEmailAsync(model.User.Id, "Confirmacion Reserva", model.GetMessageForBookingConfirmation()));
-
-
-
+            var model = await Repository.GetBookingForNotification(booking.Id);
+            // TODO notify Users
+            if (model.Status == BookingStatus.Reservada) await UserManager.SendEmailAsync(model.Userid, "Confirmacion Reserva", model.GetMessageForBookingConfirmation());  
+            
             return Json(booking.Status.ToString().ToUpper(), JsonRequestBehavior.AllowGet);
             //return View("Partials/ConfirmBookingAction", await Repository.FindByIdAsync(booking.Id, "Field"));
 

@@ -159,5 +159,13 @@ namespace Access.Repositories
             
             return model;
         }
+
+        public  Task<Booking> GetBookingForNotification(int id)
+        {
+            return Context.Bookings
+                .Include(b => b.Field)
+                .Include(b => b.User)
+                .FirstOrDefaultAsync(b => b.Id == id);
+        }
     }
 }
