@@ -198,9 +198,9 @@ namespace Admin.Controllers
                     Title = b.Field.Name,
                     Start =  b.Start.Value ,
                     End =  b.End.Value,
-                    Userid = b.Userid,
+                    UserId = b.Userid,
                     Description = "",
-                    Idcancha = b.Idcancha,
+                    Idcancha = b.Idcancha.HasValue? b.Idcancha.Value :0,
                 }).AsQueryable();
            
             var model = query.ToDataSourceResult(request);
@@ -238,7 +238,7 @@ namespace Admin.Controllers
         {
             try {
 
-                var user = await IdentityManagerService.GetUserAsync(task.UserKey);
+                var user = await IdentityManagerService.GetUserAsync(task.UserId);
                 task.Title = user.FirstName+" - "+user.Email;
                 
                 var booking = new Booking();

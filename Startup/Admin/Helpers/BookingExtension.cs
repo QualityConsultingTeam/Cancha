@@ -20,7 +20,7 @@ namespace Admin.Helpers
         public static async Task<List<BookingViewModel>> UpdateAccountInfoFoScheduler(this List<BookingViewModel> data, Access.AccessContext identityContext)
         {
 
-            var usersIds = data.Select(u => u.Userid).Distinct()
+            var usersIds = data.Select(u => u.UserId).Distinct()
                 .Select(u => u.ToString()).ToList();
 
             // userinfo
@@ -53,7 +53,7 @@ namespace Admin.Helpers
 
             foreach (var item in data)
             {
-                item.UserInfo = users.FirstOrDefault(u => u.Id == item.Userid) ?? new UserInfo();
+                item.UserInfo = users.FirstOrDefault(u => u.Id == item.UserId) ?? new UserInfo();
                 item.Start = item.Start;// DateTime.SpecifyKind(item.Start, DateTimeKind.Utc);
                 item.End = item.End; //DateTime.SpecifyKind(item.End, DateTimeKind.Utc);
                 if (item.UserInfo != null && !string.IsNullOrEmpty(item.UserInfo.Name))

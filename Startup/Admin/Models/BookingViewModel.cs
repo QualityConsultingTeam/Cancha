@@ -42,7 +42,7 @@ namespace Admin.Models
         public string EndString { get; set; }
 
         [DisplayName("Cancha")]
-        public int? Idcancha { get; set; }
+        public int Idcancha { get; set; }
 
         public string StartTimezone { get; set; }
         public string EndTimezone { get; set; }
@@ -54,27 +54,28 @@ namespace Admin.Models
 
 
         [DisplayName("Cliente")]
-        public string Userid
-        {
-            get
-            {
-                return _userId != string.Empty ? _userId
-                     : (_userId = !string.IsNullOrEmpty(UserKey) ? UserKey : string.Empty);
-            }
-            set
-            {
-                _userId = value;
-            }
-        }
+        public string UserId { get; set; }
+        //public string Userid
+        //{
+        //    get
+        //    {
+        //        return _userId != string.Empty ? _userId
+        //             : (_userId = !string.IsNullOrEmpty(UserKey) ? UserKey : string.Empty);
+        //    }
+        //    set
+        //    {
+        //        _userId = value;
+        //    }
+        //}
 
         private string _userId { get; set; }
 
-        [DisplayName("LLave Cliente")]
-        public string UserKey
-        {
-            get;
-            set;
-        }
+        //[DisplayName("LLave Cliente")]
+        //public string UserKey
+        //{
+        //    get;
+        //    set;
+        //}
 
                                                                          
 

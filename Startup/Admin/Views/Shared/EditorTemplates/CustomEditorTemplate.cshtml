@@ -33,15 +33,15 @@
 </div>*@
 
 <div class="k-edit-label">
-    @(Html.LabelFor(model => model.Userid))
+    @(Html.LabelFor(model => model.UserId))
 </div>
 
 @if (Model.BookingId == 0)
 {
 <div data-container-for="UserId" class="k-edit-field">
 
-    @(Html.Kendo().ComboBoxFor(model => model.UserKey)
-                .HtmlAttributes(new { data_bind = "value:UserKey", style = "width: 300px" })
+    @(Html.Kendo().ComboBoxFor(model => model.UserId)
+                .HtmlAttributes(new { data_bind = "value:UserId", style = "width: 300px" })
                 .DataTextField("Name")
                 .DataValueField("Id")
                 .Filter(FilterType.Contains)
@@ -54,7 +54,7 @@
 }
 else
 {
- @Html.HiddenFor(m=> m.UserKey)
+ @Html.HiddenFor(m=> m.UserId)
 }
 
 <div class="k-edit-label">
@@ -180,8 +180,10 @@ else
             .HtmlAttributes(new { data_bind = "value:Idcancha", style = "width: 300px" })
             .DataTextField("Name")
             .DataValueField("Id")
+            .Placeholder("Seleccione Cancha")
             //.OptionLabel("Cancha")
             .ValuePrimitive(true)
+            .Text("").Value("")
             //.Template("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Name\\#")
             .DataSource(source=> source.Read(r=>r.Action("GetFieldsForAutoComplete", "Canchas"))).ToClientTemplate()
         )
