@@ -115,72 +115,43 @@ namespace Admin.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
-    
-
-    //public class IdentityUserViewModel
-    //{
-
-    //    public string Id { get; set; }
-
-    //    public string Email { get; set; }
-
-    //    [DisplayName("Telefono")]
-    //    public string PHONE_2 { get; set; }
-
-    //    public int AccessFailedCount { get; set; }
-
-    //    public string Role { get; set; }
-
-        
-    //    public string Password { get; set; }
-
-    //    [DisplayName("Change Password")]
-    //    public bool ForceChangePassword { get; set; }
-
-    //    [DisplayName("Nombre")]
-    //    public string FirstName { get; set; }
 
 
-    //    [DisplayName("Apellido")]
-    //    public string LastName { get; set; }
+    // Models returned by AccountController actions.
 
-    //    //[StringLength(25)]
-    //    public string DUI { get; set; }
+    public class ExternalLoginViewModel
+    {
+        public string Name { get; set; }
 
-    //    //[StringLength(20)]
-    //    //public string PHONE_2 { get; set; }
+        public string Url { get; set; }
 
-    //    [StringLength(200)]
-    //    [DisplayName("Direccion")]
-    //    public string ADDRESS { get; set; }
+        public string State { get; set; }
+    }
 
-    //    [Required]
-    //    [DisplayName("User Name")]
-    //    public string UserName { get; set; }
+    public class ManageInfoViewModel
+    {
+        public string LocalLoginProvider { get; set; }
 
-    //    [DisplayName("Imagen de Perfil")]
-    //    public string ProfilePicture { get; set; }
+        public string Email { get; set; }
 
-    //    public string ProfilePictureDefault
-    //    {
-    //        get { return !string.IsNullOrEmpty(ProfilePicture) ? ProfilePicture : "/Images/profile.jpg"; }
-    //    }
+        public IEnumerable<UserLoginInfoViewModel> Logins { get; set; }
 
-    //    //public List<IsInRole> OnRoles { get; set; } 
+        public IEnumerable<ExternalLoginViewModel> ExternalLoginProviders { get; set; }
+    }
 
-    //    [Display(Name = "Calificacion:", Prompt = "Categoria")]
-    //    [Range(1, 5, ErrorMessage = "Debe especificar un maximo 5")]
-    //    public decimal? Category { get; set; }
+    public class UserInfoViewModel
+    {
+        public string Email { get; set; }
 
-    //    public dynamic WorkSummary { get; set; }
+        public bool HasRegistered { get; set; }
 
-    //    [Display(Name ="Complejo")]
-    //    public int? CenterId { get; set; }
+        public string LoginProvider { get; set; }
+    }
 
-    //    [DisplayName("Nombre de Complejo")]
-    //    public string CenterSearchName { get; set; }
+    public class UserLoginInfoViewModel
+    {
+        public string LoginProvider { get; set; }
 
-    //    public bool DisableForCenter { get; set; }
-
-    //}
+        public string ProviderKey { get; set; }
+    }
 }

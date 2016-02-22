@@ -105,7 +105,7 @@ namespace Test
         {
             var client = new HttpClient();
 
-            client.BaseAddress = new Uri("https://enlacancha-api.azurewebsites.net");
+            client.BaseAddress = new Uri("https://localhost:44300/");  //new Uri("https://enlacancha.azurewebsites.net");
 
             if (!string.IsNullOrEmpty(token))
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
