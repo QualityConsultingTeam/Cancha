@@ -40,7 +40,7 @@
 {
 <div data-container-for="UserId" class="k-edit-field">
 
-    @(Html.Kendo().ComboBoxFor(model => model.UserId)
+    @*@(Html.Kendo().ComboBoxFor(model => model.UserId)
                 .HtmlAttributes(new { data_bind = "value:UserId", style = "width: 300px" })
                 .DataTextField("Name")
                 .DataValueField("Id")
@@ -49,7 +49,23 @@
                 .MinLength(3)
                 //.Template("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Name\\#")
                 .DataSource(source => source.Read(r => r.Action("GetUserNamesForSchedule", "Account")).ServerFiltering(true)).ToClientTemplate()
-    )
+    )*@
+    @(Html.Kendo().DropDownListFor(m => m.UserId)
+
+
+          .DataTextField("Name")
+          .DataValueField("Id")
+          .HtmlAttributes(new { data_bind = "value:UserId", style = "width:100%" })
+          .Filter("contains")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetUserNamesForSchedule", "Account");
+              })
+              .ServerFiltering(true);
+          }))
+
 </div>
 }
 else
@@ -107,86 +123,37 @@ else
 <div data-container-for="CustomPrice" class="k-edit-field">
     @(Html.TextBoxFor(model => model.CustomPrice, new { @class = "k-textbox", data_bind = "value:CustomPrice" }))
 </div>
-
-@*<div class="k-edit-label">
-    @(Html.LabelFor(model => model.Off))
-</div>
-<div data-container-for="Off" class="k-edit-field">
-    @(Html.TextBoxFor(model => model.Off, new { @class = "k-textbox", data_bind = "value:Off" }))
-</div>*@
-@*<div class="endTimezoneRow">
-    <div class="k-edit-label"></div>
-    <div class="k-edit-field">
-        <label class="k-check">
-            <input checked="checked" class="k-timezone-toggle" type="checkbox" value="true" />
-            Use separate start and end time zones
-        </label>
-    </div>
-</div>*@
-<script>
-    $(".k-timezone-toggle").on("click", function () {
-        var isVisible = $(this).is(":checked");
-        var container = $(this).closest(".k-popup-edit-form");
-
-        var endTimezoneRow = container.find("label[for='EndTimezone']").parent().add(container.find("div[data-container-for='endTimezone']"));
-        endTimezoneRow.toggle(isVisible);
-
-        if (!isVisible) {
-            var uid = container.attr("data-uid");
-            var scheduler = $("\#scheduler").data("kendoScheduler");
-            var model = scheduler.dataSource.getByUid(uid);
-            model.set("endTimezone", null);
-        }
-    });
-
-    var endTimezone = '${data.endTimezone}';
-
-    if (!endTimezone || endTimezone == "null") {
-        $(".k-timezone-toggle").trigger('click');
-    }
-</script>
-
-@*<div class="k-edit-label">
-        @(Html.LabelFor(model => model.StartTimezone))
-    </div>
-    <div data-container-for="startTimezone" class="k-edit-field">
-        @(Html.Kendo().TimezoneEditorFor(model => model.StartTimezone)
-            .HtmlAttributes(new { data_bind = "value:startTimezone" }))
-    </div>
-
-    <div class="k-edit-label">
-        @(Html.LabelFor(model => model.EndTimezone))
-    </div>
-    <div data-container-for="endTimezone" class="k-edit-field">
-        @(Html.Kendo().TimezoneEditorFor(model => model.EndTimezone)
-            .HtmlAttributes(new { data_bind = "value:endTimezone" }))
-    </div>
-
-    <div class="k-edit-label">
-        @(Html.LabelFor(model => model.RecurrenceRule))
-    </div>
-    <div data-container-for="recurrenceRule" class="k-edit-field">
-        @(Html.Kendo().RecurrenceEditorFor(model => model.RecurrenceRule)
-            .HtmlAttributes(new { data_bind = "value:recurrenceRule" }))
-    </div>*@
  
-
-
 <div class="k-edit-label">
     @(Html.LabelFor(model => model.Idcancha))
 </div>
 <div data-container-for="Idcancha" class="k-edit-field">
-    @(Html.Kendo().ComboBoxFor(model => model.Idcancha)
+    @*@(Html.Kendo().ComboBoxFor(model => model.Idcancha)
             .HtmlAttributes(new { data_bind = "value:Idcancha", style = "width: 300px" })
             .DataTextField("Name")
             .DataValueField("Id")
             .Placeholder("Seleccione Cancha")
             //.OptionLabel("Cancha")
             .ValuePrimitive(true)
-            .Text("").Value("")
+            .Text("Seleccione Cancha").Value("")
             //.Template("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Name\\#")
             .DataSource(source=> source.Read(r=>r.Action("GetFieldsForAutoComplete", "Canchas"))).ToClientTemplate()
-        )
+        )*@
+
+    @(Html.Kendo().DropDownListFor(m=>m.Idcancha)
+
+          .DataTextField("Name")
+          .DataValueField("Id")
+          .HtmlAttributes(new { style = "width:100%" })
+          .Filter("contains")
+          .DataSource(source =>
+          {
+              source.Read(read =>
+              {
+                  read.Action("GetFieldsForAutoComplete", "Canchas");
+              })
+              .ServerFiltering(true);
+          }))
 </div>
 
 <div class="k-edit-label">

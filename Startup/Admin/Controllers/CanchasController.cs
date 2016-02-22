@@ -109,9 +109,9 @@ namespace Admin.Controllers
             return Json( model,JsonRequestBehavior.AllowGet);
         }
         [Authorize]
-        public async Task<JsonResult> GetFieldsForAutoComplete(string query)
+        public async Task<JsonResult> GetFieldsForAutoComplete(string text)
         {
-            var model = await Repository.GetFieldsFromCenterAsync(keywords: query);
+            var model = await Repository.GetFieldsFromCenterAsync(keywords: text);
 
             return Json(model.ToAutocomplete(), JsonRequestBehavior.AllowGet);
         }

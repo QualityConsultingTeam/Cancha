@@ -44,15 +44,7 @@ namespace Admin.Controllers
         {
             return View(await GetCenterAsync());
         }
-        /// <summary>
-        /// Center Header, 
-        /// </summary>
-        /// <param name="centerRepository"></param>
-        /// <returns></returns>
-        private object await(CenterRepository centerRepository)
-        {
-            throw new NotImplementedException();
-        }
+        
  
         /// <summary>
         /// Ajax Async Search Grid.
