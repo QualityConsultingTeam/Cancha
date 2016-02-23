@@ -6,10 +6,13 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
+using SendGrid;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
@@ -23,51 +26,89 @@ namespace Identity.Config
         {
             public Task SendAsync(IdentityMessage message)
             {
-                // Plug in your email service here to send an email.
-                // Plug in your email service here to send an email.
-                // Credentials:
-                var credentialUserName = "enlacancha@enlacancha.net";
-                var sentFrom = "enlacancha@enlacancha.net";
-                var pwd = "12345678";
+            // Plug in your email service here to send an email.
+            // Plug in your email service here to send an email.
+                return configSendGridasync(message);
+            }
 
-                try
+
+        private Task SendEmailAsync(IdentityMessage message)
+        {
+            // Credentials:
+            var credentialUserName = "enlacancha@enlacancha.net";
+            var sentFrom = "enlacancha@enlacancha.net";
+            var pwd = "12345678";
+
+            try
+            {
+                // Configure the client:
+                System.Net.Mail.SmtpClient client =
+                    new System.Net.Mail.SmtpClient("smtpout.secureserver.net");
+
+                client.Port = 80;
+                client.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+
+                // Create the credentials:
+                System.Net.NetworkCredential credentials =
+                    new System.Net.NetworkCredential(credentialUserName, pwd);
+
+                client.EnableSsl = false;
+                client.Credentials = credentials;
+
+                var view = AlternateView.CreateAlternateViewFromString(message.Body, null, "text/html");
+
+
+                // Create the message:
+                var mail =
+                    new System.Net.Mail.MailMessage(sentFrom, message.Destination);
+
+                mail.Subject = message.Subject;
+                mail.AlternateViews.Add(view);
+                mail.IsBodyHtml = true;
+
+                // Send:
+                return client.SendMailAsync(mail);
+            }
+            catch (Exception ex)
+            {
+                //throw ex;
+                return Task.FromResult(0);
+            }
+        }
+
+
+        private Task configSendGridasync(IdentityMessage message)
+            {
+                var myMessage = new SendGridMessage();
+                myMessage.AddTo(message.Destination);
+                myMessage.From = new System.Net.Mail.MailAddress(
+                                    //"plateforme-leyravaud@plateformeleyravaud.com",
+                                    ConfigurationManager.AppSettings["SendgridEmailAccount"],
+                                    "En La Cancha");
+                myMessage.Subject = message.Subject;
+                myMessage.Text = message.Body;
+                myMessage.Html = message.Body;
+
+                var credentials = new NetworkCredential(
+                           ConfigurationManager.AppSettings["SendgridEmailAccount"],
+                           ConfigurationManager.AppSettings["mailPassword"]
+                           );
+
+                // Create a Web transport for sending email.
+                var transportWeb = new Web(credentials);
+
+                // Send the email.
+                if (transportWeb != null)
                 {
-                    // Configure the client:
-                    System.Net.Mail.SmtpClient client =
-                        new System.Net.Mail.SmtpClient("smtpout.secureserver.net");
-
-                    client.Port = 80;
-                    client.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
-                    client.UseDefaultCredentials = false;
-
-                    // Create the credentials:
-                    System.Net.NetworkCredential credentials =
-                        new System.Net.NetworkCredential(credentialUserName, pwd);
-
-                    client.EnableSsl = false;
-                    client.Credentials = credentials;
-
-                    var view = AlternateView.CreateAlternateViewFromString(message.Body, null, "text/html");
-
-
-                    // Create the message:
-                    var mail =
-                        new System.Net.Mail.MailMessage(sentFrom, message.Destination);
-
-                    mail.Subject = message.Subject;
-                    mail.AlternateViews.Add(view);
-                    mail.IsBodyHtml = true;
-
-                    // Send:
-                    return client.SendMailAsync(mail);
+                    return transportWeb.DeliverAsync(myMessage);
                 }
-                catch (Exception ex)
+                else
                 {
-                    //throw ex;
                     return Task.FromResult(0);
                 }
             }
-        }
+    }
 
         public class SmsService : IIdentityMessageService
         {
