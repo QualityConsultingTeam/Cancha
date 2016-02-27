@@ -173,5 +173,10 @@ namespace Access.Repositories
                 .Include(b => b.User)
                 .FirstOrDefaultAsync(b => b.Id == id);
         }
+
+        public Task<Booking> FindBookingAsync(int fieldId ,string userid,DateTime start , DateTime end)
+        {
+            return Context.Bookings.FirstOrDefaultAsync(b => b.Idcancha == fieldId && b.Userid == userid && b.Start >= start && b.End <= end);
+        }
     }
 }

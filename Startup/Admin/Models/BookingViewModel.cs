@@ -55,29 +55,7 @@ namespace Admin.Models
 
         [DisplayName("Cliente")]
         public string UserId { get; set; }
-        //public string Userid
-        //{
-        //    get
-        //    {
-        //        return _userId != string.Empty ? _userId
-        //             : (_userId = !string.IsNullOrEmpty(UserKey) ? UserKey : string.Empty);
-        //    }
-        //    set
-        //    {
-        //        _userId = value;
-        //    }
-        //}
-
-        private string _userId { get; set; }
-
-        //[DisplayName("LLave Cliente")]
-        //public string UserKey
-        //{
-        //    get;
-        //    set;
-        //}
-
-                                                                         
+                               
 
         public UserInfo UserInfo { get; set; }
 

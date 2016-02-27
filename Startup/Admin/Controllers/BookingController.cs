@@ -177,7 +177,7 @@ namespace Admin.Controllers
         }
 
 
-        [Globalization]
+       
         public virtual async Task<JsonResult> Read([DataSourceRequest] DataSourceRequest request)
         {
 
@@ -199,7 +199,7 @@ namespace Admin.Controllers
 
             var identityContext = Request.GetOwinContext().Get<AccessContext>();
 
-            model.Data = await (model.Data as List<BookingViewModel>).UpdateAccountInfoFoScheduler(identityContext);
+            //model.Data = await (model.Data as List<BookingViewModel>).UpdateAccountInfoFoScheduler(identityContext);
 
             return Json(model); 
 
@@ -225,20 +225,26 @@ namespace Admin.Controllers
             return Json(null);
             
         }
-        [Globalization]
+     
         public virtual async Task<JsonResult> Create([DataSourceRequest] DataSourceRequest request, BookingViewModel task)
         {
             try {
 
                 var user = await IdentityManagerService.GetUserAsync(task.UserId);
                 task.Title = user.FirstName+" - "+user.Email;
-                
+
+                var existing = await Repository.FindBookingAsync(task.Idcancha,task.UserId,task.Start,task.End);
+
+                if (existing != null && existing.Status == BookingStatus.Reservada) throw new Exception("Already Exists booking");
+
                 var booking = new Booking();
                 
                 booking.CopyFrom(task);
                 booking.Price = task.ComputePrice();
                 booking.Start = task.Start.ToLocalTime();
                 booking.End = task.End.ToLocalTime();
+                booking.Status = BookingStatus.Reservada;
+
                 Repository.InsertOrUpdate(booking);
                 await Repository.SaveAsync();
                 return Json(new[] { task }.ToDataSourceResult(request, ModelState));

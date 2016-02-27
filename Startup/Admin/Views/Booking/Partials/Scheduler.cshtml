@@ -12,24 +12,7 @@
 <div class="row">
     <div class="col-sm-10 m-b-xs" id="checkFields">
 
-        @*@(Html.Kendo().ComboBox()
-              .Name("selectedField")
-              .DataTextField("Text")
-              .DataValueField("Id")
-              .HtmlAttributes(new { style = "width:250px" })
-              .Filter("contains")
-              .AutoBind(false)
-              .MinLength(3)
-              .DataSource(source =>
-              {
-                  source.Read(read =>
-                  {
-                      read.Action("GetFieldsFromCenter", "Canchas",new { centerId = CenterId });
-                  })
-                  .ServerFiltering(true);
-              })
-              .Events(e=> e.Select("onSelect"))
-            )*@
+       
         @foreach (var field in (List<Field>)ViewBag.fields)
         {
              
@@ -44,18 +27,17 @@
     .Name("scheduler")
      .Date(date.Date)
       .StartTime(new DateTime(date.Year, date.Month, date.Day, 7, 00, 00))
-      .Height(600)
+      .Height(800)
     .Views(views =>
     {
         views.DayView();
-        views.WorkWeekView();
+        
         views.WeekView(mv => mv.Selected(true));
         views.MonthView();
         views.AgendaView();
     })
      .MinorTickCount(1)
-     //.Selectable(true)
-     .Events(e=> e.Edit("edit"))
+     //.Selectable(true) 
      .Editable(editable =>
      {
          editable.TemplateName("CustomEditorTemplate");
@@ -86,35 +68,14 @@
             // m.Field(f => f.UserId).DefaultValue(Guid.NewGuid());
 
             m.RecurrenceId(f => f.RecurrenceId);
-        })
-        .ServerOperation(true)
+        }) 
         .Read("Read", "Booking")
             .Create("Create", "Booking")
             .Destroy("Destroy", "Booking")
-            .Update("Update", "Booking")))
+            .Update("Update", "Booking")) )
 
 
-<div class="modal fade" id="ChangeState" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header animated shake">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Reservar</h4>
-            </div>
-
-            <div class="modal-body" id="modalLoader">
-                @Html.Partial("LoaderCircle")
-            </div>
-            <div class="modal-body" id="bookingModal">
-
-            </div>
-            @*<div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary">Guardar Cambios</button>
-                </div>*@
-        </div>
-    </div>
-</div>
+ 
 
 <script type="text/javascript">
 
@@ -161,37 +122,8 @@
             scheduler.dataSource.filter(filter);
         });
     })
-    function edit(e) {
-        @*console.log("Edit");
-        console.log(e);
-        e.preventDefault();
-        
-        var object = e.event;
-        console.log(object);
-        console.log(object.end);
-        console.log(object.start);
-
-        showmodal();
-        GetBookingUpdateView('@Url.Action("AddOrUpdate","booking")' + "?begin=" + object.start + "&finish=" + object.end)*@
-
-    }
-    function GetBookingUpdateView(url) {
-        $.ajax({
-            type: "get",
-            url: url,
-            //data: ,
-            datatype: "html",
-            success: function (data) {
-                $('#bookingModal').html(data);
-                $("#modalLoader").fadeOut();
-            }
-        });
-    }
-    function showmodal() {
-        $("#bookingModal").html(null);
-        $("#modalLoader").fadeIn();
-        $('#ChangeState').modal('show');
-    }
+   
+     
  
 
 </script>

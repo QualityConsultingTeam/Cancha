@@ -40,22 +40,13 @@
 {
 <div data-container-for="UserId" class="k-edit-field">
 
-    @*@(Html.Kendo().ComboBoxFor(model => model.UserId)
-                .HtmlAttributes(new { data_bind = "value:UserId", style = "width: 300px" })
-                .DataTextField("Name")
-                .DataValueField("Id")
-                .Filter(FilterType.Contains)
-                .AutoBind(false)
-                .MinLength(3)
-                //.Template("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Name\\#")
-                .DataSource(source => source.Read(r => r.Action("GetUserNamesForSchedule", "Account")).ServerFiltering(true)).ToClientTemplate()
-    )*@
+     
     @(Html.Kendo().DropDownListFor(m => m.UserId)
 
 
           .DataTextField("Name")
           .DataValueField("Id")
-          .HtmlAttributes(new { data_bind = "value:UserId", style = "width:100%" })
+          .HtmlAttributes(new { data_bind = "value:UserId", style = "width:100%" ,required="required"})
           .Filter("contains")
           .DataSource(source =>
           {
@@ -121,30 +112,19 @@ else
     @(Html.LabelFor(model => model.CustomPrice))
 </div>
 <div data-container-for="CustomPrice" class="k-edit-field">
-    @(Html.TextBoxFor(model => model.CustomPrice, new { @class = "k-textbox", data_bind = "value:CustomPrice" }))
+    @(Html.TextBoxFor(model => model.CustomPrice, new { @class = "k-textbox", data_bind = "value:CustomPrice" ,required="required"}))
 </div>
  
 <div class="k-edit-label">
     @(Html.LabelFor(model => model.Idcancha))
 </div>
 <div data-container-for="Idcancha" class="k-edit-field">
-    @*@(Html.Kendo().ComboBoxFor(model => model.Idcancha)
-            .HtmlAttributes(new { data_bind = "value:Idcancha", style = "width: 300px" })
-            .DataTextField("Name")
-            .DataValueField("Id")
-            .Placeholder("Seleccione Cancha")
-            //.OptionLabel("Cancha")
-            .ValuePrimitive(true)
-            .Text("Seleccione Cancha").Value("")
-            //.Template("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Name\\#")
-            .DataSource(source=> source.Read(r=>r.Action("GetFieldsForAutoComplete", "Canchas"))).ToClientTemplate()
-        )*@
-
+  
     @(Html.Kendo().DropDownListFor(m=>m.Idcancha)
 
           .DataTextField("Name")
           .DataValueField("Id")
-          .HtmlAttributes(new { style = "width:100%" })
+          .HtmlAttributes(new { style = "width:100%",required="required" })
           .Filter("contains")
           .DataSource(source =>
           {
@@ -156,21 +136,7 @@ else
           }))
 </div>
 
-<div class="k-edit-label">
-    @*@(Html.LabelFor(model => model.Attendees))*@
-</div>
-<div data-container-for="Attendees" class="k-edit-field">
-    @*@(Html.Kendo().AutoCompleteFor (model => model.Attendees)
-            .HtmlAttributes(new { data_bind = "value:Attendees" })
-            .Animation(true)
-            .DataTextField("text")
-            .Value("id")
-            .ValuePrimitive(true)
-            //.TagTemplate("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Text\\#")
-            //.ItemTemplate("<span class='k-scheduler-mark' style='background-color:\\#= data.Color?Color:'' \\#'></span>\\#=Text\\#")
-            .DataSource(ds => ds.Read("Customers", "Customers"))
-        )*@
-</div>
+ 
 <div class="k-edit-label">
     @(Html.LabelFor(model => model.Description))
 </div>
@@ -181,6 +147,4 @@ else
 @{
     ViewContext.FormContext = null;
 }
-@*<script src="~/Scripts/typeahead.bundle.min.js"></script>
-<script src="~/Scripts/typeahead.jquery.min.js"></script>
-<script src="~/Scripts/typeahead.mvc.model.js"></script>*@
+ 
