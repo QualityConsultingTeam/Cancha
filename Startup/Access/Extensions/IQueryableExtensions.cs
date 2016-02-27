@@ -62,11 +62,16 @@ namespace Access.Extensions
 
         #region Center Logic extensions
 
-        public static Task<int?>GetCenterIdAsync(this AccessContext Context)
+        public async static Task<int?>GetCenterIdAsync(this AccessContext Context)
         {
-            var userId = ClaimsPrincipal.Current.UserId();
+            var centerId = ClaimsPrincipal.Current.CenterId();
 
-            return Context.Users.Where(u => u.Id == userId).Select(u => u.CenterId).FirstOrDefaultAsync();
+            if (centerId.HasValue) return Convert.ToInt32(centerId.Value);
+
+            var userId = ClaimsPrincipal.Current.UserId();
+            
+
+            return await Context.Users.Where(u => u.Id == userId).Select(u => u.CenterId).FirstOrDefaultAsync();
         }
 
         #endregion
