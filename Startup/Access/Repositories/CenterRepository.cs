@@ -121,6 +121,8 @@ namespace Access.Repositories
                     CenterId = centerId.Value,
                     Locked = locked,
                 };
+
+                Context.Entry(isLock).State = EntityState.Added;
             }
             else
             {
