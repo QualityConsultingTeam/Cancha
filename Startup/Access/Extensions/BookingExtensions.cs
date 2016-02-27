@@ -115,5 +115,16 @@ namespace Access.Extensions
             return $"Estimado {model.User?.FirstName} {model.User?.LastName} Su reserva ha sido confirmada en la cancha {model.Field?.Name} , hora {model.Start}  ";
         }
        
+
+        public static string GetLabelStatusStyle(this BookingManageViewModel model)
+        {
+            return model.Status == BookingStatus.Reservada ? "label-info" :
+                   model.Status == BookingStatus.Finalizado ? "label-primary" :
+                   model.Status == BookingStatus.Pendiente ? "label-warning" :
+                   model.Status == BookingStatus.Denegado || model.Status == BookingStatus.Falta ? "label-danger" :
+                   model.Status == BookingStatus.Cancelado ? "label-default" : "label-sucess";
+
+
+        }
     }
 }

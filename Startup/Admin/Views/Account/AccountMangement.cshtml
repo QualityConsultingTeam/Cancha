@@ -12,7 +12,8 @@
         UpdateTargetId = "userAdminSection"
     };
 }
-@model  List<Identity.IdentityUserViewModel>
+@using PagedList.Mvc;
+@model PagedList.IPagedList<Identity.IdentityUserViewModel>
 
 @Scripts.Render("~/plugins/knockout")
  <div class="row wrapper border-bottom white-bg page-heading">
@@ -32,7 +33,7 @@
     </div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight" id="userAdminSection">
-   
+
     <div class="row">
         <div class="col-lg-12">
 
@@ -56,32 +57,32 @@
                     {
                         if (User.IsInRole("Admin"))
                         {
-                        <div class="col-sm-4 m-b-xs">
-                            <select class="input-sm form-control input-s-sm inline" id="role" name="role" data-bind="
-                                    options: roles,
-                                    optionsText: 'Text',
-                                    optionsValue: 'Text',event:{ change: onSelectionChange},
-                                    optionsCaption: 'Seleccione Rol...' "></select>
-                        </div>
+                    <div class="col-sm-4 m-b-xs">
+                        <select class="input-sm form-control input-s-sm inline" id="role" name="role" data-bind="
+                                options roles,
+                                optionsText 'Text' ,
+                                optionsValue 'Text' ,event:{ change onSelectionChange},
+                                optionsCaption 'Seleccione Rol...' "></select>
+                    </div>
 
 
-                            <div class="col-sm-5 m-b-xs">
-                                <select class="input-sm form-control input-s-sm inline" id="centerid" name="centerid" data-bind="
-                                        options: centers,
-                                        optionsText: 'Text',
-                                        optionsValue: 'Id',event:{ change: onCenterChange},
-                                        optionsCaption: 'Seleccione Centro...' "></select>
-                            </div>
+                    <div class="col-sm-5 m-b-xs">
+                        <select class="input-sm form-control input-s-sm inline" id="centerid" name="centerid" data-bind="
+                                options centers,
+                                optionsText 'Text' ,
+                                optionsValue 'Id' ,event:{ change onCenterChange},
+                                optionsCaption 'Seleccione Centro...' "></select>
+                    </div>
                         }
-                        <input type="hidden" data-bind="value:Limit" name="Limit" id="Limit" />
-                        <input type="hidden" data-bind="value:page" name="page" id="page" />
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <input type="text" placeholder="Usuario/Email" id="keywords" name="keywords" class="input-sm form-control"> <span class="input-group-btn">
-                                    <button type="submit" class="btn btn-sm btn-primary"> Buscar!</button>
-                                </span>
-                            </div>
+                    <input type="hidden" data-bind="value:Limit" name="Limit" id="Limit" />
+                    <input type="hidden" data-bind="value:page" name="page" id="page" />
+                    <div class="col-sm-3">
+                        <div class="input-group">
+                            <input type="text" placeholder="Usuario/Email" id="keywords" name="keywords" class="input-sm form-control"> <span class="input-group-btn">
+                                <button type="submit" class="btn btn-sm btn-primary"> Buscar!</button>
+                            </span>
                         </div>
+                    </div>
                         }
 
                 </div>
@@ -93,23 +94,8 @@
         </div>
     </div>
     <div class="row" id="tablecontaier">
-        @Html.Partial("Partials/UserManagementGrid", Model)
+        @Html.Partial("Partials/UsersManageGrid", Model)
 
-    </div>
-    <div class="row">
-        <div class="btn-group">
-            <button type="button" class="btn btn-white" data-bind="click:previousPage">
-                <i class="fa fa-chevron-left"></i>
-            </button>
-            @*<div data-bind="foreach:pages">
-                    <button class="btn btn-white  active" data-bind="text: number"></button>
-                </div>*@
-
-
-            <button type="button" class="btn btn-white" data-bind="click:nextPage">
-                <i class="fa fa-chevron-right"></i>
-            </button>
-        </div>
     </div>
 </div>
 
@@ -128,23 +114,7 @@
             $("#page").val(0);
             doSearch();
         },
-        previousPage: function () {
-            var pag = Number($("#page").val()) - 1;
-            if (pag > 0) {
-                $("#page").val(pag);
-                doSearch();
-                $("#page").val(pag);
-            }
-        },
-        nextPage: function () {
-            var pag = Number($("#page").val()) + 1;
-            var limit = Number(pagelimit);
-            console.log("page : " + pag + "pageLImit: " + limit)
-            if (pag > 0 && pag <= limit) {
-                $("#page").val(pag);
-                doSearch();
-            }
-        },
+        
     };
     // Initialize
     function doSearch() {

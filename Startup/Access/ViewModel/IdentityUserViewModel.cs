@@ -1,9 +1,11 @@
 ﻿using Access.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -76,6 +78,8 @@ namespace Identity
 
 
         public Center Company { get; set; }
+
+        public List<IdentityUserClaim> Claims { get; set; }
 
     }
 

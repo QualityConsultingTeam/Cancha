@@ -8,7 +8,9 @@
     var options = new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "BookingListSection", LoadingElementId = "loaderSection" };
 }
 @using PagedList.Mvc;
+@using Access.Extensions;
 @model PagedList.IPagedList<BookingManageViewModel>
+
 
   <div class="table-responsive animated fadeInLeft">
     <table class="table table-striped">
@@ -71,7 +73,7 @@
                         @item.Type
                     </td>
                     <td>
-                        <span class="label label-primary">  @item.Status</span>
+                        <span class="label @item.GetLabelStatusStyle()">  @item.Status</span>
                     </td>
 
                     <td>

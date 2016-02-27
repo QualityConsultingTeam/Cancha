@@ -1,0 +1,76 @@
+﻿
+@{
+    Layout = null;
+    var options = new AjaxOptions()
+    {
+        HttpMethod = "post",
+        InsertionMode = InsertionMode.Replace,
+        LoadingElementId = "loaderSection",
+        UpdateTargetId = "userAdminSection"
+    };
+    var sortOrder = (string)ViewBag.SortOrder;
+    var currentColumnOrder = (string)ViewBag.CurrentColumnSort;
+
+    var filter = ViewBag.FilterModel;
+}
+@using PagedList.Mvc;
+@using System.Security.Claims;
+@model PagedList.IPagedList<Identity.IdentityUserViewModel>
+
+
+@foreach (var item in Model)
+{
+    {
+        var lastName = item.LastName ?? " ";
+    }
+    <div class="col-lg-3">
+        <div class="contact-box center-version animated flip">
+
+            <div>
+
+                <img alt="image" class="img-circle" style="max-height:50px; max-width:50px" src="@item.ProfilePictureDefault">
+
+
+                <h3 class="m-b-xs"><strong>@Html.DisplayFor(modelItem => item.FirstName)  </strong></h3>
+                @if (!string.IsNullOrEmpty(item.LastName))
+                {
+                    <h3 class="m-b-xs"><strong>@Html.DisplayFor(modelItem => item.LastName)</strong></h3>
+                }
+                else
+                {
+                    <h3 class="m-b-xs"><strong>@item.Claims.FirstOrDefault(c=> c.ClaimType == ClaimTypes.Name)</strong></h3>
+                }
+
+                <div class="font-bold">@Html.DisplayFor(modelItem => item.Role)</div>
+                <address class="m-t-md">
+                    <strong>@Html.DisplayFor(modelItem => item.Email)</strong><br>
+                    <abbr title="Phone">P:</abbr> @Html.DisplayFor(modelItem => item.PHONE_2)
+                </address>
+
+            </div>
+            <div class="contact-box-footer">
+                <div class="m-t-xs btn-group">
+                    @Ajax.ActionLink(" Detalles", "ApplicationUserDetails", "Account", new { id = item.Id }, options, new { @class = "btn btn-xs btn-white fa fa-paste" })
+                    @if (User.IsInRole("Admin"))
+                    {
+                        @Ajax.ActionLink(" Editar", "EditApplicationUser", "Account", new { id = item.Id }, options, new { @class = "btn btn-xs btn-white fa fa-check" })
+                    }
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+
+<div class="form-inline animated flipInX">
+    <div class="row">
+        <div class="col-lg-12 text-right">
+            <div class="pager-num">
+                @Html.PagedListPager(Model, page => Url.Action("SearchAccounts", new { filterdata = filter, page, columnName = currentColumnOrder, sortOrder }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(options))
+            </div>
+            <div class="pager-text">Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</div>
+        </div>
+    </div>
+</div>

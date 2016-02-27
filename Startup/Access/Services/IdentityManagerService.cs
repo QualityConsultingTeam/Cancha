@@ -114,6 +114,26 @@ namespace Identity
             }).ToListAsync();
         }
 
+        public IQueryable<IdentityUserViewModel> SearchUsers(FilterOptionModel filter, bool onlyUsers=false)
+        {
+            return CommonSearch(filter, onlyUsers)
+                .Select(u => new Identity.IdentityUserViewModel()
+                {
+                    Id = u.Id,
+                    Email= u.Email,
+                    PHONE_2 = u.PHONE_2,
+                    AccessFailedCount = u.AccessFailedCount,
+                    FirstName = u.FirstName,
+                    LastName =u.LastName,
+                    DUI = u.DUI,
+                    ADDRESS = u.ADDRESS,
+                    UserName = u.UserName,
+                    ProfilePicture= u.ProfilePicture,
+                    CenterId = u.CenterId,  
+                    Claims = u.Claims.ToList(),
+                }).OrderBy(o=>o.FirstName).ThenBy(o=>o.LastName);
+        }
+
         public async Task<List<ApplicationUser>> GetUsersAsync(FilterOptionModel filter, bool onlyUsers = false)
         {
 

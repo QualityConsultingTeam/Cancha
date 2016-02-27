@@ -66,7 +66,13 @@ namespace Access.Repositories
             var _query = await GetSummary(user);
             IQueryable<Booking> query = _query.Include(b => b.Field).Include(b=>b.User);
 
-            filter.SearchKeys.ForEach(k => query = query.Where(q => q.Field.Name.ToLower().Contains(k)));
+            filter.SearchKeys.ForEach(k =>
+            query = query.Where(q => q.Field.Name.ToLower().Contains(k) ||
+                                q.Field.Name.ToLower().Contains(k) ||
+                                q.User.Email.ToLower().Contains(k)||
+                                q.User.FirstName.ToLower().Contains(k) ||
+                                q.User.LastName.ToLower().Contains(k)                          
+            ));
 
 
             if (filter.date.HasValue) query = query.Where(q => q.Start >= filter.date.Value);

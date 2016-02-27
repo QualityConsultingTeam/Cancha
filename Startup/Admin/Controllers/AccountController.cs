@@ -21,6 +21,9 @@ using Identity.Models;
 using Identity;
 
 using Identity.Config;
+using Admin.Helpers;
+using PagedList;
+using Newtonsoft.Json;
 
 namespace Admin.Controllers
 {
@@ -597,29 +600,44 @@ namespace Admin.Controllers
 
         [Authorize(Roles = "Admin,Manager")]
         //[AllowAnonymous]
-        public async Task<ActionResult> AccountMangement()
+        public ActionResult AccountMangement()
         {
             
             var filter = new FilterOptionModel() { Limit= 8};
-            var users = await IdentityManagerService.GetUsersAsync(filter);
-            ViewBag.PageLimit = await IdentityManagerService.GetPageLimit(filter);
+            var users =   IdentityManagerService.SearchUsers(filter);
+            
+            ViewBag.FilterModel = filter.Serialize();
 
-            var model = users.ToIdentityUserViewModel();
-
-            return View(model);
+            return View(users.ToPagedList(filter.page == 0 ? 1 : filter.page, filter.Limit));
         }
 
         [HttpPost]
         //[Authorize(Roles = "Admin,Manager")]
-        public async Task<ActionResult> SearchAccounts(FilterOptionModel filter)
-        {   
-            var users = await IdentityManagerService.GetUsersAsync(filter);
+        public ActionResult SearchAccounts(FilterOptionModel filter)
+        {           
+            var users = IdentityManagerService.SearchUsers(filter);
 
-            var model =  users.ToIdentityUserViewModel();
+            ViewBag.FilterModel = filter.Serialize();
 
-            ViewBag.PageLimit = await IdentityManagerService.GetPageLimit(filter);
+            return PartialView("Partials/UsersManageGrid", users.ToPagedList(filter.page == 0 ? 1 : filter.page, filter.Limit));
+        }
 
-            return PartialView(@"~/Views/Account/Partials/UserManagementGrid.cshtml", model);
+        [HttpPost]
+        public ActionResult Sort(string filter, string columnName, string sortOrder, string currentColumn, int? page)
+        {
+            var _filter = JsonConvert.DeserializeObject<FilterOptionModel>(filter);
+            var model =   IdentityManagerService.SearchUsers(_filter);
+
+            sortOrder = string.IsNullOrEmpty(sortOrder) ? "ASC" : sortOrder == "ASC" ? "DESC" : "ASC";
+
+            if (currentColumn != null)
+                sortOrder = columnName != currentColumn ? "ASC" : sortOrder;
+
+            ViewBag.CurrentColumnSort = columnName;
+            ViewBag.SortOrder = sortOrder;
+            ViewBag.FilterModel = filter;
+
+            return View("Partials/UsersManageGrid", model.OrderBy(columnName, sortOrder).ToPagedList(_filter.page, _filter.Limit));
         }
 
         //[Authorize(Roles = "Admin,Manager")]

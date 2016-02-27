@@ -1677,6 +1677,7 @@
     <Content Include="Views\Feeds\Index.cshtml" />
     <Content Include="Views\Feeds\Partials\Details.cshtml" />
     <Content Include="Views\Feeds\Partials\ManageGrid.cshtml" />
+    <Content Include="Views\Account\Partials\UsersManageGrid.cshtml" />
     <None Include="Web.Azure_Website.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
