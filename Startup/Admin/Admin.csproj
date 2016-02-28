@@ -566,7 +566,6 @@
     <Content Include="Images\slide0.jpg" />
     <Content Include="Images\slide1.jpg" />
     <Content Include="Images\slide2.jpg" />
-    <Content Include="Images\waze.png" />
     <Content Include="Images\zender_logo.png" />
     <Content Include="Scripts\app\inspinia.js" />
     <Content Include="Scripts\app\inspinia.min.js" />
@@ -1674,6 +1673,7 @@
     <Content Include="Views\Feeds\Partials\Details.cshtml" />
     <Content Include="Views\Feeds\Partials\ManageGrid.cshtml" />
     <Content Include="Views\Account\Partials\UsersManageGrid.cshtml" />
+    <Content Include="Views\Shared\_Layout_0.cshtml" />
     <None Include="Web.Azure_Website.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
