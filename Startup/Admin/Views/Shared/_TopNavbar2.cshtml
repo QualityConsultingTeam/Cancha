@@ -83,7 +83,7 @@
                 <li>
                     @using (Html.BeginForm("LogOff", "Account"))
                     {
-                    <button type="submit"  class="dropdown-toggle count-info"  href="#">
+                    <button type="submit"  class="btn btn-white"  href="#">
                         <i class="fa fa-sign-out"></i>  
                            
                     </button>
@@ -95,7 +95,7 @@
                     </a>
                 </li>
                 
-                @if (User.IsInRole("Admin"))
+                @if (User.IsInRole("Manager"))
                 {
                 <li>
                     <a class="dropdown-toggle count-info" href="@Url.Action("menu", "rootadmin")">
@@ -109,14 +109,14 @@
                         <a href="#" class="pull-left">
                             <img alt="image" class="img-circle" src="@Html.FacebookProfileSmallPicture()">
                         </a>
-                        <div class="media-body">
+                        @*<div class="media-body">
                             <small class="pull-right">--</small>
                             <strong>@User.Identity.Name</strong> <br>
 
                             <small class="text-muted">
 
                             </small>
-                        </div>
+                        </div>*@
                     </div>
                 </li>
 
