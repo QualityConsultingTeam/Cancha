@@ -69,6 +69,7 @@
 
             m.RecurrenceId(f => f.RecurrenceId);
         }) 
+        .ServerOperation(true)
         .Read("Read", "Booking")
             .Create("Create", "Booking")
             .Destroy("Destroy", "Booking")
