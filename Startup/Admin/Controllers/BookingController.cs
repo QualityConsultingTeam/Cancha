@@ -237,9 +237,9 @@ namespace Admin.Controllers
 
                 if (existing != null && existing.Status == BookingStatus.Reservada) throw new Exception("Already Exists booking");
 
-                var booking = new Booking();
+                var booking = new Booking() { Userid= user.Id,Idcancha = task.Idcancha };
                 
-                booking.CopyFrom(task);
+                
                 booking.Price = task.ComputePrice();
                 booking.Start = task.Start.ToLocalTime();
                 booking.End = task.End.ToLocalTime();
