@@ -634,9 +634,6 @@
     <Content Include="Content\plugins\slick\fonts\slick.eot" />
     <Content Include="Content\plugins\slick\fonts\slick.ttf" />
     <Content Include="Content\plugins\slick\fonts\slick.woff" />
-    <None Include="Properties\PublishProfiles\enlacancha - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\enlacancha - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\enlacancha.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -1545,6 +1542,7 @@
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
@@ -1680,6 +1678,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Views\FileUpload\" />
   </ItemGroup>
   <ItemGroup>
