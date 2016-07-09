@@ -177,7 +177,7 @@ namespace Admin.Controllers
         }
 
 
-       
+       [Globalization]
         public virtual async Task<JsonResult> Read([DataSourceRequest] DataSourceRequest request)
         {
 
@@ -204,7 +204,7 @@ namespace Admin.Controllers
             return Json(model); 
 
         }
-
+        [Globalization]
         public virtual async Task<JsonResult> Destroy([DataSourceRequest] DataSourceRequest request, BookingViewModel task)
         {
 
@@ -225,7 +225,7 @@ namespace Admin.Controllers
             return Json(null);
             
         }
-     
+        [Globalization]
         public virtual async Task<JsonResult> Create([DataSourceRequest] DataSourceRequest request, BookingViewModel task)
         {
             try {
@@ -237,9 +237,9 @@ namespace Admin.Controllers
 
                 if (existing != null && existing.Status == BookingStatus.Reservada) throw new Exception("Already Exists booking");
 
-                var booking = new Booking();
+                var booking = new Booking() { Userid= user.Id,Idcancha = task.Idcancha };
                 
-                booking.CopyFrom(task);
+                
                 booking.Price = task.ComputePrice();
                 booking.Start = task.Start.ToLocalTime();
                 booking.End = task.End.ToLocalTime();
@@ -254,7 +254,7 @@ namespace Admin.Controllers
                 return Json(null);
             } 
         }
-
+        [Globalization]
         public virtual async Task<JsonResult> Update([DataSourceRequest] DataSourceRequest request, BookingViewModel task)
         {
             if (ModelState.IsValid)

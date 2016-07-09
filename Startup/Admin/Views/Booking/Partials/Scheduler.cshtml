@@ -58,7 +58,7 @@
         m.DeleteWindowTitle("Borrar registro");
         m.Destroy("Eliminar");
     })
-     //.Timezone("Etc/UTC")
+    .Timezone("Etc/UTC")
     // .Timezone(currentTimeZone)
    .DataSource(d => d
         .Model(m =>
@@ -69,6 +69,7 @@
 
             m.RecurrenceId(f => f.RecurrenceId);
         }) 
+        .ServerOperation(true)
         .Read("Read", "Booking")
             .Create("Create", "Booking")
             .Destroy("Destroy", "Booking")

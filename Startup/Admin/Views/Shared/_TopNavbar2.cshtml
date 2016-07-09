@@ -83,17 +83,13 @@
                 <li>
                     @using (Html.BeginForm("LogOff", "Account"))
                     {
-                    <button type="submit"  class="btn btn-white"  href="#">
+                    <button type="submit"  class="btn btn-white btn-sm"  href="#">
                         <i class="fa fa-sign-out"></i>  
                            
                     </button>
                     }
                 </li>
-                <li>
-                    <a class="count-info" href="@Url.Action("Index", "Manage")">
-                        <i class="fa fa-tasks"></i> <strong>MI PERFIL</strong>
-                    </a>
-                </li>
+              
                 
                 @if (User.IsInRole("Manager"))
                 {
@@ -104,9 +100,11 @@
                 </li>
                 }
                 
+                @if (!User.IsInRole("Admin") && !User.IsInRole("Manager"))
+                {
                 <li>
                     <div class="dropdown-messages-box">
-                        <a href="#" class="pull-left">
+                        <a href="@Url.Action("Index","Manage")" class="pull-left">
                             <img alt="image" class="img-circle" src="@Html.FacebookProfileSmallPicture()">
                         </a>
                         @*<div class="media-body">
@@ -119,6 +117,7 @@
                         </div>*@
                     </div>
                 </li>
+                }
 
             </ul>
             }
