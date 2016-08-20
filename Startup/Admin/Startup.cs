@@ -10,6 +10,7 @@ namespace Admin
         {
             ConfigureAuth(app);
             ConfigureApiAuth(app);
+         
         }
     }
 }
